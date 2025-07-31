@@ -4,6 +4,7 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.economy.Wallet;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.Style;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -93,13 +94,25 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public @NotNull Component getDisplayName() {
-        return MX.isBlank(displayName) ? MX.stylizeText(name) : displayName;
+        return getDisplayName(MX.STYLE_NORMAL);
     }
 
     @Override
     public @NotNull Component getDisplayName(@Nullable Style fallbackStyle) {
         if (fallbackStyle == null) return getDisplayName();
-        return MX.isBlank(displayName) ? Component.text(name).style(fallbackStyle) : displayName;
+        Component base = MX.isBlank(displayName) ? Component.text(name).style(fallbackStyle) : displayName;
+
+        Player player = getPlayer();
+        if (player == null) return base;
+
+        return base.hoverEvent(player.asHoverEvent())
+                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/dm " + name + " "))
+                .append(Component.empty().style(MX.STYLE_NORMAL));
+    }
+
+    @Override
+    public boolean hasDisplayName() {
+        return !MX.isBlank(displayName);
     }
 
     @Override

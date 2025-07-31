@@ -9,6 +9,7 @@ import com.themrsung.mirae.command.economy.PayCommand;
 import com.themrsung.mirae.command.home.*;
 import com.themrsung.mirae.command.misc.FlexCommand;
 import com.themrsung.mirae.command.social.DirectMessageCommand;
+import com.themrsung.mirae.command.social.ReplyCommand;
 import com.themrsung.mirae.command.teleport.TeleportAcceptCommand;
 import com.themrsung.mirae.command.teleport.TeleportAskCommand;
 import com.themrsung.mirae.command.teleport.TeleportAskHereCommand;
@@ -38,6 +39,7 @@ public final class Commands {
     private static final @NotNull SetDisplayNameCommand SET_DISPLAY_NAME_COMMAND = new SetDisplayNameCommand();
 
     private static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
+    private static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
 
     private static final @NotNull TeleportAskCommand TELEPORT_ASK_COMMAND = new TeleportAskCommand();
     private static final @NotNull TeleportAskHereCommand TELEPORT_ASK_HERE_COMMAND = new TeleportAskHereCommand();
@@ -64,6 +66,7 @@ public final class Commands {
             SET_DISPLAY_NAME_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
+            REPLY_COMMAND,
 
             TELEPORT_ASK_COMMAND,
             TELEPORT_ASK_HERE_COMMAND,
@@ -147,6 +150,10 @@ public final class Commands {
 
     public static @NotNull DirectMessageCommand getDirectMessageCommand() {
         return DIRECT_MESSAGE_COMMAND;
+    }
+
+    public static @NotNull ReplyCommand getReplyCommand() {
+        return REPLY_COMMAND;
     }
 
     public static @NotNull TeleportAskCommand getTeleportAskCommand() {

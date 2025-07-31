@@ -71,6 +71,13 @@ public interface Account extends Serializable {
     @NotNull Component getDisplayName(@Nullable Style fallbackStyle);
 
     /**
+     * Returns whether this account has a display name.
+     *
+     * @return {@code true} if it has a display name
+     */
+    boolean hasDisplayName();
+
+    /**
      * Sets the display name.
      *
      * @param displayName The display name to set

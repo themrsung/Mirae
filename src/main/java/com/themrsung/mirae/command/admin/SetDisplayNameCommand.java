@@ -54,7 +54,7 @@ public class SetDisplayNameCommand extends MiraeCommand {
 
         account.setDisplayName(nickname);
 
-        sender.sendMessage(account.getDisplayName(MX.STYLE_SPECIAL)
+        sender.sendMessage(Component.text(account.getName())
                 .append(Component.text("님의 별명을 ").style(MX.STYLE_NORMAL))
                 .append(nickname != null ? nickname : Component.text("없음").style(MX.STYLE_SPECIAL))
                 .append(Component.text("으로 설정했습니다.")).style(MX.STYLE_NORMAL));
