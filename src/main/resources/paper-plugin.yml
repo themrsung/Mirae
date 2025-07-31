@@ -1,11 +1,17 @@
 name: Mirae
-version: '0.1'
+version: '0.2'
 main: com.themrsung.mirae.Mirae
+author: themrsung
+description: Official plugin for Mirae Server
 api-version: '1.21'
 dependencies:
   bootstrap:
     Vault:
       required: true
+    ItemsAdder:
+      required: true
   server:
     Vault:
+      required: true
+    ItemsAdder:
       required: true

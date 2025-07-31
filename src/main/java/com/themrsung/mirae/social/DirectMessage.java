@@ -8,21 +8,33 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Direct message.
+ * Direct content.
  *
  * @param uniqueId  The unique identifier
  * @param time      The time
  * @param sender    The sender
  * @param recipient The recipient
- * @param message   The message
+ * @param content   The content
  */
 public record DirectMessage(
         @NotNull UUID uniqueId,
         @NotNull LocalDateTime time,
         @NotNull Account sender,
         @NotNull Account recipient,
-        @NotNull Component message
+        @NotNull Component content
 ) {
+    /**
+     * Composes a new direct message.
+     *
+     * @param sender    The sender
+     * @param recipient The recipient
+     * @param content   The content
+     * @return The message
+     */
+    public static @NotNull DirectMessage compose(@NotNull Account sender, @NotNull Account recipient, @NotNull Component content) {
+        return new DirectMessage(UUID.randomUUID(), LocalDateTime.now(), sender, recipient, content);
+    }
+
     /**
      * Returns the message as shown to console.
      *
@@ -33,7 +45,7 @@ public record DirectMessage(
         String recipientName = recipient.getName();
 
         String prefix = "[" + senderName + " -> " + recipientName + "] ";
-        return Component.text(prefix).append(message);
+        return Component.text(prefix).append(content);
     }
 
     /**
@@ -49,8 +61,8 @@ public record DirectMessage(
                 .append(senderDisplayName)
                 .append(Component.text(" -> "))
                 .append(recipientDisplayName)
-                .append(Component.text(" ]"))
-                .append(message);
+                .append(Component.text("] "))
+                .append(content);
     }
 
     /**
@@ -66,8 +78,8 @@ public record DirectMessage(
                 .append(senderDisplayName)
                 .append(Component.text(" -> "))
                 .append(recipientDisplayName)
-                .append(Component.text(" ]"))
-                .append(message);
+                .append(Component.text("] "))
+                .append(content);
     }
 
     /**
@@ -83,7 +95,7 @@ public record DirectMessage(
                 .append(senderDisplayName)
                 .append(Component.text(" -> "))
                 .append(recipientDisplayName)
-                .append(Component.text(" ]"))
-                .append(message);
+                .append(Component.text("] "))
+                .append(content);
     }
 }

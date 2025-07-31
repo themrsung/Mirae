@@ -3,7 +3,7 @@ package com.themrsung.mirae.economy;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.event.economy.EconomyCause;
-import com.themrsung.mirae.state.MiraeState;
+import com.themrsung.mirae.state.State;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -16,25 +16,35 @@ import java.util.List;
 /**
  * Vault Economy Adapter.
  */
-class VaultEconomyAdapter implements Economy {
+public class VaultEconomyAdapter implements Economy {
+    /**
+     * Creates a new Vault adapter.
+     *
+     * @param state The state
+     * @return The adapter
+     */
+    public static @NotNull Economy createAdapter(@NotNull State state) {
+        return new VaultEconomyAdapter(state);
+    }
+
     /**
      * Creates a new adapter.
      *
-     * @param economy The economy
+     * @param state The state
      */
-    VaultEconomyAdapter(@NotNull MiraeState economy) {
-        this.economy = economy;
+    private VaultEconomyAdapter(@NotNull State state) {
+        this.state = state;
     }
 
-    private final @NotNull MiraeState economy;
+    private final @NotNull State state;
 
     /**
-     * Returns the economy instance.
+     * Returns the state instance.
      *
-     * @return The economy instance
+     * @return The state instance
      */
-    public @NotNull MiraeState getEconomy() {
-        return economy;
+    public @NotNull State getState() {
+        return state;
     }
 
     @Override
@@ -79,7 +89,7 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return economy.hasAccount(offlinePlayer);
+        return state.hasAccount(offlinePlayer);
     }
 
     @Override
@@ -89,7 +99,7 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer, String s) {
-        return economy.hasAccount(offlinePlayer);
+        return state.hasAccount(offlinePlayer);
     }
 
     @Override
@@ -99,7 +109,7 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        return economy.getWithdrawableBalance(offlinePlayer);
+        return state.getWithdrawableBalance(offlinePlayer);
     }
 
     @Override
@@ -109,7 +119,7 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer, String s) {
-        return economy.getWithdrawableBalance(offlinePlayer);
+        return state.getWithdrawableBalance(offlinePlayer);
     }
 
     @Override
@@ -119,7 +129,7 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double v) {
-        return economy.getWithdrawableBalance(offlinePlayer) >= v;
+        return state.getWithdrawableBalance(offlinePlayer) >= v;
     }
 
     @Override
@@ -139,12 +149,12 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double v) {
-        Account account = economy.getAccount(offlinePlayer);
+        Account account = state.getAccount(offlinePlayer);
         if (account == null) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Account not found.");
         }
 
-        EconomyResult result = economy.withdrawBalance(account, v, EconomyCause.VAULT_WITHDRAWAL);
+        EconomyResult result = state.withdrawBalance(account, v, EconomyCause.VAULT_WITHDRAWAL);
 
         if (result.isSuccess()) {
             return new EconomyResponse(v, account.getWallet().getBalance(), EconomyResponse.ResponseType.SUCCESS, result.getMessage());
@@ -170,12 +180,12 @@ class VaultEconomyAdapter implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
-        Account account = economy.getAccount(offlinePlayer);
+        Account account = state.getAccount(offlinePlayer);
         if (account == null) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Account not found.");
         }
 
-        EconomyResult result = economy.depositBalance(account, v, EconomyCause.VAULT_DEPOSIT);
+        EconomyResult result = state.depositBalance(account, v, EconomyCause.VAULT_DEPOSIT);
 
         if (result.isSuccess()) {
             return new EconomyResponse(v, account.getWallet().getBalance(), EconomyResponse.ResponseType.SUCCESS, result.getMessage());
@@ -262,7 +272,7 @@ class VaultEconomyAdapter implements Economy {
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
         Account account = Account.createAccount(offlinePlayer.getUniqueId());
-        return economy.addAccount(account);
+        return state.addAccount(account);
     }
 
     @Override

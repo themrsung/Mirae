@@ -56,7 +56,7 @@ public final class EconomyResult {
      * Creates and returns a new result.
      *
      * @param success Whether it was a success
-     * @param message The message
+     * @param message The content
      * @return The result
      */
     public static @NotNull EconomyResult createResult(boolean success, @NotNull String message) {
@@ -71,7 +71,7 @@ public final class EconomyResult {
      * Creates a new result.
      *
      * @param success Whether it was successful
-     * @param message The message
+     * @param message The content
      */
     private EconomyResult(boolean success, @NotNull String message) {
         this.success = success;
@@ -91,9 +91,9 @@ public final class EconomyResult {
     }
 
     /**
-     * Returns the message.
+     * Returns the content.
      *
-     * @return The message
+     * @return The content
      */
     public @NotNull String getMessage() {
         return message;

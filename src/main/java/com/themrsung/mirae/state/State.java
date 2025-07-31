@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 /**
  * A Mirae economy.
  */
-public interface MiraeState {
+public interface State {
     /**
      * The number of minutes until being AFK.
      */
@@ -32,7 +32,7 @@ public interface MiraeState {
      *
      * @return The new economy instance
      */
-    static @NotNull MiraeState empty() {
+    static @NotNull State empty() {
         return new SynchronizedState();
     }
 
@@ -150,14 +150,14 @@ public interface MiraeState {
      *
      * @return {@code true} if it is frozen
      */
-    boolean isFrozen();
+    boolean isEconomyFrozen();
 
     /**
      * Sets whether the economy is frozen.
      *
      * @param frozen {@code true} if it is frozen
      */
-    void setFrozen(boolean frozen);
+    void setEconomyFrozen(boolean frozen);
 
     ///
     /// Withdrawable Balance
@@ -240,7 +240,7 @@ public interface MiraeState {
      * @param account The account
      * @param amount  The amount
      * @param cause   The cause
-     * @param message The message
+     * @param message The content
      * @return The result
      */
     @NotNull EconomyResult depositBalance(@NotNull Account account, double amount, @Nullable EconomyCause cause, @Nullable String message);
@@ -273,7 +273,7 @@ public interface MiraeState {
      * @param recipient The recipient
      * @param amount    The amount
      * @param cause     The cause
-     * @param message   The message
+     * @param message   The content
      * @return The result
      */
     @NotNull List<EconomyResult> transferBalance(@NotNull Account sender, @NotNull Account recipient, double amount, @Nullable EconomyCause cause, @Nullable String message);
@@ -303,7 +303,7 @@ public interface MiraeState {
      * @param account The account
      * @param amount  The amount
      * @param cause   The cause
-     * @param message The message
+     * @param message The content
      * @return The result
      */
     @NotNull EconomyResult withdrawBalance(@NotNull Account account, double amount, @Nullable EconomyCause cause, @Nullable String message);
@@ -333,7 +333,7 @@ public interface MiraeState {
      * @param account The account
      * @param amount  The amount
      * @param cause   The cause
-     * @param message The message
+     * @param message The content
      * @return The result
      */
     @NotNull EconomyResult depositCoinBalance(@NotNull Account account, long amount, @Nullable EconomyCause cause, @Nullable String message);
@@ -366,7 +366,7 @@ public interface MiraeState {
      * @param recipient The recipient
      * @param amount    The amount
      * @param cause     The cause
-     * @param message   The message
+     * @param message   The content
      * @return The result
      */
     @NotNull List<EconomyResult> transferCoinBalance(@NotNull Account sender, @NotNull Account recipient, long amount, @Nullable EconomyCause cause, @Nullable String message);
@@ -396,7 +396,7 @@ public interface MiraeState {
      * @param account The account
      * @param amount  The amount
      * @param cause   The cause
-     * @param message The message
+     * @param message The content
      * @return The result
      */
     @NotNull EconomyResult withdrawCoinBalance(@NotNull Account account, long amount, @Nullable EconomyCause cause, @Nullable String message);
@@ -413,9 +413,9 @@ public interface MiraeState {
     @NotNull List<DirectMessage> getDirectMessages();
 
     /**
-     * Adds a direct message to the state.
+     * Adds a direct content to the state.
      *
-     * @param message The message to add
+     * @param message The content to add
      */
     void addDirectMessage(@NotNull DirectMessage message);
 

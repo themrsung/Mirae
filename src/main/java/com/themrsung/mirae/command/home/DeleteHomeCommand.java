@@ -1,4 +1,4 @@
-package com.themrsung.mirae.command.teleport;
+package com.themrsung.mirae.command.home;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
@@ -56,7 +56,9 @@ public class DeleteHomeCommand extends MiraeCommand {
             case 1 -> {
                 if (!(sender instanceof Player player)) yield List.of();
                 Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
-                yield List.copyOf(account.getExtraHomeMap().keySet());
+                yield List.copyOf(account.getExtraHomeMap().keySet().stream()
+                        .filter(key -> key.startsWith(args[0]))
+                        .toList());
             }
             default -> List.of();
         };

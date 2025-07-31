@@ -68,7 +68,7 @@ public interface Wallet extends Serializable {
      *
      * @param change  The net change to apply
      * @param cause   The cause of the change
-     * @param message The message
+     * @param message The content
      * @return The balance after
      */
     double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message);
@@ -102,7 +102,7 @@ public interface Wallet extends Serializable {
      *
      * @param change  The net change to apply
      * @param cause   The cause of the change
-     * @param message The message
+     * @param message The content
      * @return The coin balance after
      */
     long modifyCoinBalance(long change, @Nullable EconomyCause cause, @Nullable String message);

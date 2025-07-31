@@ -36,6 +36,11 @@ public interface EconomyCause {
      */
     @NotNull EconomyCause VAULT_WITHDRAWAL = new InitialCause("Withdrawal (Vault)");
 
+    /**
+     * Admin command.
+     */
+    @NotNull EconomyCause ADMIN_COMMAND = new InitialCause("Admin Command");
+
     ///
     /// Custom cause
     ///
@@ -43,7 +48,7 @@ public interface EconomyCause {
     /**
      * Creates a new initial economy cause.
      *
-     * @param message The message
+     * @param message The content
      * @return The cause
      */
     static @NotNull EconomyCause createInitialCause(@Nullable String message) {
@@ -62,9 +67,9 @@ public interface EconomyCause {
     @Nullable EconomyCause getCause();
 
     /**
-     * Returns the message.
+     * Returns the content.
      *
-     * @return The message if present, {@code null} otherwise
+     * @return The content if present, {@code null} otherwise
      */
     @Nullable String getMessage();
 

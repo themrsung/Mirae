@@ -32,6 +32,7 @@ public class SynchronizedAccount implements Account {
         this.name = Objects.requireNonNullElse(player.getName(), "");
 
         this.tier = AccountTier.DEFAULT;
+        this.titleSet = EnumSet.of(AccountTitle.EMPTY);
         this.title = AccountTitle.EMPTY;
 
         this.wallet = Wallet.createWallet();
@@ -59,6 +60,7 @@ public class SynchronizedAccount implements Account {
         this.name = name;
 
         this.tier = AccountTier.DEFAULT;
+        this.titleSet = EnumSet.of(AccountTitle.EMPTY);
         this.title = AccountTitle.EMPTY;
 
         this.wallet = wallet;
@@ -108,16 +110,8 @@ public class SynchronizedAccount implements Account {
     /// Tier & Title
 
     private @NotNull AccountTier tier;
+    private final @NotNull EnumSet<AccountTitle> titleSet;
     private @NotNull AccountTitle title;
-
-    @Override
-    public @NotNull Component getFullChatName() {
-        return tier.getDisplayName()
-                .append(Component.text(" "))
-                .append(title.getValue())
-                .append(Component.text(" "))
-                .append(getDisplayName());
-    }
 
     @Override
     public @NotNull AccountTier getTier() {
@@ -130,12 +124,37 @@ public class SynchronizedAccount implements Account {
     }
 
     @Override
-    public @NotNull AccountTitle getTitle() {
+    public @NotNull EnumSet<AccountTitle> getTitleSet() {
+        return EnumSet.copyOf(titleSet);
+    }
+
+    @Override
+    public boolean hasTitle(@Nullable AccountTitle title) {
+        return titleSet.contains(title);
+    }
+
+    @Override
+    public synchronized void addTitle(@NotNull AccountTitle title) {
+        titleSet.add(title);
+    }
+
+    @Override
+    public synchronized void removeTitle(@NotNull AccountTitle title) {
+        titleSet.remove(title);
+    }
+
+    @Override
+    public synchronized void clearTitleSet() {
+        titleSet.clear();
+    }
+
+    @Override
+    public @NotNull AccountTitle getCurrentTitle() {
         return title;
     }
 
     @Override
-    public synchronized void setTitle(@NotNull AccountTitle title) {
+    public synchronized void setCurrentTitle(@NotNull AccountTitle title) {
         this.title = title;
     }
 
@@ -444,6 +463,16 @@ public class SynchronizedAccount implements Account {
     }
 
     /// Utilities
+
+    @Override
+    public void sendMessage(@NotNull Component message) {
+        Player player = Bukkit.getPlayer(uniqueId);
+        if (player != null && player.isOnline()) {
+            player.sendMessage(message);
+        } else {
+            addMail(message);
+        }
+    }
 
     @Override
     public @NotNull OfflinePlayer getOfflinePlayer() {

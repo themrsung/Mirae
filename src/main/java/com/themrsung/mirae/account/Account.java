@@ -12,10 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * A Mirae account.
@@ -80,9 +77,9 @@ public interface Account extends Serializable {
      */
     void setDisplayName(@Nullable Component displayName);
 
+    ///
     /// Tier & Title
-
-    @NotNull Component getFullChatName();
+    ///
 
     /**
      * Returns the account tier.
@@ -99,18 +96,52 @@ public interface Account extends Serializable {
     void setTier(@NotNull AccountTier tier);
 
     /**
+     * Returns the set of titles.
+     *
+     * @return The set of titles
+     */
+    @NotNull EnumSet<AccountTitle> getTitleSet();
+
+    /**
+     * Returns whether the account has the title.
+     *
+     * @param title The title
+     * @return {@code true} if the account has the title
+     */
+    boolean hasTitle(@Nullable AccountTitle title);
+
+    /**
+     * Adds the title to this account.
+     *
+     * @param title The title to add
+     */
+    void addTitle(@NotNull AccountTitle title);
+
+    /**
+     * Removes the title from this account.
+     *
+     * @param title The title to remove
+     */
+    void removeTitle(@NotNull AccountTitle title);
+
+    /**
+     * Clears the set of titles.
+     */
+    void clearTitleSet();
+
+    /**
      * Returns the account title.
      *
      * @return The account title
      */
-    @NotNull AccountTitle getTitle();
+    @NotNull AccountTitle getCurrentTitle();
 
     /**
      * Sets the account title.
      *
      * @param title The account title
      */
-    void setTitle(@NotNull AccountTitle title);
+    void setCurrentTitle(@NotNull AccountTitle title);
 
     ///
     /// Economy
@@ -488,12 +519,14 @@ public interface Account extends Serializable {
 
     /**
      * Returns the recent death location.
+     *
      * @return The recent death location
      */
     @Nullable Location getRecentDeathLocation();
 
     /**
      * Sets the recent death location.
+     *
      * @param location The location
      */
     void setRecentDeathLocation(@Nullable Location location);
@@ -501,6 +534,13 @@ public interface Account extends Serializable {
     ///
     /// Utilities
     ///
+
+    /**
+     * Sends a content to this account. If offline, it will be saved to the mail list.
+     *
+     * @param message The content
+     */
+    void sendMessage(@NotNull Component message);
 
     /**
      * Returns the offline player.

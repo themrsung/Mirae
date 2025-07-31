@@ -1,4 +1,4 @@
-package com.themrsung.mirae.command.teleport;
+package com.themrsung.mirae.command.home;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;

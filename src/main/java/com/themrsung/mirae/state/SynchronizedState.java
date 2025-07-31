@@ -20,9 +20,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Default synchronized implementation of {@link MiraeState}.
+ * Default synchronized implementation of {@link State}.
  */
-public class SynchronizedState implements MiraeState {
+public class SynchronizedState implements State {
     /**
      * Creates an empty state.
      */
@@ -131,16 +131,16 @@ public class SynchronizedState implements MiraeState {
 
     /// Freezing
 
-    private boolean frozen;
+    private boolean economyFrozen;
 
     @Override
-    public boolean isFrozen() {
-        return frozen;
+    public boolean isEconomyFrozen() {
+        return economyFrozen;
     }
 
     @Override
-    public synchronized void setFrozen(boolean frozen) {
-        this.frozen = frozen;
+    public synchronized void setEconomyFrozen(boolean frozen) {
+        this.economyFrozen = frozen;
     }
 
     /// Withdrawable Balance
@@ -157,7 +157,7 @@ public class SynchronizedState implements MiraeState {
 
     @Override
     public double getWithdrawableBalance(@Nullable Account account) {
-        if (account == null || frozen || account.isWalletFrozen()) return 0;
+        if (account == null || economyFrozen || account.isWalletFrozen()) return 0;
         return account.getWallet().getBalance();
     }
 
@@ -173,7 +173,7 @@ public class SynchronizedState implements MiraeState {
 
     @Override
     public long getWithdrawableCoinBalance(@Nullable Account account) {
-        if (account == null || frozen || account.isWalletFrozen()) return 0;
+        if (account == null || economyFrozen || account.isWalletFrozen()) return 0;
         return account.getWallet().getCoinBalance();
     }
 
@@ -191,8 +191,7 @@ public class SynchronizedState implements MiraeState {
 
     @Override
     public @NotNull EconomyResult depositBalance(@NotNull Account account, double amount, @Nullable EconomyCause cause, @Nullable String message) {
-        if (frozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
-        if (account.isWalletFrozen()) return EconomyResult.FAILURE_ACCOUNT_FROZEN;
+        if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
 
         Wallet wallet = account.getWallet();
 
@@ -236,7 +235,7 @@ public class SynchronizedState implements MiraeState {
 
     @Override
     public @NotNull EconomyResult withdrawBalance(@NotNull Account account, double amount, @Nullable EconomyCause cause, @Nullable String message) {
-        if (frozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
+        if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
         if (account.isWalletFrozen()) return EconomyResult.FAILURE_ACCOUNT_FROZEN;
 
         Wallet wallet = account.getWallet();
@@ -259,8 +258,7 @@ public class SynchronizedState implements MiraeState {
 
     @Override
     public @NotNull EconomyResult depositCoinBalance(@NotNull Account account, long amount, @Nullable EconomyCause cause, @Nullable String message) {
-        if (frozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
-        if (account.isWalletFrozen()) return EconomyResult.FAILURE_ACCOUNT_FROZEN;
+        if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
 
         Wallet wallet = account.getWallet();
 
@@ -304,7 +302,7 @@ public class SynchronizedState implements MiraeState {
 
     @Override
     public @NotNull EconomyResult withdrawCoinBalance(@NotNull Account account, long amount, @Nullable EconomyCause cause, @Nullable String message) {
-        if (frozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
+        if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
         if (account.isWalletFrozen()) return EconomyResult.FAILURE_ACCOUNT_FROZEN;
 
         Wallet wallet = account.getWallet();

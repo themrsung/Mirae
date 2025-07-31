@@ -1,9 +1,6 @@
 package com.themrsung.mirae.economy;
 
 import com.themrsung.mirae.event.economy.EconomyCause;
-import com.themrsung.mirae.event.economy.WalletBalanceModifiedEvent;
-import com.themrsung.mirae.event.economy.WalletCoinBalanceModifiedEvent;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -48,22 +45,8 @@ public class SynchronizedWallet implements Wallet {
 
     @Override
     public synchronized double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message) {
-        double balanceBefore = balance;
         balance += change;
-        double balanceAfter = balance;
-
-        var event = WalletBalanceModifiedEvent.builder()
-                .wallet(this)
-                .cause(cause)
-                .message(message)
-                .change(change)
-                .balanceBefore(balanceBefore)
-                .balanceAfter(balanceAfter)
-                .build();
-
-        Bukkit.getPluginManager().callEvent(event);
-
-        return balanceAfter;
+        return balance;
     }
 
     @Override
@@ -83,21 +66,7 @@ public class SynchronizedWallet implements Wallet {
 
     @Override
     public synchronized long modifyCoinBalance(long change, @Nullable EconomyCause cause, @Nullable String message) {
-        long balanceBefore = coinBalance;
         coinBalance += change;
-        long balanceAfter = coinBalance;
-
-        var event = WalletCoinBalanceModifiedEvent.builder()
-                .wallet(this)
-                .cause(cause)
-                .message(message)
-                .change(change)
-                .coinBalanceBefore(balanceBefore)
-                .coinBalanceAfter(balanceAfter)
-                .build();
-
-        Bukkit.getPluginManager().callEvent(event);
-
-        return balanceAfter;
+        return coinBalance;
     }
 }

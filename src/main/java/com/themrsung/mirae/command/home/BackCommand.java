@@ -1,4 +1,4 @@
-package com.themrsung.mirae.command.teleport;
+package com.themrsung.mirae.command.home;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
@@ -11,16 +11,17 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
- * Home command.
+ * Back command.
  */
-public class HomeCommand extends MiraeCommand {
+public class BackCommand extends MiraeCommand {
     /**
      * Creates a new command.
      */
-    public HomeCommand() {
-        super("home");
+    public BackCommand() {
+        super("back");
     }
 
     @Override
@@ -32,28 +33,25 @@ public class HomeCommand extends MiraeCommand {
 
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
-        if (args.length > 0) {
-            String key = args[0];
-            Location home = account.getExtraHome(key);
-
-            if (home == null) {
-                sender.sendMessage(Component.text("집을 찾을 수 없습니다.").style(MX.STYLE_WARNING));
+        if (args.length > 0 && args[0].equalsIgnoreCase("death")) {
+            Location lastDeath = account.getRecentDeathLocation();
+            if (lastDeath == null) {
+                sender.sendMessage(Component.text("최근에 사망한 지점이 없습니다.").style(MX.STYLE_WARNING));
                 return false;
             }
 
-            player.teleport(home);
+            player.teleport(lastDeath);
             sender.sendMessage(TELEPORTED_SUCCESSFULLY);
             return true;
         }
 
-        Location home = account.getHome();
-
-        if (home == null) {
-            sender.sendMessage(Component.text("집을 설정하지 않았습니다.").style(MX.STYLE_WARNING));
+        Location lastDeparture = account.getRecentTeleportDeparture();
+        if (lastDeparture == null) {
+            sender.sendMessage(Component.text("최근에 텔레포트한 지점이 없습니다.").style(MX.STYLE_WARNING));
             return false;
         }
 
-        player.teleport(home);
+        player.teleport(lastDeparture);
         sender.sendMessage(TELEPORTED_SUCCESSFULLY);
         return true;
     }
@@ -61,11 +59,9 @@ public class HomeCommand extends MiraeCommand {
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) throws IllegalArgumentException {
         return switch (args.length) {
-            case 1 -> {
-                if (!(sender instanceof Player player)) yield List.of();
-                Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
-                yield List.copyOf(account.getExtraHomeMap().keySet());
-            }
+            case 1 -> Stream.of("death")
+                    .filter(arg -> arg.toLowerCase().startsWith(args[0].toLowerCase()))
+                    .toList();
             default -> List.of();
         };
     }

@@ -1,4 +1,4 @@
-package com.themrsung.mirae.listener;
+package com.themrsung.mirae.listener.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -45,6 +45,8 @@ public final class CommandTypoListener implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
+        if (e.isCancelled()) return;
+
         String message = e.getMessage();
         String[] parts = message.split(" ");
 

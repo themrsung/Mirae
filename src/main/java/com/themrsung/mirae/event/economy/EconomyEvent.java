@@ -31,7 +31,7 @@ public abstract class EconomyEvent extends MiraeEvent implements EconomyCause {
      * Creates a new event.
      *
      * @param cause   The cause
-     * @param message The message
+     * @param message The content
      */
     public EconomyEvent(@Nullable EconomyCause cause, @Nullable String message) {
         this(UUID.randomUUID(), LocalDateTime.now(), cause, message);
@@ -43,7 +43,7 @@ public abstract class EconomyEvent extends MiraeEvent implements EconomyCause {
      * @param uniqueId The unique identifier
      * @param time     The time
      * @param cause    The cause
-     * @param message  The message
+     * @param message  The content
      */
     public EconomyEvent(@NotNull UUID uniqueId, @NotNull LocalDateTime time, @Nullable EconomyCause cause, @Nullable String message) {
         super();

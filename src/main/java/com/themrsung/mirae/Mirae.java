@@ -1,16 +1,20 @@
 package com.themrsung.mirae;
 
 import com.themrsung.mirae.command.Commands;
+import com.themrsung.mirae.economy.VaultEconomyAdapter;
 import com.themrsung.mirae.listener.Listeners;
-import com.themrsung.mirae.state.MiraeState;
+import com.themrsung.mirae.state.State;
+import com.themrsung.mirae.task.Tasks;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 public final class Mirae extends JavaPlugin {
-    private static final @NotNull MiraeState STATE = MiraeState.empty();
+    private static final @NotNull State STATE = State.empty();
 
     /**
      * Returns the plugin instance.
@@ -26,12 +30,13 @@ public final class Mirae extends JavaPlugin {
      *
      * @return The economy
      */
-    public static @NotNull MiraeState getState() {
+    public static @NotNull State getState() {
         return STATE;
     }
 
     @Override
     public void onEnable() {
+        getLogger().info("Loading Mirae plugin...");
 
         // Register listeners
         var pm = getServer().getPluginManager();
@@ -40,10 +45,19 @@ public final class Mirae extends JavaPlugin {
         // Register commands
         var cm = getServer().getCommandMap();
         Commands.getCommands().forEach(cmd -> cm.register("mirae", cmd));
+
+        // Register tasks
+        Tasks.registerTasks(this, Bukkit.getScheduler());
+
+        // Register economy to Vault
+        var sm = getServer().getServicesManager();
+        sm.register(Economy.class, VaultEconomyAdapter.createAdapter(STATE), this, ServicePriority.Normal);
+
+        getLogger().info("Mirae plugin loaded!");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        getLogger().info("Shutting down Mirae plugin...");
     }
 }

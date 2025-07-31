@@ -22,4 +22,7 @@ public record TeleportRequest(
         @NotNull Account recipient,
         boolean inbound
 ) {
+    public static @NotNull TeleportRequest createRequest(@NotNull Account sender, @NotNull Account recipient, boolean inbound) {
+        return new TeleportRequest(UUID.randomUUID(), LocalDateTime.now(), sender, recipient, inbound);
+    }
 }

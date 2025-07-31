@@ -1,0 +1,20 @@
+package com.themrsung.mirae.task;
+
+import com.themrsung.mirae.Mirae;
+import com.themrsung.mirae.state.State;
+
+import java.time.LocalDateTime;
+
+public final class MuteExpirationTask implements Runnable {
+    @Override
+    public void run() {
+        State state = Mirae.getState();
+
+        state.getAccounts().forEach(account -> {
+            if (!account.isMuted() || account.getMuteExpiration() == null) return;
+            if (account.getMuteExpiration().isBefore(LocalDateTime.now())) {
+                account.setMuted(false, null);
+            }
+        });
+    }
+}

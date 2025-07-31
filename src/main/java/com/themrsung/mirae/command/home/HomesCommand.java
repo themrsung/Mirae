@@ -1,10 +1,9 @@
-package com.themrsung.mirae.command.teleport;
+package com.themrsung.mirae.command.home;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.MiraeCommand;
-import com.themrsung.mirae.util.Coordinate;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -39,14 +38,11 @@ public class HomesCommand extends MiraeCommand {
 
         sender.sendMessage(Component.text("홈 목록:").style(MX.STYLE_SPECIAL));
         sender.sendMessage(Component.text("  - 주 주소지: ").style(MX.STYLE_NORMAL)
-                .append(Component.text(
-                        mainHome != null ? new Coordinate(mainHome).toString() : "없음"
-                ).style(MX.STYLE_SPECIAL)));
+                .append(Component.text(MX.locationToReadableString(mainHome)).style(MX.STYLE_SPECIAL)));
 
-        account.getExtraHomeMap().forEach((key, home) -> {
-            sender.sendMessage(Component.text("  - " + key + ":").style(MX.STYLE_NORMAL)
-                    .append(Component.text(new Coordinate(home).toString()).style(MX.STYLE_SPECIAL)));
-        });
+        account.getExtraHomeMap().forEach((key, home) ->
+                sender.sendMessage(Component.text("  - " + key + ":").style(MX.STYLE_NORMAL)
+                        .append(Component.text(MX.locationToReadableString(home)).style(MX.STYLE_SPECIAL))));
 
         return true;
     }

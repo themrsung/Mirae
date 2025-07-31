@@ -1,4 +1,4 @@
-package com.themrsung.mirae.listener;
+package com.themrsung.mirae.listener.player;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
@@ -7,6 +7,7 @@ import com.themrsung.mirae.economy.Wallet;
 import com.themrsung.mirae.event.economy.EconomyCause;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -15,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,6 +77,25 @@ public final class PlayerListener implements Listener {
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
         Mirae.getState().logAccountActivity(account);
+
+        Component message = renderChat(account, ((TextComponent) e.originalMessage()).content());
+        e.setCancelled(true);
+
+        if (account.isMuted()) {
+            player.sendMessage(message);
+        } else {
+            Bukkit.broadcast(message);
+        }
+    }
+
+    private @NotNull Component renderChat(Account sender, String message) {
+        return sender.getTier().getDisplayName()
+                .append(Component.text(" ").style(MX.STYLE_NORMAL))
+                .append(sender.getCurrentTitle().getValue())
+                .append(Component.text(" ").style(MX.STYLE_NORMAL))
+                .append(sender.getDisplayName(MX.STYLE_NORMAL))
+                .append(Component.text(" : ").style(MX.STYLE_NORMAL))
+                .append(Component.text(message).applyFallbackStyle(MX.STYLE_NORMAL));
     }
 
     @EventHandler
