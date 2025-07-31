@@ -1,0 +1,11 @@
+name: Mirae
+version: '0.1'
+main: com.themrsung.mirae.Mirae
+api-version: '1.21'
+dependencies:
+  bootstrap:
+    Vault:
+      required: true
+  server:
+    Vault:
+      required: true
