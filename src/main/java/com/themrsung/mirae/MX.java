@@ -204,13 +204,15 @@ public final class MX {
      * @return The available space
      */
     public static int getRemainingSpaceFor(@NotNull Inventory inventory, @NotNull ItemStack item) {
-        int queryLimit = (inventory instanceof PlayerInventory) ? 36 : -1;
+        int queryLimit = (inventory instanceof PlayerInventory) ? 36 : inventory.getSize();
         int stackSize = item.getType().getMaxStackSize();
-        int space = stackSize * Math.max(inventory.getSize(), queryLimit);
+        int space = stackSize * queryLimit;
 
         ItemStack[] contents = inventory.getContents();
         for (int i = 0; i < Math.max(contents.length, queryLimit); i++) {
             ItemStack stack = contents[i];
+
+            if (stack == null || stack.getType() == Material.AIR) continue;
 
             if (!item.isSimilar(stack)) {
                 space -= stackSize;

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * TPA here command.
@@ -63,6 +64,14 @@ public class TeleportAskHereCommand extends MiraeCommand {
 
         if (tpSender.isIgnoringAccount(tpRecipient)) {
             sender.sendMessage(YOU_ARE_IGNORING_COUNTERPARTY);
+            return false;
+        }
+
+        if (Mirae.getState().getTeleportRequests().stream()
+                .filter(tr -> Objects.equals(tr.sender().getUniqueId(), tpSender.getUniqueId()))
+                .anyMatch(tr -> Objects.equals(tr.recipient().getUniqueId(), tpRecipient.getUniqueId()))
+        ) {
+            sender.sendMessage(OUTBOUND_TELEPORT_REQUEST_ALREADY_EXISTS);
             return false;
         }
 

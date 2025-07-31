@@ -7,6 +7,7 @@ import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.social.DirectMessage;
 import com.themrsung.mirae.social.TeleportRequest;
 import com.themrsung.mirae.util.MutableIncrement;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -403,7 +404,12 @@ public class SynchronizedState implements State {
 
     @Override
     public double getMoneySupply() {
+        Set<UUID> operatorIds = Bukkit.getOperators().stream()
+                .map(OfflinePlayer::getUniqueId)
+                .collect(Collectors.toUnmodifiableSet());
+
         return getAccounts().stream()
+                .filter(a -> !operatorIds.contains(a.getUniqueId()))
                 .map(Account::getWallet)
                 .mapToDouble(Wallet::getBalance)
                 .sum();
@@ -411,7 +417,12 @@ public class SynchronizedState implements State {
 
     @Override
     public long getCoinSupply() {
+        Set<UUID> operatorIds = Bukkit.getOperators().stream()
+                .map(OfflinePlayer::getUniqueId)
+                .collect(Collectors.toUnmodifiableSet());
+
         return getAccounts().stream()
+                .filter(a -> !operatorIds.contains(a.getUniqueId()))
                 .map(Account::getWallet)
                 .mapToLong(Wallet::getCoinBalance)
                 .sum();

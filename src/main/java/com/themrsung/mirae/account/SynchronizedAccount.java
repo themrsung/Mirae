@@ -105,8 +105,11 @@ public class SynchronizedAccount implements Account {
         Player player = getPlayer();
         if (player == null) return base;
 
-        return base.hoverEvent(player.asHoverEvent())
-                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/dm " + name + " "))
+        return Component.empty()
+
+                .append(base.hoverEvent(player.asHoverEvent())
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/dm " + name + " ")))
+
                 .append(Component.empty().style(MX.STYLE_NORMAL));
     }
 

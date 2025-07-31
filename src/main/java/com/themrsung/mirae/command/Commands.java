@@ -1,19 +1,14 @@
 package com.themrsung.mirae.command;
 
-import com.themrsung.mirae.command.admin.ChangeMoneyCommand;
-import com.themrsung.mirae.command.admin.SetDisplayNameCommand;
-import com.themrsung.mirae.command.admin.SetTierCommand;
-import com.themrsung.mirae.command.admin.SetTitleCommand;
+import com.themrsung.mirae.command.admin.*;
 import com.themrsung.mirae.command.economy.BalanceCommand;
+import com.themrsung.mirae.command.economy.CoinCommand;
 import com.themrsung.mirae.command.economy.PayCommand;
 import com.themrsung.mirae.command.home.*;
 import com.themrsung.mirae.command.misc.FlexCommand;
 import com.themrsung.mirae.command.social.DirectMessageCommand;
 import com.themrsung.mirae.command.social.ReplyCommand;
-import com.themrsung.mirae.command.teleport.TeleportAcceptCommand;
-import com.themrsung.mirae.command.teleport.TeleportAskCommand;
-import com.themrsung.mirae.command.teleport.TeleportAskHereCommand;
-import com.themrsung.mirae.command.teleport.TeleportDenyCommand;
+import com.themrsung.mirae.command.teleport.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -31,9 +26,11 @@ public final class Commands {
     private static final @NotNull HomesCommand HOMES_COMMAND = new HomesCommand();
 
     private static final @NotNull BalanceCommand BALANCE_COMMAND = new BalanceCommand();
+    private static final @NotNull CoinCommand COIN_COMMAND = new CoinCommand();
     private static final @NotNull PayCommand PAY_COMMAND = new PayCommand();
 
     private static final @NotNull ChangeMoneyCommand CHANGE_MONEY_COMMAND = new ChangeMoneyCommand();
+    private static final @NotNull ChangeCoinCommand CHANGE_COIN_COMMAND = new ChangeCoinCommand();
     private static final @NotNull SetTierCommand SET_TIER_COMMAND = new SetTierCommand();
     private static final @NotNull SetTitleCommand SET_TITLE_COMMAND = new SetTitleCommand();
     private static final @NotNull SetDisplayNameCommand SET_DISPLAY_NAME_COMMAND = new SetDisplayNameCommand();
@@ -45,6 +42,7 @@ public final class Commands {
     private static final @NotNull TeleportAskHereCommand TELEPORT_ASK_HERE_COMMAND = new TeleportAskHereCommand();
     private static final @NotNull TeleportAcceptCommand TELEPORT_ACCEPT_COMMAND = new TeleportAcceptCommand();
     private static final @NotNull TeleportDenyCommand TELEPORT_DENY_COMMAND = new TeleportDenyCommand();
+    private static final @NotNull TeleportCancelCommand TELEPORT_CANCEL_COMMAND = new TeleportCancelCommand();
 
     private static final @NotNull FlexCommand FLEX_COMMAND = new FlexCommand();
 
@@ -58,9 +56,11 @@ public final class Commands {
             HOMES_COMMAND,
 
             BALANCE_COMMAND,
+            COIN_COMMAND,
             PAY_COMMAND,
 
             CHANGE_MONEY_COMMAND,
+            CHANGE_COIN_COMMAND,
             SET_TIER_COMMAND,
             SET_TITLE_COMMAND,
             SET_DISPLAY_NAME_COMMAND,
@@ -72,6 +72,7 @@ public final class Commands {
             TELEPORT_ASK_HERE_COMMAND,
             TELEPORT_ACCEPT_COMMAND,
             TELEPORT_DENY_COMMAND,
+            TELEPORT_CANCEL_COMMAND,
 
             FLEX_COMMAND
     );
@@ -128,12 +129,20 @@ public final class Commands {
         return BALANCE_COMMAND;
     }
 
+    public static @NotNull CoinCommand getCoinCommand() {
+        return COIN_COMMAND;
+    }
+
     public static @NotNull PayCommand getPayCommand() {
         return PAY_COMMAND;
     }
 
     public static @NotNull ChangeMoneyCommand getChangeMoneyCommand() {
         return CHANGE_MONEY_COMMAND;
+    }
+
+    public static @NotNull ChangeCoinCommand getChangeCoinCommand() {
+        return CHANGE_COIN_COMMAND;
     }
 
     public static @NotNull SetTierCommand getSetTierCommand() {
@@ -158,6 +167,22 @@ public final class Commands {
 
     public static @NotNull TeleportAskCommand getTeleportAskCommand() {
         return TELEPORT_ASK_COMMAND;
+    }
+
+    public static @NotNull TeleportAskHereCommand getTeleportAskHereCommand() {
+        return TELEPORT_ASK_HERE_COMMAND;
+    }
+
+    public static @NotNull TeleportAcceptCommand getTeleportAcceptCommand() {
+        return TELEPORT_ACCEPT_COMMAND;
+    }
+
+    public static @NotNull TeleportDenyCommand getTeleportDenyCommand() {
+        return TELEPORT_DENY_COMMAND;
+    }
+
+    public static @NotNull TeleportCancelCommand getTeleportCancelCommand() {
+        return TELEPORT_CANCEL_COMMAND;
     }
 
     public static @NotNull FlexCommand getFlexCommand() {

@@ -41,6 +41,11 @@ public interface EconomyCause {
      */
     @NotNull EconomyCause ADMIN_COMMAND = new InitialCause("Admin Command");
 
+    /**
+     * Item redemption.
+     */
+    @NotNull EconomyCause ITEM_REDEEMED = new InitialCause("Item Redeemed");
+
     ///
     /// Custom cause
     ///
