@@ -1,6 +1,6 @@
 package com.themrsung.mirae.account;
 
-import com.themrsung.mirae.economy.Wallet;
+import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.LongUnaryOperator;
 
 /**
  * A Mirae account.
@@ -150,16 +152,36 @@ public interface Account extends Serializable {
      */
     void setCurrentTitle(@NotNull AccountTitle title);
 
-    ///
     /// Economy
-    ///
 
-    /**
-     * Returns the wallet of this account.
-     *
-     * @return The wallet
-     */
-    @NotNull Wallet getWallet();
+    double getBalance();
+
+    long getCoinBalance();
+
+    double modifyBalance(double change);
+
+    double modifyBalance(double change, @Nullable EconomyCause cause);
+
+    double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message);
+
+    double modifyBalance(@NotNull DoubleUnaryOperator function);
+
+    double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause);
+
+    double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message);
+
+
+    long modifyCoinBalance(long change);
+
+    long modifyCoinBalance(long change, @Nullable EconomyCause cause);
+
+    long modifyCoinBalance(long change, @Nullable EconomyCause cause, @Nullable String message);
+
+    long modifyCoinBalance(@NotNull LongUnaryOperator function);
+
+    long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause);
+
+    long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message);
 
     /**
      * Returns whether the wallet is frozen.

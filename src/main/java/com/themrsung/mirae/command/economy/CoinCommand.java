@@ -7,6 +7,8 @@ import com.themrsung.mirae.command.MiraeCommand;
 import com.themrsung.mirae.economy.CoinVersion;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -46,7 +48,11 @@ public class CoinCommand extends MiraeCommand {
         ItemStack item = stack.getItemStack();
         ItemMeta meta = item.getItemMeta();
 
-        meta.itemName(MiniMessage.miniMessage().deserialize("<gradient:green:gold><bold>후원 코인<reset>"));
+        Component name = MiniMessage.miniMessage().deserialize("<gradient:green:gold>후원 코인<reset>")
+                .style(Style.style().decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.BOLD).build());
+
+        meta.itemName(name);
+        meta.displayName(name);
         meta.lore(List.of(
                 Component.text("후원을 통해 얻을 수 있습니다.").style(MX.STYLE_NORMAL)
         ));
@@ -92,7 +98,7 @@ public class CoinCommand extends MiraeCommand {
             player.getWorld().dropItem(player.getLocation(), remainingCoins);
         }
 
-        long coinsAfter = account.getWallet().modifyCoinBalance(-amount);
+        long coinsAfter = account.modifyCoinBalance(-amount);
         sender.sendMessage(Component.text(MX.formatCoinBalance(amount)).style(MX.STYLE_SPECIAL)
                 .append(Component.text("을 인출했습니다. 잔액: ").style(MX.STYLE_NORMAL))
                 .append(Component.text(MX.formatCoinBalance(coinsAfter)).style(MX.STYLE_SPECIAL)));
@@ -106,7 +112,7 @@ public class CoinCommand extends MiraeCommand {
             case 1 -> {
                 if (!(sender instanceof Player player)) yield List.of();
                 Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
-                long coins = account.getWallet().getCoinBalance();
+                long coins = account.getCoinBalance();
                 yield coins > 0 ? List.of(Long.toString(coins)) : List.of("보유한 코인이 없습니다.");
             }
             default -> List.of();

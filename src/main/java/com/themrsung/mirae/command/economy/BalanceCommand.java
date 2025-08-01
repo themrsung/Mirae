@@ -67,8 +67,8 @@ public class BalanceCommand extends MiraeCommand {
     }
 
     private void sendBalanceInformation(@NotNull CommandSender sender, @NotNull Account account) {
-        double balance = Math.round(account.getWallet().getBalance());
-        long coinBalance = account.getWallet().getCoinBalance();
+        double balance = Math.round(account.getBalance());
+        long coinBalance = account.getCoinBalance();
 
         sender.sendMessage(Component.text("[은행] 계좌 정보").style(MX.STYLE_SPECIAL));
         sender.sendMessage(Component.text("  - 계좌 잔액: ").style(MX.STYLE_NORMAL)

@@ -3,7 +3,6 @@ package com.themrsung.mirae.listener.player;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
-import com.themrsung.mirae.economy.Wallet;
 import com.themrsung.mirae.event.economy.EconomyCause;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
@@ -43,10 +42,8 @@ public final class PlayerListener implements Listener {
             Account account = Account.createAccount(player.getUniqueId());
             Mirae.getState().addAccount(account);
 
-            Wallet wallet = account.getWallet();
-
-            wallet.modifyBalance(STARTING_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting balance");
-            wallet.modifyCoinBalance(STARTING_COIN_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting coin balance");
+            account.modifyBalance(STARTING_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting balance");
+            account.modifyCoinBalance(STARTING_COIN_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting coin balance");
         } else {
             // Rejoin
             Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));

@@ -52,7 +52,7 @@ public class ChangeMoneyCommand extends MiraeCommand {
         Account account = optionalAccount.get();
         double change = MX.parseDouble(args[1]);
 
-        double after = account.getWallet().modifyBalance(change, EconomyCause.ADMIN_COMMAND);
+        double after = account.modifyBalance(change, EconomyCause.ADMIN_COMMAND);
 
         sender.sendMessage(account.getDisplayName(MX.STYLE_SPECIAL)
                 .append(Component.text("의 잔고를 ").style(MX.STYLE_NORMAL))

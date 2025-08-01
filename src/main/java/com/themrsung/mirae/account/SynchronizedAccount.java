@@ -1,7 +1,7 @@
 package com.themrsung.mirae.account;
 
 import com.themrsung.mirae.MX;
-import com.themrsung.mirae.economy.Wallet;
+import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.LongUnaryOperator;
 
 /**
  * Default synchronized implementation of {@link Account}.
@@ -36,7 +38,8 @@ public class SynchronizedAccount implements Account {
         this.titleSet = EnumSet.of(AccountTitle.EMPTY);
         this.title = AccountTitle.EMPTY;
 
-        this.wallet = Wallet.createWallet();
+        this.balance = 0;
+        this.coinBalance = 0;
         this.walletFrozen = false;
 
         this.extraHomeMap = new ConcurrentHashMap<>();
@@ -54,9 +57,8 @@ public class SynchronizedAccount implements Account {
      *
      * @param uniqueId The unique identifier
      * @param name     The name
-     * @param wallet   The wallet
      */
-    SynchronizedAccount(@NotNull UUID uniqueId, @NotNull String name, @NotNull Wallet wallet) {
+    SynchronizedAccount(@NotNull UUID uniqueId, @NotNull String name) {
         this.uniqueId = uniqueId;
         this.name = name;
 
@@ -64,7 +66,9 @@ public class SynchronizedAccount implements Account {
         this.titleSet = EnumSet.of(AccountTitle.EMPTY);
         this.title = AccountTitle.EMPTY;
 
-        this.wallet = wallet;
+        this.balance = 0;
+        this.coinBalance = 0;
+        this.walletFrozen = false;
 
         this.extraHomeMap = new ConcurrentHashMap<>();
         this.maxExtraHomes = DEFAULT_MAX_HOMES;
@@ -176,12 +180,82 @@ public class SynchronizedAccount implements Account {
 
     /// Economy
 
-    private final @NotNull Wallet wallet;
+    private double balance;
+    private long coinBalance;
     private boolean walletFrozen;
 
     @Override
-    public @NotNull Wallet getWallet() {
-        return wallet;
+    public double getBalance() {
+        return balance;
+    }
+
+    @Override
+    public long getCoinBalance() {
+        return coinBalance;
+    }
+
+    @Override
+    public double modifyBalance(double change) {
+        return modifyBalance(change, null, null);
+    }
+
+    @Override
+    public double modifyBalance(double change, @Nullable EconomyCause cause) {
+        return modifyBalance(change, cause, null);
+    }
+
+    @Override
+    public double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message) {
+        balance += change;
+        return balance;
+    }
+
+    @Override
+    public double modifyBalance(@NotNull DoubleUnaryOperator function) {
+        return modifyBalance(function, null, null);
+    }
+
+    @Override
+    public double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause) {
+        return modifyBalance(function, cause, null);
+    }
+
+    @Override
+    public double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message) {
+        balance += function.applyAsDouble(balance);
+        return balance;
+    }
+
+    @Override
+    public long modifyCoinBalance(long change) {
+        return modifyCoinBalance(change, null, null);
+    }
+
+    @Override
+    public long modifyCoinBalance(long change, @Nullable EconomyCause cause) {
+        return modifyCoinBalance(change, cause, null);
+    }
+
+    @Override
+    public long modifyCoinBalance(long change, @Nullable EconomyCause cause, @Nullable String message) {
+        coinBalance += change;
+        return coinBalance;
+    }
+
+    @Override
+    public long modifyCoinBalance(@NotNull LongUnaryOperator function) {
+        return modifyCoinBalance(function, null, null);
+    }
+
+    @Override
+    public long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause) {
+        return modifyCoinBalance(function, cause, null);
+    }
+
+    @Override
+    public long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message) {
+        coinBalance += function.applyAsLong(coinBalance);
+        return coinBalance;
     }
 
     @Override

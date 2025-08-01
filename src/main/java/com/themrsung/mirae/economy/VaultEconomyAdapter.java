@@ -157,9 +157,9 @@ public class VaultEconomyAdapter implements Economy {
         EconomyResult result = state.withdrawBalance(account, v, EconomyCause.VAULT_WITHDRAWAL);
 
         if (result.isSuccess()) {
-            return new EconomyResponse(v, account.getWallet().getBalance(), EconomyResponse.ResponseType.SUCCESS, result.getMessage());
+            return new EconomyResponse(v, account.getBalance(), EconomyResponse.ResponseType.SUCCESS, result.getMessage());
         } else {
-            return new EconomyResponse(0, account.getWallet().getBalance(), EconomyResponse.ResponseType.FAILURE, result.getMessage());
+            return new EconomyResponse(0, account.getBalance(), EconomyResponse.ResponseType.FAILURE, result.getMessage());
         }
     }
 
@@ -188,9 +188,9 @@ public class VaultEconomyAdapter implements Economy {
         EconomyResult result = state.depositBalance(account, v, EconomyCause.VAULT_DEPOSIT);
 
         if (result.isSuccess()) {
-            return new EconomyResponse(v, account.getWallet().getBalance(), EconomyResponse.ResponseType.SUCCESS, result.getMessage());
+            return new EconomyResponse(v, account.getBalance(), EconomyResponse.ResponseType.SUCCESS, result.getMessage());
         } else {
-            return new EconomyResponse(0, account.getWallet().getBalance(), EconomyResponse.ResponseType.FAILURE, result.getMessage());
+            return new EconomyResponse(0, account.getBalance(), EconomyResponse.ResponseType.FAILURE, result.getMessage());
         }
     }
 

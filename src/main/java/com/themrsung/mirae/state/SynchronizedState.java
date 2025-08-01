@@ -2,7 +2,6 @@ package com.themrsung.mirae.state;
 
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.economy.EconomyResult;
-import com.themrsung.mirae.economy.Wallet;
 import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.social.DirectMessage;
 import com.themrsung.mirae.social.TeleportRequest;
@@ -159,7 +158,7 @@ public class SynchronizedState implements State {
     @Override
     public double getWithdrawableBalance(@Nullable Account account) {
         if (account == null || economyFrozen || account.isWalletFrozen()) return 0;
-        return account.getWallet().getBalance();
+        return account.getBalance();
     }
 
     @Override
@@ -175,7 +174,7 @@ public class SynchronizedState implements State {
     @Override
     public long getWithdrawableCoinBalance(@Nullable Account account) {
         if (account == null || economyFrozen || account.isWalletFrozen()) return 0;
-        return account.getWallet().getCoinBalance();
+        return account.getCoinBalance();
     }
 
     /// Actions
@@ -194,9 +193,7 @@ public class SynchronizedState implements State {
     public @NotNull EconomyResult depositBalance(@NotNull Account account, double amount, @Nullable EconomyCause cause, @Nullable String message) {
         if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
 
-        Wallet wallet = account.getWallet();
-
-        wallet.modifyBalance(amount, cause, message);
+        account.modifyBalance(amount, cause, message);
         return Objects.equals(cause, EconomyCause.VAULT_DEPOSIT) ? EconomyResult.SUCCESS_VAULT : EconomyResult.SUCCESS_NATIVE;
     }
 
@@ -239,11 +236,9 @@ public class SynchronizedState implements State {
         if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
         if (account.isWalletFrozen()) return EconomyResult.FAILURE_ACCOUNT_FROZEN;
 
-        Wallet wallet = account.getWallet();
+        if (account.getBalance() < amount) return EconomyResult.FAILURE_INSUFFICIENT_FUNDS;
 
-        if (wallet.getBalance() < amount) return EconomyResult.FAILURE_INSUFFICIENT_FUNDS;
-
-        wallet.modifyBalance(-amount, cause, message);
+        account.modifyBalance(-amount, cause, message);
         return Objects.equals(cause, EconomyCause.VAULT_WITHDRAWAL) ? EconomyResult.SUCCESS_VAULT : EconomyResult.SUCCESS_NATIVE;
     }
 
@@ -261,9 +256,7 @@ public class SynchronizedState implements State {
     public @NotNull EconomyResult depositCoinBalance(@NotNull Account account, long amount, @Nullable EconomyCause cause, @Nullable String message) {
         if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
 
-        Wallet wallet = account.getWallet();
-
-        wallet.modifyCoinBalance(amount, cause, message);
+        account.modifyCoinBalance(amount, cause, message);
         return Objects.equals(cause, EconomyCause.VAULT_DEPOSIT) ? EconomyResult.SUCCESS_VAULT : EconomyResult.SUCCESS_NATIVE;
     }
 
@@ -306,11 +299,9 @@ public class SynchronizedState implements State {
         if (economyFrozen) return EconomyResult.FAILURE_ECONOMY_FROZEN;
         if (account.isWalletFrozen()) return EconomyResult.FAILURE_ACCOUNT_FROZEN;
 
-        Wallet wallet = account.getWallet();
+        if (account.getCoinBalance() < amount) return EconomyResult.FAILURE_INSUFFICIENT_FUNDS;
 
-        if (wallet.getCoinBalance() < amount) return EconomyResult.FAILURE_INSUFFICIENT_FUNDS;
-
-        wallet.modifyCoinBalance(-amount, cause, message);
+        account.modifyCoinBalance(-amount, cause, message);
         return Objects.equals(cause, EconomyCause.VAULT_WITHDRAWAL) ? EconomyResult.SUCCESS_VAULT : EconomyResult.SUCCESS_NATIVE;
     }
 
@@ -410,8 +401,7 @@ public class SynchronizedState implements State {
 
         return getAccounts().stream()
                 .filter(a -> !operatorIds.contains(a.getUniqueId()))
-                .map(Account::getWallet)
-                .mapToDouble(Wallet::getBalance)
+                .mapToDouble(Account::getBalance)
                 .sum();
     }
 
@@ -423,8 +413,7 @@ public class SynchronizedState implements State {
 
         return getAccounts().stream()
                 .filter(a -> !operatorIds.contains(a.getUniqueId()))
-                .map(Account::getWallet)
-                .mapToLong(Wallet::getCoinBalance)
+                .mapToLong(Account::getCoinBalance)
                 .sum();
     }
 

@@ -34,7 +34,7 @@ public final class EconomyEventListener implements Listener {
             quantity -= remaining;
         }
 
-        long coinsAfter = account.getWallet().modifyCoinBalance(quantity, EconomyCause.ITEM_REDEEMED);
+        long coinsAfter = account.modifyCoinBalance(quantity, EconomyCause.ITEM_REDEEMED);
 
         player.sendMessage(Component.text(MX.formatCoinBalance(quantity)).style(MX.STYLE_SPECIAL)
                 .append(Component.text("을 입금했습니다. 잔액: ").style(MX.STYLE_NORMAL))
