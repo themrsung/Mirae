@@ -41,7 +41,7 @@ public class HomesCommand extends MiraeCommand {
                 .append(Component.text(MX.locationToReadableString(mainHome)).style(MX.STYLE_SPECIAL)));
 
         account.getExtraHomeMap().forEach((key, home) ->
-                sender.sendMessage(Component.text("  - " + key + ":").style(MX.STYLE_NORMAL)
+                sender.sendMessage(Component.text("  - " + key + ": ").style(MX.STYLE_NORMAL)
                         .append(Component.text(MX.locationToReadableString(home)).style(MX.STYLE_SPECIAL))));
 
         return true;

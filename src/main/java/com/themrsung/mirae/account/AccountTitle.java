@@ -3,7 +3,6 @@ package com.themrsung.mirae.account;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.economy.TitleVersion;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -28,6 +27,11 @@ public enum AccountTitle {
             .decorate(TextDecoration.BOLD)
             .build())),
 
+    DOOMSDAY("doomsday", Component.text("둠스데이클럽").style(Style.style()
+            .color(TextColor.fromHexString("#ffe925"))
+            .decorate(TextDecoration.BOLD)
+            .build())),
+
     NETHER_STAR("nether_star", Component.text(":mc_nether_star:")),
 
     CLOCK("clock", Component.text(":mc_clock:")),
@@ -40,7 +44,7 @@ public enum AccountTitle {
 
     AccountTitle(@NotNull String key, @NotNull Component value) {
         this.key = key;
-        this.value = value;
+        this.value = value.hoverEvent(null);
     }
 
     /// Titles
