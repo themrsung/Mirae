@@ -1,17 +1,29 @@
 package com.themrsung.mirae.state;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.economy.EconomyResult;
 import com.themrsung.mirae.event.economy.EconomyCause;
+import com.themrsung.mirae.gson.ItemStackGson;
+import com.themrsung.mirae.gson.SkillTypeLongPair;
+import com.themrsung.mirae.gson.StateData;
+import com.themrsung.mirae.gson.StringCoordinatePair;
 import com.themrsung.mirae.social.DirectMessage;
 import com.themrsung.mirae.social.TeleportRequest;
+import com.themrsung.mirae.util.Coordinate;
 import com.themrsung.mirae.util.MutableIncrement;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.ItemStack;
+import org.codehaus.plexus.util.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -419,6 +431,27 @@ public class SynchronizedState implements State {
 
     /// Input/Output
 
+    private static final @NotNull Gson SERIALIZER = new GsonBuilder()
+            .registerTypeHierarchyAdapter(Account.class, Account.serializer())
+            .registerTypeAdapter(Coordinate.class, Coordinate.serializer())
+            .registerTypeAdapter(ItemStack.class, ItemStackGson.serializer())
+            .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.serializer())
+            .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.serializer())
+            .registerTypeAdapter(StateData.class, StateData.serializer())
+            .setPrettyPrinting()
+            .create();
+
+    private static final @NotNull Gson DESERIALIZER = new GsonBuilder()
+            .registerTypeHierarchyAdapter(Account.class, Account.deserializer())
+            .registerTypeAdapter(Coordinate.class, Coordinate.deserializer())
+            .registerTypeAdapter(ItemStack.class, ItemStackGson.deserializer())
+            .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.deserializer())
+            .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.deserializer())
+            .registerTypeAdapter(StateData.class, StateData.deserializer())
+            .create();
+
+    private static final @NotNull String SAVE_PATH = "plugins/Mirae";
+
     @Override
     public void clearTransient() {
         clearDirectMessages();
@@ -434,11 +467,72 @@ public class SynchronizedState implements State {
 
     @Override
     public void save() throws IOException {
+        File path = new File(SAVE_PATH);
+        if (!path.exists() && !path.mkdirs()) {
+            throw new IOException("Failed to create plugin directory.");
+        }
 
+        File dataFile = new File(SAVE_PATH + "/data.json");
+        try (FileWriter writer = new FileWriter(dataFile)) {
+            StateData data = new StateData(spawnPoint != null ? new Coordinate(spawnPoint) : null);
+            writer.write(SERIALIZER.toJson(data));
+        } catch (IOException e) {
+            throw new IOException("Error saving state data.", e);
+        }
+
+        File accountsDir = new File(SAVE_PATH + "/accounts");
+        if (!accountsDir.exists() && !accountsDir.mkdirs())
+            throw new IOException("Unable to create accounts folder.");
+
+        FileUtils.cleanDirectory(accountsDir);
+
+        accountMap.forEach((uuid, account) -> {
+            File file = new File(SAVE_PATH + "/accounts/" + uuid + ".json");
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(SERIALIZER.toJson(account));
+                writer.flush();
+            } catch (IOException e) {
+                throw new RuntimeException("Error saving account " + uuid, e);
+            }
+        });
     }
 
     @Override
     public void load() throws IOException {
         clearAll();
+
+        File accountsDir = new File(SAVE_PATH + "/accounts");
+        if (accountsDir.exists()) {
+            File[] accountFiles = accountsDir.listFiles();
+            if (accountFiles != null) {
+                for (File file : accountFiles) {
+                    if (!file.getName().endsWith(".json")) continue;
+
+                    try (FileReader reader = new FileReader(file)) {
+                        Account account = DESERIALIZER.fromJson(reader, Account.class);
+                        UUID accountId = account.getUniqueId();
+
+                        accountMap.put(accountId, account);
+                    } catch (IOException e) {
+                        throw new IOException("Error loading account file: " + file.getName(), e);
+                    }
+                }
+            }
+        }
+
+        File dataFile = new File(SAVE_PATH + "/data.json");
+        if (dataFile.exists()) {
+            try (FileReader reader = new FileReader(dataFile)) {
+                StateData data = DESERIALIZER.fromJson(reader, StateData.class);
+
+                Coordinate s = data.getSpawnPoint();
+                if (s != null) spawnPoint = s.asLocation();
+
+            } catch (IOException e) {
+                throw new IOException("Error loading data.", e);
+            } catch (IllegalArgumentException e) {
+                throw new IOException("Invalid spawn coordinate.", e);
+            }
+        }
     }
 }

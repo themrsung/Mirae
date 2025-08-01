@@ -16,6 +16,9 @@ public final class CommandTypoListener implements Listener {
         Map<String, String> map = new HashMap<>();
 
         map.put("넴주", "spawn");
+        map.put("넴", "spawn");
+        map.put("넴ㅈ", "spawn");
+        map.put("ㄴㅔㅁㅈ", "spawn");
         map.put("ㄴㅔㅁㅈㅜ", "spawn");
 
         map.put("ㅠㅁ차", "back");
@@ -36,6 +39,18 @@ public final class CommandTypoListener implements Listener {
         map.put("ㅙㅡㄷㄴ", "homes");
         map.put("ㅗㅐㅡㄷㄴ", "homes");
 
+        map.put("셈", "tpa");
+        map.put("ㅅㅔㅁ", "tpa");
+
+        map.put("세몯ㄱㄷ", "tpahere");
+        map.put("ㅅㅔㅁㅗㄷㄱㄷ", "tpahere");
+
+        map.put("셈ㅊㅊ뎃", "tpaccept");
+        map.put("ㅅㅔㅁㅊㅊㄷㅔㅅ", "tpaccept");
+
+        map.put("셍두ㅛ", "tpdeny");
+        map.put("ㅅㅔㅇㄷㅜㅛ", "tpdeny");
+
         TYPO_MAP = Map.copyOf(map);
     }
 
@@ -50,9 +65,10 @@ public final class CommandTypoListener implements Listener {
         String message = e.getMessage();
         String[] parts = message.split(" ");
 
-        if (parts.length < 1) return;
+        if (parts.length < 1 || parts[0].isBlank()) return;
 
-        String label = parts[0].toLowerCase();
+        String label = parts[0].substring(1).toLowerCase();
+        ;
         if (TYPO_MAP.containsKey(label)) {
             e.setCancelled(true);
 

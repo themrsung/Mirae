@@ -1,5 +1,6 @@
 package com.themrsung.mirae.listener;
 
+import com.themrsung.mirae.listener.command.AntiSpamListener;
 import com.themrsung.mirae.listener.command.CommandTypoListener;
 import com.themrsung.mirae.listener.economy.EconomyEventListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
@@ -21,6 +22,7 @@ public final class Listeners {
     private static final @NotNull EconomyEventListener ECONOMY_EVENT_LISTENER = new EconomyEventListener();
     private static final @NotNull ShulkerBoxListener SHULKER_BOX_LISTENER = new ShulkerBoxListener();
     private static final @NotNull SocialSpyListener SOCIAL_SPY_LISTENER = new SocialSpyListener();
+    private static final @NotNull AntiSpamListener ANTI_SPAM_LISTENER = new AntiSpamListener();
 
     /**
      * Returns the player listener.
@@ -51,6 +53,10 @@ public final class Listeners {
         return SOCIAL_SPY_LISTENER;
     }
 
+    public static @NotNull AntiSpamListener getAntiSpamListener() {
+        return ANTI_SPAM_LISTENER;
+    }
+
     /**
      * Returns the set of all listeners.
      *
@@ -63,7 +69,8 @@ public final class Listeners {
                 GUI_ACTION_LISTENER,
                 ECONOMY_EVENT_LISTENER,
                 SHULKER_BOX_LISTENER,
-                SOCIAL_SPY_LISTENER
+                SOCIAL_SPY_LISTENER,
+                ANTI_SPAM_LISTENER
         );
     }
 

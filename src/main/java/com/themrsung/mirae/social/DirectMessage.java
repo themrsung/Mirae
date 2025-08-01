@@ -1,7 +1,11 @@
 package com.themrsung.mirae.social;
 
+import com.themrsung.mirae.MX;
 import com.themrsung.mirae.account.Account;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
@@ -62,7 +66,9 @@ public record DirectMessage(
                 .append(Component.text(" -> "))
                 .append(recipientDisplayName)
                 .append(Component.text("] "))
-                .append(content);
+                .append(content.applyFallbackStyle(MX.STYLE_NORMAL)
+                        .hoverEvent(HoverEvent.showText(Component.text("클릭하여 복사합니다...").style(MX.STYLE_NORMAL)))
+                        .clickEvent(ClickEvent.copyToClipboard(((TextComponent) content).content())));
     }
 
     /**
@@ -79,7 +85,9 @@ public record DirectMessage(
                 .append(Component.text(" -> "))
                 .append(recipientDisplayName)
                 .append(Component.text("] "))
-                .append(content);
+                .append(content
+                        .hoverEvent(HoverEvent.showText(Component.text("클릭하여 복사합니다...").style(MX.STYLE_NORMAL)))
+                        .clickEvent(ClickEvent.copyToClipboard(((TextComponent) content).content())));
     }
 
     /**
@@ -96,6 +104,8 @@ public record DirectMessage(
                 .append(Component.text(" -> "))
                 .append(recipientDisplayName)
                 .append(Component.text("] "))
-                .append(content);
+                .append(content
+                        .hoverEvent(HoverEvent.showText(Component.text("클릭하여 복사합니다...").style(MX.STYLE_NORMAL)))
+                        .clickEvent(ClickEvent.copyToClipboard(((TextComponent) content).content())));
     }
 }

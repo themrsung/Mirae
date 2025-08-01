@@ -5,6 +5,8 @@ import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.MiraeCommand;
 import com.themrsung.mirae.economy.CoinVersion;
+import com.themrsung.mirae.economy.EconomyResult;
+import com.themrsung.mirae.event.economy.EconomyCause;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
@@ -18,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Withdraw coin command.
@@ -82,6 +85,16 @@ public class CoinCommand extends MiraeCommand {
             return false;
         }
 
+        EconomyResult result = Mirae.getState().withdrawCoinBalance(account, amount, EconomyCause.WITHDRAWN_AS_ITEM);
+
+        if (Objects.equals(result, EconomyResult.FAILURE_INSUFFICIENT_FUNDS)) {
+            sender.sendMessage(INSUFFICIENT_FUNDS);
+            return false;
+        } else if (!result.isSuccess()) {
+            sender.sendMessage(INTERNAL_ERROR);
+            return false;
+        }
+
         ItemStack coins = getCoinItem();
         coins.setAmount((int) amount);
 
@@ -98,7 +111,7 @@ public class CoinCommand extends MiraeCommand {
             player.getWorld().dropItem(player.getLocation(), remainingCoins);
         }
 
-        long coinsAfter = account.modifyCoinBalance(-amount);
+        long coinsAfter = account.getCoinBalance();
         sender.sendMessage(Component.text(MX.formatCoinBalance(amount)).style(MX.STYLE_SPECIAL)
                 .append(Component.text("을 인출했습니다. 잔액: ").style(MX.STYLE_NORMAL))
                 .append(Component.text(MX.formatCoinBalance(coinsAfter)).style(MX.STYLE_SPECIAL)));

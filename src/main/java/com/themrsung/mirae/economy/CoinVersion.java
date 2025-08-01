@@ -46,7 +46,7 @@ public enum CoinVersion {
         return item;
     }
 
-    private boolean isCoin(@Nullable ItemStack coin) {
+    public boolean isCoin(@Nullable ItemStack coin) {
         return switch (this) {
             default -> CoinCommand.getCoinItem(this).isSimilar(coin);
         };

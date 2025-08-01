@@ -11,6 +11,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public final class Mirae extends JavaPlugin {
@@ -53,11 +54,26 @@ public final class Mirae extends JavaPlugin {
         var sm = getServer().getServicesManager();
         sm.register(Economy.class, VaultEconomyAdapter.createAdapter(STATE), this, ServicePriority.Normal);
 
+        // Load data
+        try {
+            STATE.load();
+        } catch (IOException e) {
+            getLogger().severe("Failed to load data from disk: " + e.getMessage());
+        }
+
         getLogger().info("Mirae plugin loaded!");
     }
 
     @Override
     public void onDisable() {
         getLogger().info("Shutting down Mirae plugin...");
+
+        try {
+            STATE.save();
+        } catch (IOException e) {
+            getLogger().severe("Failed to save data to disk: " + e.getMessage());
+        }
+
+        getLogger().info("Mirae plugin disabled!");
     }
 }

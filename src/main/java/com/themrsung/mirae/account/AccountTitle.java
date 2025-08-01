@@ -1,10 +1,17 @@
 package com.themrsung.mirae.account;
 
+import com.themrsung.mirae.economy.TitleVersion;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +20,11 @@ import java.util.stream.Collectors;
  */
 public enum AccountTitle {
     EMPTY("empty", Component.empty()),
+
+    CAPITALIST("capitalist", Component.text("자본주의자").style(Style.style()
+            .color(TextColor.fromHexString("#4870e0"))
+            .decorate(TextDecoration.BOLD)
+            .build())),
 
     NETHER_STAR("nether_star", Component.text(":mc_nether_star:")),
 
@@ -69,5 +81,31 @@ public enum AccountTitle {
      */
     public @NotNull Component getValue() {
         return value;
+    }
+
+    public @NotNull ItemStack generateItem() {
+        return generateItem(TitleVersion.CURRENT);
+    }
+
+    /**
+     * Generates and returns a new account title item.
+     *
+     * @param version The version
+     * @return The item
+     */
+    public @NotNull ItemStack generateItem(@NotNull TitleVersion version) {
+        /// Legacy support here
+
+        assert version == TitleVersion.VERSION_1;
+
+        ItemStack stack = new ItemStack(version.getItem());
+        ItemMeta meta = stack.getItemMeta();
+
+        meta.itemName(Component.text(key));
+        meta.displayName(value);
+        meta.lore(List.of(TitleVersion.VERSION_1_LORE));
+
+        stack.setItemMeta(meta);
+        return stack;
     }
 }

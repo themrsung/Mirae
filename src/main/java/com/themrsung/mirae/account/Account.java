@@ -1,9 +1,15 @@
 package com.themrsung.mirae.account;
 
+import com.google.gson.*;
+import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.event.economy.EconomyCause;
+import com.themrsung.mirae.gson.SkillTypeLongPair;
+import com.themrsung.mirae.gson.StringCoordinatePair;
 import com.themrsung.mirae.skill.SkillType;
+import com.themrsung.mirae.util.Coordinate;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -11,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.DoubleUnaryOperator;
@@ -589,4 +596,239 @@ public interface Account extends Serializable {
      * Updates the name of the player from the Bukkit servers.
      */
     void updateName();
+
+    /// GSON
+
+    static @NotNull Serializer serializer() {
+        return Serializer.SERIALIZER;
+    }
+
+    static @NotNull Deserializer deserializer() {
+        return Deserializer.DESERIALIZER;
+    }
+
+    final class Serializer implements JsonSerializer<Account> {
+        private static final @NotNull Serializer SERIALIZER = new Serializer();
+
+        private Serializer() {
+        }
+
+        @Override
+        public JsonElement serialize(Account account, Type type, JsonSerializationContext context) {
+            JsonObject object = new JsonObject();
+
+            // Identification
+
+            object.add("uniqueId", context.serialize(account.getUniqueId()));
+            object.add("name", context.serialize(account.getName()));
+            object.add("displayName", account.hasDisplayName() ? GsonComponentSerializer.gson().serializeToTree(account.getDisplayName(Style.empty())) : JsonNull.INSTANCE);
+
+            // Tier & Title
+
+            object.add("accountTier", context.serialize(account.getTier()));
+            object.add("currentTitle", context.serialize(account.getCurrentTitle()));
+
+            JsonArray ownedTitles = new JsonArray();
+            account.getTitleSet().forEach(title -> ownedTitles.add(context.serialize(title)));
+            object.add("ownedTitles", ownedTitles);
+
+            // Wallet
+
+            object.add("balance", new JsonPrimitive(account.getBalance()));
+            object.add("coinBalance", new JsonPrimitive(account.getCoinBalance()));
+            object.add("walletFrozen", new JsonPrimitive(account.isWalletFrozen()));
+
+            // Homes
+
+            Coordinate home = account.getHome() != null ? new Coordinate(account.getHome()) : null;
+            Map<String, Coordinate> extraHomeMap = new HashMap<>();
+            account.getExtraHomeMap().forEach((k, v) -> extraHomeMap.put(k, new Coordinate(v)));
+
+            object.add("home", context.serialize(home));
+
+            JsonArray extraHomes = new JsonArray();
+            extraHomeMap.forEach((k, v) -> {
+                StringCoordinatePair pair = new StringCoordinatePair(k, v);
+                extraHomes.add(context.serialize(pair));
+            });
+
+            object.add("extraHomes", extraHomes);
+            object.add("maxExtraHomes", new JsonPrimitive(account.getMaxExtraHomes()));
+
+            // Stats
+
+            object.add("lastSeenTime", account.getLastSeenTime() != null ? context.serialize(account.getLastSeenTime()) : JsonNull.INSTANCE);
+            object.add("lastSeenLocation", account.getLastSeenLocation() != null ? context.serialize(account.getLastSeenLocation()) : JsonNull.INSTANCE);
+
+            JsonArray skillLevels = new JsonArray();
+            account.getSkillLevelMap().forEach((k, v) -> {
+                SkillTypeLongPair pair = new SkillTypeLongPair(k, v);
+                skillLevels.add(context.serialize(pair));
+            });
+            object.add("skillLevels", skillLevels);
+
+            // Social
+
+            JsonArray mailList = new JsonArray();
+            account.getMailList().forEach(m -> mailList.add(GsonComponentSerializer.gson().serializeToTree(m)));
+            object.add("mailList", mailList);
+
+            object.add("muted", new JsonPrimitive(account.isMuted()));
+            object.add("muteExpiration", account.getMuteExpiration() != null ? context.serialize(account.getMuteExpiration()) : JsonNull.INSTANCE);
+
+            JsonArray ignoredAccountIds = new JsonArray();
+            account.getIgnoredAccountIds().forEach(id -> ignoredAccountIds.add(context.serialize(id)));
+            object.add("ignoredAccountIds", ignoredAccountIds);
+
+            return object;
+        }
+    }
+
+    final class Deserializer implements JsonDeserializer<Account> {
+        private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
+
+        private Deserializer() {
+        }
+
+        @Override
+        public Account deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
+            if (jsonElement == null || jsonElement.isJsonNull()) return null;
+
+            JsonObject object = jsonElement.getAsJsonObject();
+
+            // Identification
+
+            UUID uniqueId = null;
+            String name = null;
+
+            if (!object.has("uniqueId") || object.get("uniqueId").isJsonNull()) {
+                throw new JsonParseException("Missing or invalid required parameter \"uniqueId\".");
+            }
+
+            uniqueId = context.deserialize(object.get("uniqueId"), UUID.class);
+
+            if (!object.has("name") || object.get("name").isJsonNull()) {
+                throw new JsonParseException("Missing or invalid required parameter \"name\".");
+            }
+
+            name = object.get("name").getAsString();
+
+            Account account = new SynchronizedAccount(uniqueId, name);
+
+            if (object.has("displayName") && !object.get("displayName").isJsonNull()) {
+                account.setDisplayName(GsonComponentSerializer.gson().deserializeFromTree(object.get("displayName")));
+            }
+
+            // Tier & title
+
+            if (object.has("accountTier") && !object.get("accountTier").isJsonNull()) {
+                account.setTier(context.deserialize(object.get("accountTier"), AccountTier.class));
+            }
+
+            if (object.has("currentTitle") && !object.get("currentTitle").isJsonNull()) {
+                account.setCurrentTitle(context.deserialize(object.get("currentTitle"), AccountTitle.class));
+            }
+
+            if (object.has("ownedTitles") && object.get("ownedTitles").isJsonArray()) {
+                JsonArray array = object.get("ownedTitles").getAsJsonArray();
+                array.forEach(entry -> {
+                    AccountTitle title = context.deserialize(entry, AccountTitle.class);
+                    account.addTitle(title);
+                });
+            }
+
+            // Wallet
+
+            if (object.has("balance") && object.get("balance").isJsonPrimitive()) {
+                account.modifyBalance(object.get("balance").getAsDouble(), EconomyCause.INITIALIZED);
+            } else {
+                Mirae.getInstance().getLogger().warning("Parameter \"balance\" not found for account \"" + uniqueId + "\"!");
+            }
+
+            if (object.has("coinBalance") && object.get("coinBalance").isJsonPrimitive()) {
+                account.modifyCoinBalance(object.get("coinBalance").getAsLong(), EconomyCause.INITIALIZED);
+            } else {
+                Mirae.getInstance().getLogger().warning("Parameter \"balance\" not found for account \"" + uniqueId + "\"!");
+            }
+
+            if (object.has("walletFrozen") && object.get("walletFrozen").isJsonPrimitive()) {
+                account.setWalletFrozen(object.get("walletFrozen").getAsBoolean());
+            }
+
+            // Homes
+
+            if (object.has("home") && !object.get("home").isJsonNull()) {
+                Coordinate c = context.deserialize(object.get("home"), Coordinate.class);
+                try {
+                    account.setHome(c.asLocation());
+                } catch (IllegalArgumentException e) {
+                    throw new JsonParseException(e);
+                }
+            }
+
+            if (object.has("extraHomes") && object.get("extraHomes").isJsonArray()) {
+                JsonArray extraHomes = object.get("extraHomes").getAsJsonArray();
+                extraHomes.forEach(entry -> { // Lambda isolates individual exceptions
+                    StringCoordinatePair pair = context.deserialize(entry, StringCoordinatePair.class);
+                    try {
+                        account.setExtraHome(pair.getKey(), pair.getValue().asLocation());
+                    } catch (IllegalArgumentException e) {
+                        throw new JsonParseException(e);
+                    }
+                });
+            }
+
+            if (object.has("maxExtraHomes") && object.get("maxExtraHomes").isJsonPrimitive()) {
+                account.setMaxExtraHomes(object.get("maxExtraHomes").getAsInt());
+            }
+
+            // Stats
+
+            if (object.has("lastSeenTime") && !object.get("lastSeenTime").isJsonNull()) {
+                account.setLastSeenTime(context.deserialize(object.get("lastSeenTime"), LocalDateTime.class));
+            }
+
+            if (object.has("lastSeenLocation") && !object.get("lastSeenLocation").isJsonNull()) {
+                Coordinate c = context.deserialize(object.get("lastSeenLocation"), Coordinate.class);
+                try {
+                    account.setLastSeenLocation(c.asLocation());
+                } catch (IllegalArgumentException e) {
+                    throw new JsonParseException(e);
+                }
+            }
+
+            if (object.has("skillLevels") && object.get("skillLevels").isJsonArray()) {
+                JsonArray skillLevels = object.get("skillLevels").getAsJsonArray();
+                skillLevels.forEach(entry -> {
+                    SkillTypeLongPair pair = context.deserialize(entry, SkillTypeLongPair.class);
+                    account.setSkillLevel(pair.getKey(), pair.getValue());
+                });
+            }
+
+            // Social
+
+            if (object.has("mailList") && object.get("mailList").isJsonArray()) {
+                JsonArray mailList = object.get("mailList").getAsJsonArray();
+                mailList.forEach(m -> {
+                    Component mail = GsonComponentSerializer.gson().deserializeFromTree(m);
+                    account.addMail(mail);
+                });
+            }
+
+            if (object.has("muted") && object.get("muted").isJsonPrimitive()) {
+                account.setMuted(object.get("muted").getAsBoolean());
+            }
+
+            if (object.has("muteExpiration") && !object.get("muteExpiration").isJsonNull()) {
+                account.setMuted(account.isMuted(), context.deserialize(object.get("muteExpiration"), LocalDateTime.class));
+            }
+
+            if (object.has("ignoredAccountIds") && object.get("ignoredAccountIds").isJsonArray()) {
+                JsonArray ignoredAccountIds = object.get("ignoredAccountIds").getAsJsonArray();
+                ignoredAccountIds.forEach(id -> account.setIgnoringAccount((UUID) context.deserialize(id, UUID.class), true));
+            }
+
+            return account;
+        }
+    }
 }

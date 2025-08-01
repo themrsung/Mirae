@@ -394,7 +394,7 @@ public class SynchronizedAccount implements Account {
 
     /// Social
 
-    private @NotNull List<Component> mailList;
+    private final @NotNull List<Component> mailList;
     private boolean muted;
     private @Nullable LocalDateTime muteExpiration;
     private final @NotNull Set<UUID> ignoredAccountIds;

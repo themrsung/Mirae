@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,10 @@ public enum AccountTier {
             .color(TextColor.fromHexString("#130e0b"))
             .decorate(TextDecoration.BOLD)
             .decoration(TextDecoration.ITALIC, false)
-            .build()));
+            .build())),
+
+    DEVELOPER(MiniMessage.miniMessage()
+            .deserialize("<gradient:#ff2e01:#2e2727>developer<reset>"));
 
     AccountTier(@NotNull Component displayName) {
         this.displayName = displayName;

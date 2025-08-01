@@ -202,10 +202,10 @@ public final class Coordinate implements Serializable {
 
             object.add("world", new JsonPrimitive(coordinate.world));
             object.add("x", new JsonPrimitive(coordinate.x));
-            object.add("y", new JsonPrimitive(coordinate.x));
-            object.add("z", new JsonPrimitive(coordinate.x));
-            object.add("yaw", new JsonPrimitive(coordinate.x));
-            object.add("pitch", new JsonPrimitive(coordinate.x));
+            object.add("y", new JsonPrimitive(coordinate.y));
+            object.add("z", new JsonPrimitive(coordinate.z));
+            object.add("yaw", new JsonPrimitive(coordinate.yaw));
+            object.add("pitch", new JsonPrimitive(coordinate.pitch));
 
             return object;
         }
@@ -226,7 +226,7 @@ public final class Coordinate implements Serializable {
             double y = 0;
             double z = 0;
 
-            if (!object.has("world") || !object.get("world").isJsonPrimitive()) {
+            if (!object.has("world") || object.get("world").isJsonNull()) {
                 throw new JsonParseException("Missing or invalid required parameter \"world\".");
             }
 

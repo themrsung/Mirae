@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PayCommand extends MiraeCommand {
     public PayCommand() {
@@ -46,6 +47,11 @@ public class PayCommand extends MiraeCommand {
             return false;
         }
 
+        if (Objects.equals(moneySender.getUniqueId(), moneyRecipient.getUniqueId())) {
+            sender.sendMessage(CANNOT_DO_THIS_TO_SELF);
+            return false;
+        }
+
         if (moneyRecipient.isIgnoringAccount(moneySender)) {
             sender.sendMessage(COUNTERPARTY_IS_IGNORING_YOU);
             return false;
@@ -66,14 +72,14 @@ public class PayCommand extends MiraeCommand {
         EconomyResult senderResult = results.getFirst();
 
         if (senderResult.isSuccess()) {
-            sender.sendMessage(Component.text("[출금] ").style(MX.STYLE_SPECIAL)
+            sender.sendMessage(Component.text("[출금] ").style(MX.STYLE_ERROR)
                     .append(moneyRecipient.getDisplayName(MX.STYLE_SPECIAL)
                             .append(Component.text("님에게 ").style(MX.STYLE_NORMAL))
                             .append(Component.text(MX.formatBalance(amount)).style(MX.STYLE_SPECIAL))
                             .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL))));
 
             assert results.size() >= 2;
-            moneyRecipient.sendMessage(Component.text("[입금] ").style(MX.STYLE_SPECIAL)
+            moneyRecipient.sendMessage(Component.text("[입금] ").style(MX.STYLE_GOOD)
                     .append(moneySender.getDisplayName(MX.STYLE_SPECIAL)
                             .append(Component.text("님이 ").style(MX.STYLE_NORMAL))
                             .append(Component.text(MX.formatBalance(amount)).style(MX.STYLE_SPECIAL))

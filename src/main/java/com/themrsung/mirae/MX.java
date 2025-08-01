@@ -485,6 +485,9 @@ public final class MX {
 
             case COOKED_BEEF -> "스테이크";
 
+            case COPPER_INGOT -> "금괴 (스페인산)";
+            case COPPER_BLOCK -> "금 블럭 (스페인산)";
+
             case BARRIER -> "어?";
             case BEDROCK -> "어??";
 

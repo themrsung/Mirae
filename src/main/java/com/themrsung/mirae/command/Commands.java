@@ -7,6 +7,7 @@ import com.themrsung.mirae.command.economy.PayCommand;
 import com.themrsung.mirae.command.home.*;
 import com.themrsung.mirae.command.misc.FlexCommand;
 import com.themrsung.mirae.command.social.DirectMessageCommand;
+import com.themrsung.mirae.command.social.IgnoreCommand;
 import com.themrsung.mirae.command.social.ReplyCommand;
 import com.themrsung.mirae.command.teleport.*;
 import org.jetbrains.annotations.NotNull;
@@ -33,10 +34,13 @@ public final class Commands {
     private static final @NotNull ChangeCoinCommand CHANGE_COIN_COMMAND = new ChangeCoinCommand();
     private static final @NotNull SetTierCommand SET_TIER_COMMAND = new SetTierCommand();
     private static final @NotNull SetTitleCommand SET_TITLE_COMMAND = new SetTitleCommand();
+    private static final @NotNull GetTitleCommand GET_TITLE_COMMAND = new GetTitleCommand();
     private static final @NotNull SetDisplayNameCommand SET_DISPLAY_NAME_COMMAND = new SetDisplayNameCommand();
+    private static final @NotNull MuteCommand MUTE_COMMAND = new MuteCommand();
 
     private static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     private static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
+    private static final @NotNull IgnoreCommand IGNORE_COMMAND = new IgnoreCommand();
 
     private static final @NotNull TeleportAskCommand TELEPORT_ASK_COMMAND = new TeleportAskCommand();
     private static final @NotNull TeleportAskHereCommand TELEPORT_ASK_HERE_COMMAND = new TeleportAskHereCommand();
@@ -63,10 +67,13 @@ public final class Commands {
             CHANGE_COIN_COMMAND,
             SET_TIER_COMMAND,
             SET_TITLE_COMMAND,
+            GET_TITLE_COMMAND,
             SET_DISPLAY_NAME_COMMAND,
+            MUTE_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,
+            IGNORE_COMMAND,
 
             TELEPORT_ASK_COMMAND,
             TELEPORT_ASK_HERE_COMMAND,
@@ -153,8 +160,16 @@ public final class Commands {
         return SET_TITLE_COMMAND;
     }
 
+    public static @NotNull GetTitleCommand getGetTitleCommand() {
+        return GET_TITLE_COMMAND;
+    }
+
     public static @NotNull SetDisplayNameCommand getSetDisplayNameCommand() {
         return SET_DISPLAY_NAME_COMMAND;
+    }
+
+    public static @NotNull MuteCommand getMuteCommand() {
+        return MUTE_COMMAND;
     }
 
     public static @NotNull DirectMessageCommand getDirectMessageCommand() {
@@ -163,6 +178,10 @@ public final class Commands {
 
     public static @NotNull ReplyCommand getReplyCommand() {
         return REPLY_COMMAND;
+    }
+
+    public static @NotNull IgnoreCommand getIgnoreCommand() {
+        return IGNORE_COMMAND;
     }
 
     public static @NotNull TeleportAskCommand getTeleportAskCommand() {

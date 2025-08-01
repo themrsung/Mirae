@@ -51,6 +51,11 @@ public class TeleportAskCommand extends MiraeCommand {
             return false;
         }
 
+        if (Objects.equals(tpSender.getUniqueId(), tpRecipient.getUniqueId())) {
+            sender.sendMessage(CANNOT_DO_THIS_TO_SELF);
+            return false;
+        }
+
         if (tpRecipient.getPlayer() == null || !tpRecipient.getPlayer().isOnline()) {
             sender.sendMessage(COUNTERPARTY_IS_OFFLINE);
             return false;

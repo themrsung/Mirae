@@ -7,6 +7,8 @@ import com.themrsung.mirae.event.economy.EconomyCause;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -37,16 +39,18 @@ public final class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
+        Account account;
+
         if (!Mirae.getState().hasAccount(player)) {
             // First join
-            Account account = Account.createAccount(player.getUniqueId());
+            account = Account.createAccount(player.getUniqueId());
             Mirae.getState().addAccount(account);
 
             account.modifyBalance(STARTING_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting balance");
             account.modifyCoinBalance(STARTING_COIN_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting coin balance");
         } else {
             // Rejoin
-            Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
+            account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
             List<Component> mailList = account.getMailList();
 
             if (!mailList.isEmpty()) {
@@ -55,9 +59,14 @@ public final class PlayerListener implements Listener {
                     player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 }, 100);
             }
-
-            Mirae.getState().logAccountActivity(account);
         }
+
+        Mirae.getState().logAccountActivity(account);
+
+        Bukkit.broadcast(Component.text("[").style(MX.STYLE_NORMAL)
+                .append(Component.text("+").style(MX.STYLE_GOOD))
+                .append(Component.text("] ").style(MX.STYLE_NORMAL))
+                .append(account.getDisplayName(MX.STYLE_SPECIAL)));
     }
 
     @EventHandler
@@ -81,7 +90,12 @@ public final class PlayerListener implements Listener {
         if (account.isMuted()) {
             player.sendMessage(message);
         } else {
-            Bukkit.broadcast(message);
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                Account a = MX.requireAccountNonNull(Mirae.getState().getAccount(p));
+                if (a.isIgnoringAccount(account) || account.isIgnoringAccount(a)) return;
+
+                p.sendMessage(message);
+            });
         }
     }
 
@@ -92,7 +106,9 @@ public final class PlayerListener implements Listener {
                 .append(Component.text(" ").style(MX.STYLE_NORMAL))
                 .append(sender.getDisplayName(MX.STYLE_NORMAL))
                 .append(Component.text(" : ").style(MX.STYLE_NORMAL))
-                .append(Component.text(message).applyFallbackStyle(MX.STYLE_NORMAL));
+                .append(Component.text(message).applyFallbackStyle(MX.STYLE_NORMAL)
+                        .hoverEvent(HoverEvent.showText(Component.text("클릭하여 복사합니다...").style(MX.STYLE_NORMAL)))
+                        .clickEvent(ClickEvent.copyToClipboard(message)));
     }
 
     @EventHandler
@@ -121,6 +137,7 @@ public final class PlayerListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
+        e.setShouldDropExperience(false);
         e.getDrops().clear();
 
         e.setKeepInventory(true);
@@ -143,5 +160,10 @@ public final class PlayerListener implements Listener {
 
         account.setLastSeenTime(LocalDateTime.now());
         account.setLastSeenLocation(player.getLocation());
+
+        Bukkit.broadcast(Component.text("[").style(MX.STYLE_NORMAL)
+                .append(Component.text("-").style(MX.STYLE_ERROR))
+                .append(Component.text("] ").style(MX.STYLE_NORMAL))
+                .append(account.getDisplayName(MX.STYLE_SPECIAL)));
     }
 }

@@ -40,7 +40,7 @@ public final class ItemStackGson {
     /**
      * Serializer class.
      */
-    static final class Serializer implements JsonSerializer<ItemStack> {
+    private static final class Serializer implements JsonSerializer<ItemStack> {
         @Override
         @SuppressWarnings("deprecation")
         public JsonElement serialize(ItemStack itemStack, Type type, JsonSerializationContext context) {
@@ -62,7 +62,7 @@ public final class ItemStackGson {
     /**
      * Deserializer class.
      */
-    static final class Deserializer implements JsonDeserializer<ItemStack> {
+    private static final class Deserializer implements JsonDeserializer<ItemStack> {
         @Override
         @SuppressWarnings("deprecation")
         public ItemStack deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {

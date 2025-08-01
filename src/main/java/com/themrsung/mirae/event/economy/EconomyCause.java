@@ -46,6 +46,16 @@ public interface EconomyCause {
      */
     @NotNull EconomyCause ITEM_REDEEMED = new InitialCause("Item Redeemed");
 
+    /**
+     * Withdrawn as item.
+     */
+    @NotNull EconomyCause WITHDRAWN_AS_ITEM = new InitialCause("Withdrawn as Item");
+
+    /**
+     * Initialized when loaded from disk.
+     */
+    @NotNull EconomyCause INITIALIZED = new InitialCause("Initialized.");
+
     ///
     /// Custom cause
     ///

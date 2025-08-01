@@ -1,0 +1,14 @@
+package com.themrsung.mirae.task;
+
+import com.themrsung.mirae.Mirae;
+import com.themrsung.mirae.account.Account;
+
+/**
+ * Updates names
+ */
+public class UpdateNameTask implements Runnable {
+    @Override
+    public void run() {
+        Mirae.getState().getAccounts().forEach(Account::updateName);
+    }
+}
