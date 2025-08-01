@@ -1,7 +1,9 @@
 package com.themrsung.mirae.account;
 
+import com.themrsung.mirae.MX;
 import com.themrsung.mirae.economy.TitleVersion;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -83,6 +85,10 @@ public enum AccountTitle {
         return value;
     }
 
+    /**
+     * Generates the title item.
+     * @return The title item
+     */
     public @NotNull ItemStack generateItem() {
         return generateItem(TitleVersion.CURRENT);
     }

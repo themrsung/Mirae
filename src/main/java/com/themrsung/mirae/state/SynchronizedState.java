@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.economy.EconomyResult;
 import com.themrsung.mirae.event.economy.EconomyCause;
-import com.themrsung.mirae.gson.ItemStackGson;
-import com.themrsung.mirae.gson.SkillTypeLongPair;
-import com.themrsung.mirae.gson.StateData;
-import com.themrsung.mirae.gson.StringCoordinatePair;
+import com.themrsung.mirae.gson.*;
 import com.themrsung.mirae.social.DirectMessage;
 import com.themrsung.mirae.social.TeleportRequest;
 import com.themrsung.mirae.util.Coordinate;
@@ -21,15 +18,16 @@ import org.codehaus.plexus.util.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Default synchronized implementation of {@link State}.
@@ -438,6 +436,7 @@ public class SynchronizedState implements State {
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.serializer())
             .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.serializer())
             .registerTypeAdapter(StateData.class, StateData.serializer())
+            .registerTypeAdapter(LocalDateTime.class, LocalDateTimeGson.serializer())
             .setPrettyPrinting()
             .create();
 
@@ -448,6 +447,7 @@ public class SynchronizedState implements State {
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.deserializer())
             .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.deserializer())
             .registerTypeAdapter(StateData.class, StateData.deserializer())
+            .registerTypeAdapter(LocalDateTime.class, LocalDateTimeGson.deserializer())
             .create();
 
     private static final @NotNull String SAVE_PATH = "plugins/Mirae";
@@ -467,9 +467,42 @@ public class SynchronizedState implements State {
 
     @Override
     public void save() throws IOException {
-        File path = new File(SAVE_PATH);
-        if (!path.exists() && !path.mkdirs()) {
+        File pluginDir = new File(SAVE_PATH);
+        if (!pluginDir.exists() && !pluginDir.mkdirs()) {
             throw new IOException("Failed to create plugin directory.");
+        }
+
+        File backupsDir = new File(SAVE_PATH + "/backups");
+        if (!backupsDir.exists() && !backupsDir.mkdirs()) {
+            throw new IOException("Unable to create backups folder.");
+        }
+
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        File backupFile = new File(backupsDir, timestamp + ".zip");
+
+        try (FileOutputStream fos = new FileOutputStream(backupFile)) {
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            Files.walk(pluginDir.toPath())
+                    .filter(path -> !Files.isDirectory(path))
+                    .filter(path -> !path.startsWith(backupsDir.toPath()))
+                    .forEach(path -> {
+                        try {
+                            ZipEntry entry = new ZipEntry(pluginDir.toPath().relativize(path).toString());
+                            zos.putNextEntry(entry);
+
+                            byte[] bytes = Files.readAllBytes(path);
+
+                            zos.write(bytes);
+                            zos.closeEntry();
+                        } catch (IOException e) {
+                            throw new UncheckedIOException("Error creating backup file.", e);
+                        }
+                    });
+
+            zos.close();
+        } catch (UncheckedIOException e) {
+            throw new IOException(e);
         }
 
         File dataFile = new File(SAVE_PATH + "/data.json");
@@ -526,7 +559,8 @@ public class SynchronizedState implements State {
                 StateData data = DESERIALIZER.fromJson(reader, StateData.class);
 
                 Coordinate s = data.getSpawnPoint();
-                if (s != null) spawnPoint = s.asLocation();
+                if (s != null) try { spawnPoint = s.asLocation();}
+                catch (IllegalArgumentException ignored) {}
 
             } catch (IOException e) {
                 throw new IOException("Error loading data.", e);

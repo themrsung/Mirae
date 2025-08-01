@@ -1,6 +1,12 @@
 package com.themrsung.mirae.task;
 
 import com.themrsung.mirae.Mirae;
+import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
+import com.themrsung.mirae.task.player.ScoreboardTask;
+import com.themrsung.mirae.task.state.AutoSaveTask;
+import com.themrsung.mirae.task.state.MuteExpirationTask;
+import com.themrsung.mirae.task.state.TransientVariableCleanupTask;
+import com.themrsung.mirae.task.state.UpdateNameTask;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +18,7 @@ public final class Tasks {
     private static final @NotNull AntiSpamBanTask ANTI_SPAM_BAN_TASK = new AntiSpamBanTask();
     private static final @NotNull UpdateNameTask UPDATE_NAME_TASK = new UpdateNameTask();
     private static final @NotNull AutoSaveTask AUTO_SAVE_TASK = new AutoSaveTask();
+    private static final @NotNull ScoreboardTask SCOREBOARD_TASK = new ScoreboardTask();
 
     public static @NotNull MuteExpirationTask getMuteExpirationTask() {
         return MUTE_EXPIRATION_TASK;
@@ -33,13 +40,18 @@ public final class Tasks {
         return AUTO_SAVE_TASK;
     }
 
+    public static @NotNull ScoreboardTask getScoreboardTask() {
+        return SCOREBOARD_TASK;
+    }
+
     public static @NotNull Set<Runnable> getTasks() {
         return Set.of(
                 MUTE_EXPIRATION_TASK,
                 TRANSIENT_VARIABLE_CLEANUP_TASK,
                 ANTI_SPAM_BAN_TASK,
                 UPDATE_NAME_TASK,
-                AUTO_SAVE_TASK
+                AUTO_SAVE_TASK,
+                SCOREBOARD_TASK
         );
     }
 
@@ -51,6 +63,7 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, ANTI_SPAM_BAN_TASK, 20, 200);
         s.scheduleSyncRepeatingTask(p, UPDATE_NAME_TASK, 20 * 60 * 10, 200);
         s.scheduleSyncRepeatingTask(p, AUTO_SAVE_TASK, 20 * 60 * 5, 20 * 60 * 5);
+        s.scheduleSyncRepeatingTask(p, SCOREBOARD_TASK, 5, 5);
     }
 
     private Tasks() throws Exception {

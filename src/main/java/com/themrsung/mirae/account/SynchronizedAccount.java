@@ -50,6 +50,8 @@ public class SynchronizedAccount implements Account {
         this.mailList = Collections.synchronizedList(new ArrayList<>());
 
         this.ignoredAccountIds = Collections.synchronizedSet(new HashSet<>());
+
+        this.hideScoreboard = false;
     }
 
     /**
@@ -78,6 +80,8 @@ public class SynchronizedAccount implements Account {
         this.mailList = Collections.synchronizedList(new ArrayList<>());
 
         this.ignoredAccountIds = Collections.synchronizedSet(new HashSet<>());
+
+        this.hideScoreboard = false;
     }
 
     /// Identification
@@ -583,5 +587,19 @@ public class SynchronizedAccount implements Account {
         } else {
             name = "";
         }
+    }
+
+    /// Misc.
+
+    private boolean hideScoreboard;
+
+    @Override
+    public boolean hideScoreboard() {
+        return hideScoreboard;
+    }
+
+    @Override
+    public void setHideScoreboard(boolean hideScoreboard) {
+        this.hideScoreboard = hideScoreboard;
     }
 }

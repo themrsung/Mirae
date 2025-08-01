@@ -1,10 +1,10 @@
-package com.themrsung.mirae.task;
+package com.themrsung.mirae.task.state;
 
 import com.themrsung.mirae.Mirae;
 
 import java.io.IOException;
 
-public class AutoSaveTask implements Runnable {
+public final class AutoSaveTask implements Runnable {
     @Override
     public void run() {
         try {

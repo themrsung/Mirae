@@ -56,7 +56,6 @@ public final class Listeners {
     public static @NotNull AntiSpamListener getAntiSpamListener() {
         return ANTI_SPAM_LISTENER;
     }
-
     /**
      * Returns the set of all listeners.
      *

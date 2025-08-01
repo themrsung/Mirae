@@ -38,6 +38,8 @@ public abstract class MiraeCommand extends Command {
     public static final @NotNull Component TELEPORT_REQUEST_CANCELLED_BY_COUNTERPARTY = Component.text("상대방이 텔레포트 요청을 취소했습니다.").style(MX.STYLE_GOOD);
     public static final @NotNull Component HOME_SET_TO_HERE = Component.text("이곳으로 홈을 설정했습니다.").style(MX.STYLE_GOOD);
     public static final @NotNull Component HOME_DELETED = Component.text("홈이 삭제되었습니다.").style(MX.STYLE_GOOD);
+    public static final @NotNull Component NICKNAME_RESET = Component.text("닉네임을 초기화했습니다.").style(MX.STYLE_GOOD);
+    public static final @NotNull Component NICKNAME_SET = Component.text("닉네임이 설정되었습니다.").style(MX.STYLE_GOOD);
 
     /**
      * Creates a new command.

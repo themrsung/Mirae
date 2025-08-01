@@ -8,7 +8,9 @@ import com.themrsung.mirae.command.home.*;
 import com.themrsung.mirae.command.misc.FlexCommand;
 import com.themrsung.mirae.command.social.DirectMessageCommand;
 import com.themrsung.mirae.command.social.IgnoreCommand;
+import com.themrsung.mirae.command.social.NicknameCommand;
 import com.themrsung.mirae.command.social.ReplyCommand;
+import com.themrsung.mirae.command.stats.MoneySupplyCommand;
 import com.themrsung.mirae.command.teleport.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +43,7 @@ public final class Commands {
     private static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     private static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
     private static final @NotNull IgnoreCommand IGNORE_COMMAND = new IgnoreCommand();
+    private static final @NotNull NicknameCommand NICKNAME_COMMAND = new NicknameCommand();
 
     private static final @NotNull TeleportAskCommand TELEPORT_ASK_COMMAND = new TeleportAskCommand();
     private static final @NotNull TeleportAskHereCommand TELEPORT_ASK_HERE_COMMAND = new TeleportAskHereCommand();
@@ -49,6 +52,8 @@ public final class Commands {
     private static final @NotNull TeleportCancelCommand TELEPORT_CANCEL_COMMAND = new TeleportCancelCommand();
 
     private static final @NotNull FlexCommand FLEX_COMMAND = new FlexCommand();
+
+    private static final @NotNull MoneySupplyCommand MONEY_SUPPLY_COMMAND = new MoneySupplyCommand();
 
     private static final @NotNull Set<MiraeCommand> ALL_COMMANDS = Set.of(
             SPAWN_COMMAND,
@@ -74,6 +79,7 @@ public final class Commands {
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,
             IGNORE_COMMAND,
+            NICKNAME_COMMAND,
 
             TELEPORT_ASK_COMMAND,
             TELEPORT_ASK_HERE_COMMAND,
@@ -81,7 +87,9 @@ public final class Commands {
             TELEPORT_DENY_COMMAND,
             TELEPORT_CANCEL_COMMAND,
 
-            FLEX_COMMAND
+            FLEX_COMMAND,
+
+            MONEY_SUPPLY_COMMAND
     );
 
     /**
@@ -184,6 +192,10 @@ public final class Commands {
         return IGNORE_COMMAND;
     }
 
+    public static @NotNull NicknameCommand getNicknameCommand() {
+        return NICKNAME_COMMAND;
+    }
+
     public static @NotNull TeleportAskCommand getTeleportAskCommand() {
         return TELEPORT_ASK_COMMAND;
     }
@@ -206,6 +218,10 @@ public final class Commands {
 
     public static @NotNull FlexCommand getFlexCommand() {
         return FLEX_COMMAND;
+    }
+
+    public static @NotNull MoneySupplyCommand getMoneySupplyCommand() {
+        return MONEY_SUPPLY_COMMAND;
     }
 
     /**

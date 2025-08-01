@@ -1,4 +1,4 @@
-package com.themrsung.mirae.task;
+package com.themrsung.mirae.task.state;
 
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.state.State;

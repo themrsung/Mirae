@@ -1,6 +1,8 @@
 package com.themrsung.mirae.account;
 
+import com.themrsung.mirae.MX;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -12,41 +14,49 @@ import org.jetbrains.annotations.Nullable;
  * Account tier.
  */
 public enum AccountTier {
-    DEFAULT(Component.empty()),
+    DEFAULT(0, Component.empty(), Component.empty()),
 
-    GREEN(Component.text("그린").style(Style.style()
+    GREEN(1, Component.text("그린").style(Style.style()
             .color(TextColor.fromHexString("#3cee7d"))
             .decorate(TextDecoration.BOLD)
             .decoration(TextDecoration.ITALIC, false)
-            .build())),
+            .build()),
+            Component.text("누적후원금액 1만원 이상").style(MX.STYLE_NORMAL)),
 
-    GOLD(Component.text("골드").style(Style.style()
+    GOLD(2, Component.text("골드").style(Style.style()
             .color(TextColor.fromHexString("#ecd731"))
             .decorate(TextDecoration.BOLD)
             .decoration(TextDecoration.ITALIC, false)
-            .build())),
+            .build()),
+            Component.text("누적후원금액 5만원 이상").style(MX.STYLE_NORMAL)),
 
-    PLATINUM(Component.text("플래티넘").style(Style.style()
+    PLATINUM(3, Component.text("플래티넘").style(Style.style()
             .color(TextColor.fromHexString("#c3c2ab"))
             .decorate(TextDecoration.BOLD)
             .decoration(TextDecoration.ITALIC, false)
-            .build())),
+            .build()),
+            Component.text("누적후원금액 50만원 이상").style(MX.STYLE_NORMAL)),
 
 
-    BLACK(Component.text("블랙").style(Style.style()
+    BLACK(4, Component.text("블랙").style(Style.style()
             .color(TextColor.fromHexString("#130e0b"))
             .decorate(TextDecoration.BOLD)
             .decoration(TextDecoration.ITALIC, false)
-            .build())),
+            .build()),
+            Component.text("누적후원금액 100만원 이상").style(MX.STYLE_NORMAL)),
 
-    DEVELOPER(MiniMessage.miniMessage()
-            .deserialize("<gradient:#ff2e01:#2e2727>developer<reset>"));
+    DEVELOPER(100, MiniMessage.miniMessage().deserialize("<gradient:#ff2e01:#2e2727>developer<reset>"),
+            MiniMessage.miniMessage().deserialize("<gradient:white:gold><bold>누적개발시간 300시간 이상"));
 
-    AccountTier(@NotNull Component displayName) {
-        this.displayName = displayName;
+    AccountTier(int ordinal, @NotNull Component displayName, @NotNull Component description) {
+        this.ordinal = ordinal;
+        this.displayName = displayName.hoverEvent(HoverEvent.showText(description));
+        this.description = description;
     }
 
+    private final int ordinal;
     private final @NotNull Component displayName;
+    private final @NotNull Component description;
 
     /**
      * Returns the display name.
@@ -55,6 +65,14 @@ public enum AccountTier {
      */
     public @NotNull Component getDisplayName() {
         return displayName;
+    }
+
+    /**
+     * Returns the description.
+     * @return The description
+     */
+    public @NotNull Component getDescription() {
+        return description;
     }
 
     /**
@@ -103,5 +121,15 @@ public enum AccountTier {
             case GREEN -> DEFAULT;
             default -> null;
         };
+    }
+
+    /**
+     * Returns if this tier is at least the given tier.
+     * @param t The tier
+     * @return {@code true} if this tier is at least the given tier
+     */
+    public boolean isAtLeast(@Nullable AccountTier t) {
+        if (t == null) return false;
+        return ordinal >= t.ordinal;
     }
 }

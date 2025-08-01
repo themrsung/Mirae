@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Vault Economy Adapter.
  */
-public class VaultEconomyAdapter implements Economy {
+public final class VaultEconomyAdapter implements Economy {
     /**
      * Creates a new Vault adapter.
      *
