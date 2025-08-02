@@ -3,6 +3,7 @@ package com.themrsung.mirae.task.player;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
+import com.themrsung.mirae.account.AccountTier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -25,7 +26,7 @@ public final class ScoreboardTask implements Runnable {
             Component displayName = account.getDisplayName(MX.STYLE_SPECIAL);
             Component tier = account.getTier().getDisplayName();
 
-            Component fullName = tier.append(Component.text(account.hasDisplayName() ? " " : ""))
+            Component fullName = tier.append(Component.text(account.getTier() != AccountTier.DEFAULT ? " " : ""))
                     .append(displayName);
 
             Component balance = Component.text(MX.formatBalance(account.getBalance())).style(MX.STYLE_GOOD);
