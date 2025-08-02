@@ -165,29 +165,100 @@ public interface Account extends Serializable {
 
     long getCoinBalance();
 
+    /**
+     * Modifies the balance of this account.
+     * @param change The net change
+     * @return The resulting balance after
+     */
     double modifyBalance(double change);
 
+    /**
+     * Modifies the balance of this account.
+     * @param change The net change
+     * @param cause The cause
+     * @return The resulting balance after
+     */
     double modifyBalance(double change, @Nullable EconomyCause cause);
 
+    /**
+     * Modifies the balance of this account.
+     * @param change The net change
+     * @param cause The cause
+     * @param message The message
+     * @return The resulting balance after
+     */
     double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message);
 
+    /**
+     * Modifies the balance of this account.
+     * @param function The modifier function
+     * @return The resulting balance after
+     */
     double modifyBalance(@NotNull DoubleUnaryOperator function);
 
+    /**
+     * Modifies the balance of this account.
+     * @param function The modifier function
+     * @param cause The cause
+     * @return The resulting balance after
+     */
     double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause);
 
+    /**
+     * Modifies the balance of this account.
+     * @param function The modifier function
+     * @param cause The cause
+     * @param message The message
+     * @return The resulting balance after
+     */
     double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message);
 
-
+    /**
+     * Modifies the coin balance of this account.
+     * @param change The net change
+     * @return The resulting coin balance after
+     */
     long modifyCoinBalance(long change);
 
+    /**
+     * Modifies the coin balance of this account.
+     * @param change The net change
+     * @param cause The cause
+     * @return The resulting coin balance after
+     */
     long modifyCoinBalance(long change, @Nullable EconomyCause cause);
 
+    /**
+     * Modifies the coin balance of this account.
+     * @param change The net change
+     * @param cause The cause
+     * @param message The message
+     * @return The resulting coin balance after
+     */
     long modifyCoinBalance(long change, @Nullable EconomyCause cause, @Nullable String message);
 
+    /**
+     * Modifies the coin balance of this account.
+     * @param function The modifier function.
+     * @return The resulting coin balance after
+     */
     long modifyCoinBalance(@NotNull LongUnaryOperator function);
 
+    /**
+     * Modifies the coin balance of this account.
+     * @param function The modifier function.
+     * @param cause The cause
+     * @return The resulting coin balance after
+     */
     long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause);
 
+    /**
+     * Modifies the coin balance of this account.
+     * @param function The modifier function.
+     * @param cause The cause
+     * @param message The message
+     * @return The resulting coin balance after
+     */
     long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message);
 
     /**
@@ -535,6 +606,18 @@ public interface Account extends Serializable {
      */
     void clearIgnoredAccounts();
 
+    /**
+     * Returns whether this account is in local chat.
+     * @return {@code true} if in local chat
+     */
+    boolean inLocalChat();
+
+    /**
+     * Sets whether this account is in local chat.
+     * @param localChat {@code true} for local chat
+     */
+    void setLocalChat(boolean localChat);
+
     ///
     /// Transient Getters / Setters
     ///
@@ -567,9 +650,7 @@ public interface Account extends Serializable {
      */
     void setRecentDeathLocation(@Nullable Location location);
 
-    ///
     /// Misc.
-    ///
 
     boolean hideScoreboard();
 
@@ -688,6 +769,8 @@ public interface Account extends Serializable {
             account.getIgnoredAccountIds().forEach(id -> ignoredAccountIds.add(context.serialize(id)));
             object.add("ignoredAccountIds", ignoredAccountIds);
 
+            object.add("localChat", new JsonPrimitive(account.inLocalChat()));
+
             // Misc.
 
             object.add("hideScoreboard", new JsonPrimitive(account.hideScoreboard()));
@@ -773,7 +856,8 @@ public interface Account extends Serializable {
                 Coordinate c = context.deserialize(object.get("home"), Coordinate.class);
                 try {
                     account.setHome(c.asLocation());
-                } catch (IllegalArgumentException ignored) {}
+                } catch (IllegalArgumentException ignored) {
+                }
             }
 
             if (object.has("extraHomes") && object.get("extraHomes").isJsonArray()) {
@@ -782,7 +866,8 @@ public interface Account extends Serializable {
                     StringCoordinatePair pair = context.deserialize(entry, StringCoordinatePair.class);
                     try {
                         account.setExtraHome(pair.getKey(), pair.getValue().asLocation());
-                    } catch (IllegalArgumentException ignored) {} // Nullify
+                    } catch (IllegalArgumentException ignored) {
+                    } // Nullify
                 });
             }
 
@@ -800,7 +885,8 @@ public interface Account extends Serializable {
                 Coordinate c = context.deserialize(object.get("lastSeenLocation"), Coordinate.class);
                 try {
                     account.setLastSeenLocation(c.asLocation());
-                } catch (IllegalArgumentException ignored) {} // Nullify
+                } catch (IllegalArgumentException ignored) {
+                } // Nullify
             }
 
             if (object.has("skillLevels") && object.get("skillLevels").isJsonArray()) {
@@ -832,6 +918,10 @@ public interface Account extends Serializable {
             if (object.has("ignoredAccountIds") && object.get("ignoredAccountIds").isJsonArray()) {
                 JsonArray ignoredAccountIds = object.get("ignoredAccountIds").getAsJsonArray();
                 ignoredAccountIds.forEach(id -> account.setIgnoringAccount((UUID) context.deserialize(id, UUID.class), true));
+            }
+
+            if (object.has("localChat") && object.get("localChat").isJsonPrimitive()) {
+                account.setLocalChat(object.get("localChat").getAsBoolean());
             }
 
             // Misc.

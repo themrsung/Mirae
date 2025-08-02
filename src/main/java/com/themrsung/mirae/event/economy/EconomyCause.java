@@ -56,6 +56,11 @@ public interface EconomyCause {
      */
     @NotNull EconomyCause INITIALIZED = new InitialCause("Initialized.");
 
+    /**
+     * Interest received to account.
+     */
+    @NotNull EconomyCause INTEREST_RECEIVED = new InitialCause("Interest Received.");
+
     ///
     /// Custom cause
     ///

@@ -23,7 +23,7 @@ public final class AntiSpamBanTask implements Runnable {
 
     @Override
     public void run() {
-        AntiSpamListener listener = Listeners.getAntiSpamListener();
+        AntiSpamListener listener = Listeners.ANTI_SPAM_LISTENER;
 
         listener.forEachCommand((id, count) -> banSpammer(id, count, 10));
         listener.forEachChat((id, count) -> banSpammer(id, count, 7));

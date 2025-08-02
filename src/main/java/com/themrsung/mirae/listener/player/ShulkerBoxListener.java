@@ -22,7 +22,7 @@ public final class ShulkerBoxListener implements Listener {
         if (!e.getAction().isRightClick()) return;
 
         Player player = e.getPlayer();
-        if (Listeners.getGuiActionListener().hasCloseCallback(player.getUniqueId())) return;
+        if (Listeners.GUI_ACTION_LISTENER.hasCloseCallback(player.getUniqueId())) return;
         if (player.isSneaking()) return;
 
         ItemStack item = e.getItem();
@@ -35,7 +35,7 @@ public final class ShulkerBoxListener implements Listener {
 
         Inventory inventory = box.getInventory();
 
-        if (Listeners.getGuiActionListener().registerCloseCallback(player.getUniqueId(), ignored -> {
+        if (Listeners.GUI_ACTION_LISTENER.registerCloseCallback(player.getUniqueId(), ignored -> {
             box.getInventory().setContents(inventory.getContents());
             bsm.setBlockState(box);
             item.setItemMeta(bsm);
@@ -52,7 +52,7 @@ public final class ShulkerBoxListener implements Listener {
         Player player = e.getPlayer();
         UUID uniqueId = player.getUniqueId();
 
-        if (!Listeners.getGuiActionListener().hasCloseCallback(uniqueId)) return;
+        if (!Listeners.GUI_ACTION_LISTENER.hasCloseCallback(uniqueId)) return;
         if (!Tag.SHULKER_BOXES.isTagged(e.getItemDrop().getItemStack().getType())) return;
 
         e.setCancelled(true);
@@ -63,7 +63,7 @@ public final class ShulkerBoxListener implements Listener {
         if (e.isCancelled()) return;
 
         UUID uniqueId = e.getWhoClicked().getUniqueId();
-        if (!Listeners.getGuiActionListener().hasCloseCallback(uniqueId)) return;
+        if (!Listeners.GUI_ACTION_LISTENER.hasCloseCallback(uniqueId)) return;
         if (e.getClickedInventory() == null || e.getClickedInventory().getType() != InventoryType.PLAYER) return;
 
         ItemStack item = e.getCurrentItem();

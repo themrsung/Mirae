@@ -73,17 +73,17 @@ public class PayCommand extends MiraeCommand {
 
         if (senderResult.isSuccess()) {
             sender.sendMessage(Component.text("[출금] ").style(MX.STYLE_ERROR)
-                    .append(moneyRecipient.getDisplayName(MX.STYLE_SPECIAL)
+                    .append(moneyRecipient.getDisplayName(MX.STYLE_SPECIAL))
                             .append(Component.text("님에게 ").style(MX.STYLE_NORMAL))
                             .append(Component.text(MX.formatBalance(amount)).style(MX.STYLE_SPECIAL))
-                            .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL))));
+                            .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL)));
 
             assert results.size() >= 2;
             moneyRecipient.sendMessage(Component.text("[입금] ").style(MX.STYLE_GOOD)
-                    .append(moneySender.getDisplayName(MX.STYLE_SPECIAL)
+                    .append(moneySender.getDisplayName(MX.STYLE_SPECIAL))
                             .append(Component.text("님이 ").style(MX.STYLE_NORMAL))
                             .append(Component.text(MX.formatBalance(amount)).style(MX.STYLE_SPECIAL))
-                            .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL))));
+                            .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL)));
 
             return true;
         } else if (senderResult == EconomyResult.FAILURE_INSUFFICIENT_FUNDS) {

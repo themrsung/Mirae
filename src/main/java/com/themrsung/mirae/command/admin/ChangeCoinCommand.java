@@ -15,10 +15,12 @@ import java.util.Optional;
 import static com.themrsung.mirae.Mirae.getState;
 
 /**
- * Add money command.
- * Add money command.
+ * Change coin balance command.
  */
 public class ChangeCoinCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public ChangeCoinCommand() {
         super("changecoin");
         setAliases(List.of(

@@ -49,9 +49,11 @@ public class NicknameCommand extends MiraeCommand {
         Component displayName;
 
         if (account.getTier().isAtLeast(AccountTier.GOLD)) {
-            displayName = MiniMessage.miniMessage().deserialize(messageRaw.substring(0, Math.min(messageRaw.length(), 50)));
+            displayName = MiniMessage.miniMessage().deserialize(messageRaw.substring(0, Math.min(messageRaw.length(), 50)))
+                    .applyFallbackStyle(MX.STYLE_SPECIAL);
         } else {
-            displayName = Component.text(messageRaw.substring(0, Math.min(messageRaw.length(), 10)));
+            displayName = Component.text(messageRaw.substring(0, Math.min(messageRaw.length(), 10)))
+                    .style(MX.STYLE_SPECIAL);
         }
 
         account.setDisplayName(displayName);

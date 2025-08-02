@@ -2,7 +2,9 @@ package com.themrsung.mirae.task;
 
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
+import com.themrsung.mirae.task.economy.InterestPayoutTask;
 import com.themrsung.mirae.task.player.ScoreboardTask;
+import com.themrsung.mirae.task.server.NotifierTask;
 import com.themrsung.mirae.task.state.AutoSaveTask;
 import com.themrsung.mirae.task.state.MuteExpirationTask;
 import com.themrsung.mirae.task.state.TransientVariableCleanupTask;
@@ -13,46 +15,28 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public final class Tasks {
-    private static final @NotNull MuteExpirationTask MUTE_EXPIRATION_TASK = new MuteExpirationTask();
-    private static final @NotNull TransientVariableCleanupTask TRANSIENT_VARIABLE_CLEANUP_TASK = new TransientVariableCleanupTask();
-    private static final @NotNull AntiSpamBanTask ANTI_SPAM_BAN_TASK = new AntiSpamBanTask();
-    private static final @NotNull UpdateNameTask UPDATE_NAME_TASK = new UpdateNameTask();
-    private static final @NotNull AutoSaveTask AUTO_SAVE_TASK = new AutoSaveTask();
-    private static final @NotNull ScoreboardTask SCOREBOARD_TASK = new ScoreboardTask();
+    public static final @NotNull MuteExpirationTask MUTE_EXPIRATION_TASK = new MuteExpirationTask();
+    public static final @NotNull TransientVariableCleanupTask TRANSIENT_VARIABLE_CLEANUP_TASK = new TransientVariableCleanupTask();
+    public static final @NotNull AntiSpamBanTask ANTI_SPAM_BAN_TASK = new AntiSpamBanTask();
+    public static final @NotNull UpdateNameTask UPDATE_NAME_TASK = new UpdateNameTask();
+    public static final @NotNull AutoSaveTask AUTO_SAVE_TASK = new AutoSaveTask();
+    public static final @NotNull ScoreboardTask SCOREBOARD_TASK = new ScoreboardTask();
+    public static final @NotNull NotifierTask NOTIFIER_TASK = new NotifierTask();
+    public static final @NotNull InterestPayoutTask INTEREST_PAYOUT_TASK = new InterestPayoutTask();
 
-    public static @NotNull MuteExpirationTask getMuteExpirationTask() {
-        return MUTE_EXPIRATION_TASK;
-    }
-
-    public static @NotNull TransientVariableCleanupTask getTransientVariableCleanupTask() {
-        return TRANSIENT_VARIABLE_CLEANUP_TASK;
-    }
-
-    public static @NotNull AntiSpamBanTask getAntiSpamBanTask() {
-        return ANTI_SPAM_BAN_TASK;
-    }
-
-    public static @NotNull UpdateNameTask getUpdateNameTask() {
-        return UPDATE_NAME_TASK;
-    }
-
-    public static @NotNull AutoSaveTask getAutoSaveTask() {
-        return AUTO_SAVE_TASK;
-    }
-
-    public static @NotNull ScoreboardTask getScoreboardTask() {
-        return SCOREBOARD_TASK;
-    }
+    private static final @NotNull Set<Runnable> TASKS = Set.of(
+            MUTE_EXPIRATION_TASK,
+            TRANSIENT_VARIABLE_CLEANUP_TASK,
+            ANTI_SPAM_BAN_TASK,
+            UPDATE_NAME_TASK,
+            AUTO_SAVE_TASK,
+            SCOREBOARD_TASK,
+            NOTIFIER_TASK,
+            INTEREST_PAYOUT_TASK
+    );
 
     public static @NotNull Set<Runnable> getTasks() {
-        return Set.of(
-                MUTE_EXPIRATION_TASK,
-                TRANSIENT_VARIABLE_CLEANUP_TASK,
-                ANTI_SPAM_BAN_TASK,
-                UPDATE_NAME_TASK,
-                AUTO_SAVE_TASK,
-                SCOREBOARD_TASK
-        );
+        return TASKS;
     }
 
     public static void registerTasks(@NotNull Mirae p, @NotNull BukkitScheduler s) {
@@ -64,6 +48,8 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, UPDATE_NAME_TASK, 20 * 60 * 10, 200);
         s.scheduleSyncRepeatingTask(p, AUTO_SAVE_TASK, 20 * 60 * 5, 20 * 60 * 5);
         s.scheduleSyncRepeatingTask(p, SCOREBOARD_TASK, 5, 5);
+        s.scheduleSyncRepeatingTask(p, NOTIFIER_TASK, 20 * 60 * 5, 20 * 60 * 3);
+        s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
     }
 
     private Tasks() throws Exception {

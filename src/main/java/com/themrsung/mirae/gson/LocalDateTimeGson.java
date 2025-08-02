@@ -1,7 +1,6 @@
 package com.themrsung.mirae.gson;
 
 import com.google.gson.*;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;

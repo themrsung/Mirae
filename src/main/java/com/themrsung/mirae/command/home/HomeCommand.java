@@ -21,6 +21,10 @@ public class HomeCommand extends MiraeCommand {
      */
     public HomeCommand() {
         super("home");
+        setAliases(List.of(
+                "홈",
+                "집"
+        ));
     }
 
     @Override

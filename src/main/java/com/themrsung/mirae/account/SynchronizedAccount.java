@@ -1,6 +1,8 @@
 package com.themrsung.mirae.account;
 
 import com.themrsung.mirae.MX;
+import com.themrsung.mirae.event.economy.AccountBalanceModifiedEvent;
+import com.themrsung.mirae.event.economy.AccountCoinBalanceModifiedEvent;
 import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
@@ -210,8 +212,22 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message) {
+        double balanceBefore = balance;
         balance += change;
-        return balance;
+        double balanceAfter = balance;
+
+        AccountBalanceModifiedEvent event = AccountBalanceModifiedEvent.builder()
+                .account(this)
+                .cause(cause)
+                .message(message)
+                .balanceChange(change)
+                .balanceBefore(balanceBefore)
+                .balanceAfter(balanceAfter)
+                .build();
+
+        Bukkit.getServer().getPluginManager().callEvent(event);
+
+        return balanceAfter;
     }
 
     @Override
@@ -226,8 +242,7 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message) {
-        balance += function.applyAsDouble(balance);
-        return balance;
+        return modifyBalance(function.applyAsDouble(balance), cause, message);
     }
 
     @Override
@@ -242,8 +257,22 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public long modifyCoinBalance(long change, @Nullable EconomyCause cause, @Nullable String message) {
+        long balanceBefore = coinBalance;
         coinBalance += change;
-        return coinBalance;
+        long balanceAfter = coinBalance;
+
+        AccountCoinBalanceModifiedEvent event = AccountCoinBalanceModifiedEvent.builder()
+                .account(this)
+                .cause(cause)
+                .message(message)
+                .coinBalanceChange(change)
+                .coinBalanceBefore(balanceBefore)
+                .coinBalanceAfter(balanceAfter)
+                .build();
+
+        Bukkit.getServer().getPluginManager().callEvent(event);
+
+        return balanceAfter;
     }
 
     @Override
@@ -258,8 +287,7 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message) {
-        coinBalance += function.applyAsLong(coinBalance);
-        return coinBalance;
+        return modifyCoinBalance(function.applyAsLong(coinBalance), cause, message);
     }
 
     @Override
@@ -402,6 +430,7 @@ public class SynchronizedAccount implements Account {
     private boolean muted;
     private @Nullable LocalDateTime muteExpiration;
     private final @NotNull Set<UUID> ignoredAccountIds;
+    private boolean localChat;
 
     @Override
     public @NotNull List<Component> getMailList() {
@@ -524,6 +553,16 @@ public class SynchronizedAccount implements Account {
         } else {
             return ignoreAccount(player);
         }
+    }
+
+    @Override
+    public boolean inLocalChat() {
+        return localChat;
+    }
+
+    @Override
+    public void setLocalChat(boolean localChat) {
+        this.localChat = localChat;
     }
 
     @Override

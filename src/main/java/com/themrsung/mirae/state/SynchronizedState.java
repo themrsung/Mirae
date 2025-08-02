@@ -559,8 +559,10 @@ public class SynchronizedState implements State {
                 StateData data = DESERIALIZER.fromJson(reader, StateData.class);
 
                 Coordinate s = data.getSpawnPoint();
-                if (s != null) try { spawnPoint = s.asLocation();}
-                catch (IllegalArgumentException ignored) {}
+                if (s != null) try {
+                    spawnPoint = s.asLocation();
+                } catch (IllegalArgumentException ignored) {
+                }
 
             } catch (IOException e) {
                 throw new IOException("Error loading data.", e);

@@ -17,5 +17,10 @@ public final class TransientVariableCleanupTask implements Runnable {
 
         LocalDateTime directMessageCutoff = now.minusHours(1);
         state.clearDirectMessages(directMessageCutoff);
+
+        int mailListCutoff = 10;
+        state.getAccounts().forEach(a -> {
+            a.clearMailList(mailListCutoff);
+        });
     }
 }

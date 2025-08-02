@@ -26,6 +26,16 @@ public final class MutableIncrement {
     }
 
     /**
+     * Returns a copy of the given increment.
+     *
+     * @param inc The increment
+     * @return The copy
+     */
+    public static @NotNull MutableIncrement copyOf(@NotNull MutableIncrement inc) {
+        return new MutableIncrement(inc.i);
+    }
+
+    /**
      * Creates a new mutable increment.
      *
      * @param i The starting index
@@ -46,12 +56,33 @@ public final class MutableIncrement {
     }
 
     /**
+     * Sets the value.
+     *
+     * @param i The value
+     */
+    public void set(int i) {
+        this.i = i;
+    }
+
+    /**
      * Increments and returns.
      *
      * @return {@code i}
      */
     public int increment() {
         return i++;
+    }
+
+    /**
+     * Increments mod and returns.
+     *
+     * @param mod The mod
+     * @return {@code i}
+     */
+    public int incrementMod(int mod) {
+        int before = i;
+        i = (i + 1) % mod;
+        return before;
     }
 
     /**

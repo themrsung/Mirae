@@ -25,7 +25,7 @@ public final class ScoreboardTask implements Runnable {
             Component displayName = account.getDisplayName(MX.STYLE_SPECIAL);
             Component tier = account.getTier().getDisplayName();
 
-            Component fullName = tier.append(Component.text(" "))
+            Component fullName = tier.append(Component.text(account.hasDisplayName() ? " " : ""))
                     .append(displayName);
 
             Component balance = Component.text(MX.formatBalance(account.getBalance())).style(MX.STYLE_GOOD);

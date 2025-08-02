@@ -69,6 +69,7 @@ public enum AccountTier {
 
     /**
      * Returns the description.
+     *
      * @return The description
      */
     public @NotNull Component getDescription() {
@@ -125,6 +126,7 @@ public enum AccountTier {
 
     /**
      * Returns if this tier is at least the given tier.
+     *
      * @param t The tier
      * @return {@code true} if this tier is at least the given tier
      */

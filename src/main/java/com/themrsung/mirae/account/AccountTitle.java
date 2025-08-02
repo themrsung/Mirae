@@ -3,6 +3,7 @@ package com.themrsung.mirae.account;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.economy.TitleVersion;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -25,11 +26,13 @@ public enum AccountTitle {
     CAPITALIST("capitalist", Component.text("자본주의자").style(Style.style()
             .color(TextColor.fromHexString("#4870e0"))
             .decorate(TextDecoration.BOLD)
+            .hoverEvent(HoverEvent.showText(Component.text("자본주의서버 출신 플레이어입니다.").style(MX.STYLE_WARNING)))
             .build())),
 
     DOOMSDAY("doomsday", Component.text("둠스데이클럽").style(Style.style()
             .color(TextColor.fromHexString("#ffe925"))
             .decorate(TextDecoration.BOLD)
+            .hoverEvent(HoverEvent.showText(Component.text("J").style(MX.STYLE_WARNING)))
             .build())),
 
     NETHER_STAR("nether_star", Component.text(":mc_nether_star:")),
@@ -44,7 +47,7 @@ public enum AccountTitle {
 
     AccountTitle(@NotNull String key, @NotNull Component value) {
         this.key = key;
-        this.value = value.hoverEvent(null);
+        this.value = value.applyFallbackStyle(Style.empty());
     }
 
     /// Titles
@@ -91,6 +94,7 @@ public enum AccountTitle {
 
     /**
      * Generates the title item.
+     *
      * @return The title item
      */
     public @NotNull ItemStack generateItem() {

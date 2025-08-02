@@ -46,12 +46,14 @@ public class BackCommand extends MiraeCommand {
         }
 
         Location lastDeparture = account.getRecentTeleportDeparture();
-        if (lastDeparture == null) {
+        Location recentLocation = lastDeparture != null ? lastDeparture : account.getRecentDeathLocation();
+
+        if (recentLocation == null) {
             sender.sendMessage(Component.text("최근에 텔레포트한 지점이 없습니다.").style(MX.STYLE_WARNING));
             return false;
         }
 
-        player.teleport(lastDeparture);
+        player.teleport(recentLocation);
         sender.sendMessage(TELEPORTED_SUCCESSFULLY);
         return true;
     }
