@@ -15,7 +15,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Direct message command.
+ */
 public class DirectMessageCommand extends MiraeCommand {
+    /**
+     * Creates a new direct message command.
+     */
     public DirectMessageCommand() {
         super("directmessage");
         setAliases(List.of(

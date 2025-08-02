@@ -12,9 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-import static com.themrsung.mirae.Mirae.getState;
-
+/**
+ * Set display name command.
+ */
 public class SetDisplayNameCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public SetDisplayNameCommand() {
         super("setdisplayname");
         setAliases(List.of(
@@ -65,7 +69,7 @@ public class SetDisplayNameCommand extends MiraeCommand {
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) throws IllegalArgumentException {
         return switch (args.length) {
-            case 1 -> getState().getAccounts().stream()
+            case 1 -> Mirae.getState().getAccounts().stream()
                     .map(Account::getName)
                     .filter(n -> n.toLowerCase().startsWith(args[0].toLowerCase()))
                     .toList();

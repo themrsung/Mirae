@@ -21,30 +21,60 @@ import java.util.stream.Collectors;
  * An account title.
  */
 public enum AccountTitle {
+    /**
+     * Empty title.
+     */
     EMPTY("empty", Component.empty()),
 
+    /**
+     * Special title for ex-Capitalism users.
+     */
     CAPITALIST("capitalist", Component.text("자본주의자").style(Style.style()
             .color(TextColor.fromHexString("#4870e0"))
             .decorate(TextDecoration.BOLD)
             .hoverEvent(HoverEvent.showText(Component.text("자본주의서버 출신 플레이어입니다.").style(MX.STYLE_WARNING)))
             .build())),
 
+    /**
+     * Special title for ex-Julie users.
+     */
     DOOMSDAY("doomsday", Component.text("둠스데이클럽").style(Style.style()
             .color(TextColor.fromHexString("#ffe925"))
             .decorate(TextDecoration.BOLD)
             .hoverEvent(HoverEvent.showText(Component.text("J").style(MX.STYLE_WARNING)))
             .build())),
 
+    /**
+     * Nether star emoji.
+     */
     NETHER_STAR("nether_star", Component.text(":mc_nether_star:")),
 
+    /**
+     * Clock emoji.
+     */
     CLOCK("clock", Component.text(":mc_clock:")),
 
+    /**
+     * Ruby emoji.
+     */
     RUBY("ruby", Component.text(":mc_ruby:")),
 
+    /**
+     * Elytra emoji.
+     */
     ELYTRA("elytra", Component.text(":mc_elytra:")),
 
+    /**
+     * Barrier emoji.
+     */
     BARRIER("barrier", Component.text(":mc_barrier:"));
 
+    /**
+     * Creates a new title.
+     *
+     * @param key   The key
+     * @param value The value
+     */
     AccountTitle(@NotNull String key, @NotNull Component value) {
         this.key = key;
         this.value = value.applyFallbackStyle(Style.empty());
@@ -52,6 +82,12 @@ public enum AccountTitle {
 
     /// Titles
 
+    /**
+     * Returns the title of matching key, or {@link #EMPTY the empty title}.
+     *
+     * @param key The key
+     * @return The title if present, {@link #EMPTY} otherwise
+     */
     public static @NotNull AccountTitle getOrEmpty(@Nullable String key) {
         if (key == null) return EMPTY;
 
@@ -62,6 +98,11 @@ public enum AccountTitle {
         }
     }
 
+    /**
+     * Returns the set of all keys.
+     *
+     * @return The set of all keys
+     */
     public static @NotNull Set<String> getKeys() {
         return Arrays.stream(values())
                 .map(AccountTitle::toString)

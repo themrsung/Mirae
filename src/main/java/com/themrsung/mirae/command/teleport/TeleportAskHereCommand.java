@@ -18,6 +18,9 @@ import java.util.Objects;
  * TPA here command.
  */
 public class TeleportAskHereCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public TeleportAskHereCommand() {
         super("teleportaskhere");
         setAliases(List.of(

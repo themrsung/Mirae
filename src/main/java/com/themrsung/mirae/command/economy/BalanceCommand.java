@@ -12,7 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Balance command.
+ */
 public class BalanceCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public BalanceCommand() {
         super("balance");
         setAliases(List.of(

@@ -12,7 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Set home command.
+ */
 public class SetHomeCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public SetHomeCommand() {
         super("sethome");
         setAliases(List.of(

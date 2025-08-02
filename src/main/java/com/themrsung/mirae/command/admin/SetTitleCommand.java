@@ -14,7 +14,13 @@ import java.util.Optional;
 
 import static com.themrsung.mirae.Mirae.getState;
 
+/**
+ * Set title command.
+ */
 public class SetTitleCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public SetTitleCommand() {
         super("settitle");
         setAliases(List.of("changetitle"));

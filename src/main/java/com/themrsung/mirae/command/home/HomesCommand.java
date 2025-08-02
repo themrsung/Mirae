@@ -12,7 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Homes command.
+ */
 public class HomesCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public HomesCommand() {
         super("homes");
         setAliases(List.of(

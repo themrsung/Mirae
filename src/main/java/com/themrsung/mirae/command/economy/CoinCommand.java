@@ -26,6 +26,9 @@ import java.util.Objects;
  * Withdraw coin command.
  */
 public class CoinCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public CoinCommand() {
         super("coin");
         setAliases(List.of(

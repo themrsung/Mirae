@@ -16,7 +16,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Reply command.
+ */
 public class ReplyCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public ReplyCommand() {
         super("reply");
         setAliases(List.of(

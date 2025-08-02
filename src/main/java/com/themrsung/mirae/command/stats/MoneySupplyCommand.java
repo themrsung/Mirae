@@ -13,6 +13,9 @@ import java.util.List;
  * Money supply command.
  */
 public class MoneySupplyCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public MoneySupplyCommand() {
         super("moneysupply");
         setAliases(List.of(

@@ -11,7 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Get title command.
+ */
 public class GetTitleCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public GetTitleCommand() {
         super("gettitle");
         setAliases(List.of(

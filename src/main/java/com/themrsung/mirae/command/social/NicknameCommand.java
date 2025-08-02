@@ -13,7 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Nickname command.
+ */
 public class NicknameCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public NicknameCommand() {
         super("nickname");
         setAliases(List.of(

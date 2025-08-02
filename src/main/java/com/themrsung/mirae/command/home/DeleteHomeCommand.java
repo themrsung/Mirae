@@ -11,7 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Delete home command.
+ */
 public class DeleteHomeCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public DeleteHomeCommand() {
         super("deletehome");
         setAliases(List.of(

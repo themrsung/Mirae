@@ -167,6 +167,7 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the balance of this account.
+     *
      * @param change The net change
      * @return The resulting balance after
      */
@@ -174,16 +175,18 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the balance of this account.
+     *
      * @param change The net change
-     * @param cause The cause
+     * @param cause  The cause
      * @return The resulting balance after
      */
     double modifyBalance(double change, @Nullable EconomyCause cause);
 
     /**
      * Modifies the balance of this account.
-     * @param change The net change
-     * @param cause The cause
+     *
+     * @param change  The net change
+     * @param cause   The cause
      * @param message The message
      * @return The resulting balance after
      */
@@ -191,6 +194,7 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the balance of this account.
+     *
      * @param function The modifier function
      * @return The resulting balance after
      */
@@ -198,23 +202,26 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the balance of this account.
+     *
      * @param function The modifier function
-     * @param cause The cause
+     * @param cause    The cause
      * @return The resulting balance after
      */
     double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause);
 
     /**
      * Modifies the balance of this account.
+     *
      * @param function The modifier function
-     * @param cause The cause
-     * @param message The message
+     * @param cause    The cause
+     * @param message  The message
      * @return The resulting balance after
      */
     double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message);
 
     /**
      * Modifies the coin balance of this account.
+     *
      * @param change The net change
      * @return The resulting coin balance after
      */
@@ -222,16 +229,18 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the coin balance of this account.
+     *
      * @param change The net change
-     * @param cause The cause
+     * @param cause  The cause
      * @return The resulting coin balance after
      */
     long modifyCoinBalance(long change, @Nullable EconomyCause cause);
 
     /**
      * Modifies the coin balance of this account.
-     * @param change The net change
-     * @param cause The cause
+     *
+     * @param change  The net change
+     * @param cause   The cause
      * @param message The message
      * @return The resulting coin balance after
      */
@@ -239,6 +248,7 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the coin balance of this account.
+     *
      * @param function The modifier function.
      * @return The resulting coin balance after
      */
@@ -246,17 +256,19 @@ public interface Account extends Serializable {
 
     /**
      * Modifies the coin balance of this account.
+     *
      * @param function The modifier function.
-     * @param cause The cause
+     * @param cause    The cause
      * @return The resulting coin balance after
      */
     long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause);
 
     /**
      * Modifies the coin balance of this account.
+     *
      * @param function The modifier function.
-     * @param cause The cause
-     * @param message The message
+     * @param cause    The cause
+     * @param message  The message
      * @return The resulting coin balance after
      */
     long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message);
@@ -608,12 +620,14 @@ public interface Account extends Serializable {
 
     /**
      * Returns whether this account is in local chat.
+     *
      * @return {@code true} if in local chat
      */
     boolean inLocalChat();
 
     /**
      * Sets whether this account is in local chat.
+     *
      * @param localChat {@code true} for local chat
      */
     void setLocalChat(boolean localChat);
@@ -688,14 +702,27 @@ public interface Account extends Serializable {
 
     /// GSON
 
+    /**
+     * Returns the serializer.
+     *
+     * @return The serializer
+     */
     static @NotNull Serializer serializer() {
         return Serializer.SERIALIZER;
     }
 
+    /**
+     * Returns the deserializer.
+     *
+     * @return The deserializer
+     */
     static @NotNull Deserializer deserializer() {
         return Deserializer.DESERIALIZER;
     }
 
+    /**
+     * Serializer class.
+     */
     final class Serializer implements JsonSerializer<Account> {
         private static final @NotNull Serializer SERIALIZER = new Serializer();
 
@@ -779,6 +806,9 @@ public interface Account extends Serializable {
         }
     }
 
+    /**
+     * Deserializer class.
+     */
     final class Deserializer implements JsonDeserializer<Account> {
         private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
 

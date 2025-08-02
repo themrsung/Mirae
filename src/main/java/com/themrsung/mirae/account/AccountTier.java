@@ -14,8 +14,14 @@ import org.jetbrains.annotations.Nullable;
  * Account tier.
  */
 public enum AccountTier {
+    /**
+     * Default tier.
+     */
     DEFAULT(0, Component.empty(), Component.empty()),
 
+    /**
+     * Green tier.
+     */
     GREEN(1, Component.text("그린").style(Style.style()
             .color(TextColor.fromHexString("#3cee7d"))
             .decorate(TextDecoration.BOLD)
@@ -23,6 +29,9 @@ public enum AccountTier {
             .build()),
             Component.text("누적후원금액 1만원 이상").style(MX.STYLE_NORMAL)),
 
+    /**
+     * Gold tier.
+     */
     GOLD(2, Component.text("골드").style(Style.style()
             .color(TextColor.fromHexString("#ecd731"))
             .decorate(TextDecoration.BOLD)
@@ -30,6 +39,9 @@ public enum AccountTier {
             .build()),
             Component.text("누적후원금액 5만원 이상").style(MX.STYLE_NORMAL)),
 
+    /**
+     * Platinum tier.
+     */
     PLATINUM(3, Component.text("플래티넘").style(Style.style()
             .color(TextColor.fromHexString("#c3c2ab"))
             .decorate(TextDecoration.BOLD)
@@ -37,7 +49,9 @@ public enum AccountTier {
             .build()),
             Component.text("누적후원금액 50만원 이상").style(MX.STYLE_NORMAL)),
 
-
+    /**
+     * Black tier.
+     */
     BLACK(4, Component.text("블랙").style(Style.style()
             .color(TextColor.fromHexString("#130e0b"))
             .decorate(TextDecoration.BOLD)
@@ -45,9 +59,19 @@ public enum AccountTier {
             .build()),
             Component.text("누적후원금액 100만원 이상").style(MX.STYLE_NORMAL)),
 
+    /**
+     * Developer tier.
+     */
     DEVELOPER(100, MiniMessage.miniMessage().deserialize("<gradient:#ff2e01:#2e2727>developer<reset>"),
             MiniMessage.miniMessage().deserialize("<gradient:white:gold><bold>누적개발시간 300시간 이상"));
 
+    /**
+     * Creates a new tier.
+     *
+     * @param ordinal     The constant ordinal
+     * @param displayName The display name
+     * @param description The description
+     */
     AccountTier(int ordinal, @NotNull Component displayName, @NotNull Component description) {
         this.ordinal = ordinal;
         this.displayName = displayName.hoverEvent(HoverEvent.showText(description));

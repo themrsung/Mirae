@@ -16,6 +16,9 @@ import java.util.Objects;
  * Ignore command.
  */
 public class IgnoreCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public IgnoreCommand() {
         super("ignore");
         setAliases(List.of(

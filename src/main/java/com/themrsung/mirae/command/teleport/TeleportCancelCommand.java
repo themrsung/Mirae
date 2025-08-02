@@ -18,6 +18,9 @@ import java.util.Optional;
  * Teleport Cancel Command.
  */
 public class TeleportCancelCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public TeleportCancelCommand() {
         super("teleportaskcancel");
         setAliases(List.of(

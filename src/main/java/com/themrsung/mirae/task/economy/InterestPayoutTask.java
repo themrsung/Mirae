@@ -23,6 +23,7 @@ public class InterestPayoutTask implements Runnable {
 
     /**
      * Calculates daily interest.
+     *
      * @param principal The principal amount
      * @return The interest
      */
@@ -55,9 +56,9 @@ public class InterestPayoutTask implements Runnable {
 
             player.sendMessage(Component.text("[입금] ").style(MX.STYLE_GOOD)
                     .append(Component.text("미래 서버").style(MX.STYLE_SPECIAL))
-                            .append(Component.text("에서 이자 ").style(MX.STYLE_NORMAL))
-                            .append(Component.text(MX.formatBalance(interest)).style(MX.STYLE_SPECIAL))
-                            .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL)));
+                    .append(Component.text("에서 이자 ").style(MX.STYLE_NORMAL))
+                    .append(Component.text(MX.formatBalance(interest)).style(MX.STYLE_SPECIAL))
+                    .append(Component.text("을 보냈습니다.").style(MX.STYLE_NORMAL)));
         });
     }
 }

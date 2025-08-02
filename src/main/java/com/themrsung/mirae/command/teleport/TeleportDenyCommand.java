@@ -14,7 +14,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Teleport deny command.
+ */
 public class TeleportDenyCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public TeleportDenyCommand() {
         super("teleportdeny");
         setAliases(List.of(

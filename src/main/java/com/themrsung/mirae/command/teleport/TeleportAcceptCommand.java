@@ -14,7 +14,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Teleport accept command.
+ */
 public class TeleportAcceptCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public TeleportAcceptCommand() {
         super("teleportaccept");
         setAliases(List.of(

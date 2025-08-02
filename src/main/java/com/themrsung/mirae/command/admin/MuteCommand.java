@@ -11,7 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Mute command.
+ */
 public class MuteCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public MuteCommand() {
         super("mute");
         setAliases(List.of(

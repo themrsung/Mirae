@@ -15,7 +15,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Flex command.
+ */
 public class FlexCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public FlexCommand() {
         super("flex");
         setAliases(List.of(

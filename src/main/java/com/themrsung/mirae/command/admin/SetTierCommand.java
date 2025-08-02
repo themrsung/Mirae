@@ -19,6 +19,9 @@ import static com.themrsung.mirae.Mirae.getState;
  * Set tier command.
  */
 public class SetTierCommand extends MiraeCommand {
+    /**
+     * Creates a new command.
+     */
     public SetTierCommand() {
         super("settier");
         setAliases(List.of(
