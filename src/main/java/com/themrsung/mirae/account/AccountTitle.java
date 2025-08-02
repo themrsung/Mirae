@@ -153,7 +153,7 @@ public enum AccountTitle {
 
         assert version == TitleVersion.VERSION_1;
 
-        ItemStack stack = new ItemStack(version.getItem());
+        ItemStack stack = new ItemStack(version.getItemType());
         ItemMeta meta = stack.getItemMeta();
 
         meta.itemName(Component.text(key));
