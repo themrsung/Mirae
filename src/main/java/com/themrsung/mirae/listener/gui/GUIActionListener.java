@@ -15,6 +15,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+/**
+ * Listens for and handles GUI actions.
+ */
 public final class GUIActionListener implements Listener {
     /**
      * Creates a new listener.

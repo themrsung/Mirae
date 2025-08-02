@@ -26,6 +26,9 @@ public final class Listeners {
     public static final @NotNull AntiSpamListener ANTI_SPAM_LISTENER = new AntiSpamListener();
     public static final @NotNull SkillUpgradeListener SKILL_UPGRADE_LISTENER = new SkillUpgradeListener();
 
+    /**
+     * The set of all listeners.
+     */
     private static final @NotNull Set<Listener> LISTENERS = Set.of(
             PLAYER_LISTENER,
             COMMAND_TYPO_LISTENER,

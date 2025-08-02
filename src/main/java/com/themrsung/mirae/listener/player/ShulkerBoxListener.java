@@ -16,6 +16,9 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 
 import java.util.UUID;
 
+/**
+ * Shulker box listener.
+ */
 public final class ShulkerBoxListener implements Listener {
     @EventHandler
     public void onInventoryClick(PlayerInteractEvent e) {

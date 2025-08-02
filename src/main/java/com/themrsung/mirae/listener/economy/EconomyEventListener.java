@@ -17,6 +17,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+/**
+ * Listens for economy events.
+ */
 public final class EconomyEventListener implements Listener {
     @EventHandler
     public void onCoinRedeemed(PlayerInteractEvent e) {

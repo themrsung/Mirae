@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+/**
+ * {@link LocalDateTime} GSON utility.
+ */
 public final class LocalDateTimeGson {
     /**
      * Returns the serializer instance.

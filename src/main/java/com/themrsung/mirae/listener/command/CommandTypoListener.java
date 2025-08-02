@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Command typo listener.
+ */
 public final class CommandTypoListener implements Listener {
     private static final @NotNull Map<String, String> TYPO_MAP;
 
@@ -54,6 +57,10 @@ public final class CommandTypoListener implements Listener {
         TYPO_MAP = Map.copyOf(map);
     }
 
+    /**
+     * Returns the typo map.
+     * @return The typo map
+     */
     public static @NotNull Map<String, String> getTypoMap() {
         return TYPO_MAP;
     }

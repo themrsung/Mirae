@@ -14,14 +14,27 @@ public final class StringCoordinatePair implements Serializable {
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
 
+    /**
+     * Returns the serializer.
+     * @return The serializer
+     */
     public static @NotNull JsonSerializer<StringCoordinatePair> serializer() {
         return SERIALIZER;
     }
 
+    /**
+     * Returns the deserializer.
+     * @return The deserializer
+     */
     public static @NotNull JsonDeserializer<StringCoordinatePair> deserializer() {
         return DESERIALIZER;
     }
 
+    /**
+     * Creates a new pair.
+     * @param key The key
+     * @param value The value
+     */
     public StringCoordinatePair(@NotNull String key, @NotNull Coordinate value) {
         this.key = key;
         this.value = value;
@@ -30,14 +43,25 @@ public final class StringCoordinatePair implements Serializable {
     private final @NotNull String key;
     private final @NotNull Coordinate value;
 
+    /**
+     * Returns the key.
+     * @return The key
+     */
     public @NotNull String getKey() {
         return key;
     }
 
+    /**
+     * Returns the value.
+     * @return The value
+     */
     public @NotNull Coordinate getValue() {
         return value;
     }
 
+    /**
+     * Serializer class.
+     */
     private static final class Serializer implements JsonSerializer<StringCoordinatePair> {
         @Override
         public JsonElement serialize(StringCoordinatePair pair, Type type, JsonSerializationContext context) {
@@ -50,6 +74,9 @@ public final class StringCoordinatePair implements Serializable {
         }
     }
 
+    /**
+     * Deserializer class.
+     */
     private static final class Deserializer implements JsonDeserializer<StringCoordinatePair> {
         @Override
         public StringCoordinatePair deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {

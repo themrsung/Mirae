@@ -8,6 +8,9 @@ import org.bukkit.event.Listener;
 
 import java.util.Objects;
 
+/**
+ * Social spy listener.
+ */
 public class SocialSpyListener implements Listener {
     @EventHandler
     public void onDirectMessageSent(DirectMessageSentEvent e) {

@@ -149,6 +149,17 @@ public class AccountCoinBalanceModifiedEvent extends AccountEconomyEvent {
         }
     }
 
+    /**
+     * Protected constructor.
+     * @param uniqueId The unique identifier
+     * @param time The time
+     * @param account The account
+     * @param cause The cause
+     * @param message The message
+     * @param coinBalanceChange The coin balance change
+     * @param coinBalanceBefore The coin balance before
+     * @param coinBalanceAfter The coin balance after
+     */
     protected AccountCoinBalanceModifiedEvent(
             @NotNull UUID uniqueId,
             @NotNull LocalDateTime time,
