@@ -59,6 +59,7 @@ public final class CommandTypoListener implements Listener {
 
     /**
      * Returns the typo map.
+     *
      * @return The typo map
      */
     public static @NotNull Map<String, String> getTypoMap() {

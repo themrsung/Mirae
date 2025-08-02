@@ -9,7 +9,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.*;
 
-public final class ScoreboardTask implements Runnable {
+/**
+ * Scoreboard task.
+ */
+public class ScoreboardTask implements Runnable {
     @Override
     public void run() {
         ScoreboardManager manager = Bukkit.getScoreboardManager();

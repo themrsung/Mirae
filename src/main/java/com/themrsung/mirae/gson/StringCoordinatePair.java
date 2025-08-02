@@ -16,6 +16,7 @@ public final class StringCoordinatePair implements Serializable {
 
     /**
      * Returns the serializer.
+     *
      * @return The serializer
      */
     public static @NotNull JsonSerializer<StringCoordinatePair> serializer() {
@@ -24,6 +25,7 @@ public final class StringCoordinatePair implements Serializable {
 
     /**
      * Returns the deserializer.
+     *
      * @return The deserializer
      */
     public static @NotNull JsonDeserializer<StringCoordinatePair> deserializer() {
@@ -32,7 +34,8 @@ public final class StringCoordinatePair implements Serializable {
 
     /**
      * Creates a new pair.
-     * @param key The key
+     *
+     * @param key   The key
      * @param value The value
      */
     public StringCoordinatePair(@NotNull String key, @NotNull Coordinate value) {
@@ -45,6 +48,7 @@ public final class StringCoordinatePair implements Serializable {
 
     /**
      * Returns the key.
+     *
      * @return The key
      */
     public @NotNull String getKey() {
@@ -53,6 +57,7 @@ public final class StringCoordinatePair implements Serializable {
 
     /**
      * Returns the value.
+     *
      * @return The value
      */
     public @NotNull Coordinate getValue() {

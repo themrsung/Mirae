@@ -26,6 +26,7 @@ public enum SkillType {
 
     /**
      * Creates a new skill.
+     *
      * @param displayName The display name
      */
     SkillType(@NotNull Component displayName) {
@@ -36,6 +37,7 @@ public enum SkillType {
 
     /**
      * Returns the display name.
+     *
      * @return The display name
      */
     public @NotNull Component getDisplayName() {

@@ -4,7 +4,10 @@ import com.themrsung.mirae.Mirae;
 
 import java.io.IOException;
 
-public final class AutoSaveTask implements Runnable {
+/**
+ * Auto save task.
+ */
+public class AutoSaveTask implements Runnable {
     @Override
     public void run() {
         try {

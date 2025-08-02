@@ -18,7 +18,7 @@ import java.util.UUID;
 /**
  * Anti-spam ban task.
  */
-public final class AntiSpamBanTask implements Runnable {
+public class AntiSpamBanTask implements Runnable {
     public static final @NotNull String BAN_MESSAGE = "계정이 영구정지되었습니다. 관리자에게 문의하세요. 디스코드: @themrsung";
 
     @Override

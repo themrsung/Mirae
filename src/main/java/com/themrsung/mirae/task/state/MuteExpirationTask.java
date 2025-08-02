@@ -5,7 +5,10 @@ import com.themrsung.mirae.state.State;
 
 import java.time.LocalDateTime;
 
-public final class MuteExpirationTask implements Runnable {
+/**
+ * Mute expiration task.
+ */
+public class MuteExpirationTask implements Runnable {
     @Override
     public void run() {
         State state = Mirae.getState();

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class DirectMessageSentEvent extends MiraeEvent {
     /**
      * Creates a new event.
+     *
      * @param message The message
      */
     public DirectMessageSentEvent(@NotNull DirectMessage message) {
@@ -20,6 +21,7 @@ public class DirectMessageSentEvent extends MiraeEvent {
 
     /**
      * Returns the direct message which was sent.
+     *
      * @return The DM which was sent
      */
     public @NotNull DirectMessage getMessage() {

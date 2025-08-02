@@ -151,14 +151,15 @@ public class AccountBalanceModifiedEvent extends AccountEconomyEvent {
 
     /**
      * Protected constructor.
-     * @param uniqueId The unique identifier
-     * @param time The time
-     * @param account The account
-     * @param cause The cause
-     * @param message The message
+     *
+     * @param uniqueId      The unique identifier
+     * @param time          The time
+     * @param account       The account
+     * @param cause         The cause
+     * @param message       The message
      * @param balanceChange The balance change
      * @param balanceBefore THe balance before
-     * @param balanceAfter The balance after
+     * @param balanceAfter  The balance after
      */
     protected AccountBalanceModifiedEvent(
             @NotNull UUID uniqueId,

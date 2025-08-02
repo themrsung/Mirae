@@ -5,7 +5,10 @@ import com.themrsung.mirae.state.State;
 
 import java.time.LocalDateTime;
 
-public final class TransientVariableCleanupTask implements Runnable {
+/**
+ * Transient variable cleanup task.
+ */
+public class TransientVariableCleanupTask implements Runnable {
     @Override
     public void run() {
         State state = Mirae.getState();

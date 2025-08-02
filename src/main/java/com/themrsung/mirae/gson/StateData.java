@@ -17,6 +17,7 @@ public final class StateData implements Serializable {
 
     /**
      * Returns the serializer.
+     *
      * @return The serializer
      */
     public static @NotNull JsonSerializer<StateData> serializer() {
@@ -25,6 +26,7 @@ public final class StateData implements Serializable {
 
     /**
      * Returns the deserializer.
+     *
      * @return The deserializer
      */
     public static @NotNull JsonDeserializer<StateData> deserializer() {
@@ -33,6 +35,7 @@ public final class StateData implements Serializable {
 
     /**
      * Creates a new state data object.
+     *
      * @param spawnPoint The spawn point
      */
     public StateData(@Nullable Coordinate spawnPoint) {
@@ -43,6 +46,7 @@ public final class StateData implements Serializable {
 
     /**
      * Returns the spawn point.
+     *
      * @return The spawn point
      */
     public @Nullable Coordinate getSpawnPoint() {

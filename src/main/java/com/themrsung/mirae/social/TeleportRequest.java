@@ -22,6 +22,14 @@ public record TeleportRequest(
         @NotNull Account recipient,
         boolean inbound
 ) {
+    /**
+     * Creates and returns a new request.
+     *
+     * @param sender    The sender
+     * @param recipient The recipient
+     * @param inbound   Whether it is inbound
+     * @return The request
+     */
     public static @NotNull TeleportRequest createRequest(@NotNull Account sender, @NotNull Account recipient, boolean inbound) {
         return new TeleportRequest(UUID.randomUUID(), LocalDateTime.now(), sender, recipient, inbound);
     }

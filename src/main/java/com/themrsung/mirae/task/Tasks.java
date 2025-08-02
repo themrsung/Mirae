@@ -14,6 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
+/**
+ * Tasks.
+ */
 public final class Tasks {
     public static final @NotNull MuteExpirationTask MUTE_EXPIRATION_TASK = new MuteExpirationTask();
     public static final @NotNull TransientVariableCleanupTask TRANSIENT_VARIABLE_CLEANUP_TASK = new TransientVariableCleanupTask();
@@ -24,6 +27,9 @@ public final class Tasks {
     public static final @NotNull NotifierTask NOTIFIER_TASK = new NotifierTask();
     public static final @NotNull InterestPayoutTask INTEREST_PAYOUT_TASK = new InterestPayoutTask();
 
+    /**
+     * The set of all tasks.
+     */
     private static final @NotNull Set<Runnable> TASKS = Set.of(
             MUTE_EXPIRATION_TASK,
             TRANSIENT_VARIABLE_CLEANUP_TASK,
@@ -35,10 +41,21 @@ public final class Tasks {
             INTEREST_PAYOUT_TASK
     );
 
+    /**
+     * Returns the set of all tasks.
+     *
+     * @return The set of all tasks
+     */
     public static @NotNull Set<Runnable> getTasks() {
         return TASKS;
     }
 
+    /**
+     * Registers every task.
+     *
+     * @param p The plugin instance
+     * @param s The scheduler instance
+     */
     public static void registerTasks(@NotNull Mirae p, @NotNull BukkitScheduler s) {
         // plugin, task, interval, delay
 
@@ -52,6 +69,11 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
     }
 
+    /**
+     * Prevents instantiation.
+     *
+     * @throws Exception Always
+     */
     private Tasks() throws Exception {
         throw new Exception("Cannot instantiate utility class.");
     }
