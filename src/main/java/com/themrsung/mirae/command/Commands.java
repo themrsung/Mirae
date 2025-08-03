@@ -1,6 +1,7 @@
 package com.themrsung.mirae.command;
 
 import com.themrsung.mirae.command.admin.*;
+import com.themrsung.mirae.command.debug.TestCommand;
 import com.themrsung.mirae.command.economy.BalanceCommand;
 import com.themrsung.mirae.command.economy.CoinCommand;
 import com.themrsung.mirae.command.economy.PayCommand;
@@ -55,6 +56,8 @@ public final class Commands {
 
     public static final @NotNull MoneySupplyCommand MONEY_SUPPLY_COMMAND = new MoneySupplyCommand();
 
+    public static final @NotNull TestCommand TEST_COMMAND = new TestCommand();
+
     private static final @NotNull Set<MiraeCommand> ALL_COMMANDS = Set.of(
             SPAWN_COMMAND,
             BACK_COMMAND,
@@ -91,7 +94,9 @@ public final class Commands {
             FLEX_COMMAND,
             SCOREBOARD_TOGGLE_COMMAND,
 
-            MONEY_SUPPLY_COMMAND
+            MONEY_SUPPLY_COMMAND,
+
+            TEST_COMMAND
     );
 
     /**

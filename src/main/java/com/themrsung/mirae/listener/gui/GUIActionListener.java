@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,6 +31,16 @@ public final class GUIActionListener implements Listener {
 
     private final @NotNull Map<UUID, Consumer<InventoryCloseEvent>> onCloseCallbacks;
     private final @NotNull Map<UUID, Consumer<InventoryClickEvent>> onClickCallbacks;
+
+    /**
+     * Returns whether there is a callback with the given key.
+     *
+     * @param uniqueId The unique identifier
+     * @return {@code true} if there is a callback
+     */
+    public boolean hasCallback(@NotNull UUID uniqueId) {
+        return onClickCallbacks.containsKey(uniqueId) || onCloseCallbacks.containsKey(uniqueId);
+    }
 
     /**
      * Registers an on close callback.
@@ -133,6 +144,9 @@ public final class GUIActionListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onSwapHands(PlayerSwapHandItemsEvent e) {
         if (onClickCallbacks.containsKey(e.getPlayer().getUniqueId())) {
+            InventoryView view = e.getPlayer().getOpenInventory();
+            if (view.getType() == InventoryType.ENDER_CHEST || view.getType() == InventoryType.WORKBENCH) return;
+
             e.setCancelled(true);
             e.getPlayer().updateInventory();
         }
@@ -145,6 +159,9 @@ public final class GUIActionListener implements Listener {
         UUID uniqueId = e.getWhoClicked().getUniqueId();
         if (!onClickCallbacks.containsKey(uniqueId)) return;
 
+        InventoryView view = e.getWhoClicked().getOpenInventory();
+        if (view.getType() == InventoryType.ENDER_CHEST || view.getType() == InventoryType.WORKBENCH) return;
+
         Inventory clickedInventory = e.getClickedInventory();
         if (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER) return;
 
@@ -153,6 +170,11 @@ public final class GUIActionListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreativeClick(InventoryCreativeEvent e) {
-        if (onClickCallbacks.containsKey(e.getWhoClicked().getUniqueId())) e.setCancelled(true);
+        if (onClickCallbacks.containsKey(e.getWhoClicked().getUniqueId())) {
+            InventoryView view = e.getWhoClicked().getOpenInventory();
+            if (view.getType() == InventoryType.ENDER_CHEST || view.getType() == InventoryType.WORKBENCH) return;
+
+            e.setCancelled(true);
+        }
     }
 }

@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * A market where price changes actively.
  */
-public class ActivePriceMarket extends AbstractMarket {
+public final class ActivePriceMarket extends AbstractMarket {
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
 
@@ -57,7 +57,7 @@ public class ActivePriceMarket extends AbstractMarket {
      *
      * @param m The other market
      */
-    protected ActivePriceMarket(@NotNull Market m) {
+    public ActivePriceMarket(@NotNull Market m) {
         super(m);
 
         if (m instanceof ActivePriceMarket apm) {
@@ -81,7 +81,7 @@ public class ActivePriceMarket extends AbstractMarket {
      * @param orderChain      The order chain
      * @param volatilityLevel The volatility level
      */
-    protected ActivePriceMarket(
+    private ActivePriceMarket(
             @NotNull UUID uniqueId,
             @NotNull String name,
             @NotNull ItemStack item,

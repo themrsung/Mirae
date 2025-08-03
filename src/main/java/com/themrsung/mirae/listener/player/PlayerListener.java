@@ -169,6 +169,7 @@ public final class PlayerListener implements Listener {
         Player player = e.getPlayer();
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
+        account.setRecentTeleportDeparture(player.getLocation());
         account.setRecentDeathLocation(player.getLocation());
     }
 

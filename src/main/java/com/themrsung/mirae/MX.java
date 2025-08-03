@@ -127,7 +127,7 @@ public final class MX {
         return "[" + location.getWorld().getName() + ", "
                 + Math.round(location.getX()) + ", "
                 + Math.round(location.getY()) + ", "
-                + Math.round(location.getZ());
+                + Math.round(location.getZ()) + "]";
     }
 
     ///

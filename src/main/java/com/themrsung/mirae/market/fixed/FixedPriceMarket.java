@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * Fixed price market.
  */
-public class FixedPriceMarket extends AbstractMarket {
+public final class FixedPriceMarket extends AbstractMarket {
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
 
@@ -59,7 +59,7 @@ public class FixedPriceMarket extends AbstractMarket {
      *
      * @param m The other market
      */
-    protected FixedPriceMarket(@NotNull Market m) {
+    public FixedPriceMarket(@NotNull Market m) {
         super(m);
 
         if (m instanceof FixedPriceMarket fpm) {
@@ -82,7 +82,7 @@ public class FixedPriceMarket extends AbstractMarket {
      * @param buyPrice  The buy price
      * @param sellPrice The sell price
      */
-    protected FixedPriceMarket(
+    private FixedPriceMarket(
             @NotNull UUID uniqueId,
             @NotNull String name,
             @NotNull ItemStack item,

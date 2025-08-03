@@ -4,6 +4,7 @@ import com.themrsung.mirae.listener.command.AntiSpamListener;
 import com.themrsung.mirae.listener.command.CommandTypoListener;
 import com.themrsung.mirae.listener.economy.EconomyEventListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
+import com.themrsung.mirae.listener.gui.QuickMenuListener;
 import com.themrsung.mirae.listener.player.PlayerListener;
 import com.themrsung.mirae.listener.player.ShulkerBoxListener;
 import com.themrsung.mirae.listener.skill.SkillUpgradeListener;
@@ -25,6 +26,7 @@ public final class Listeners {
     public static final @NotNull SocialSpyListener SOCIAL_SPY_LISTENER = new SocialSpyListener();
     public static final @NotNull AntiSpamListener ANTI_SPAM_LISTENER = new AntiSpamListener();
     public static final @NotNull SkillUpgradeListener SKILL_UPGRADE_LISTENER = new SkillUpgradeListener();
+    public static final @NotNull QuickMenuListener QUICK_MENU_LISTENER = new QuickMenuListener();
 
     /**
      * The set of all listeners.
@@ -37,7 +39,8 @@ public final class Listeners {
             SHULKER_BOX_LISTENER,
             SOCIAL_SPY_LISTENER,
             ANTI_SPAM_LISTENER,
-            SKILL_UPGRADE_LISTENER
+            SKILL_UPGRADE_LISTENER,
+            QUICK_MENU_LISTENER
     );
 
     /**

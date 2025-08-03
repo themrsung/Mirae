@@ -3,6 +3,7 @@ package com.themrsung.mirae.market;
 import com.google.gson.*;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.market.active.ActivePriceMarket;
+import com.themrsung.mirae.market.fixed.FixedPriceMarket;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public interface Market extends Serializable {
     /**
      * Fee rate for active markets.
      */
-    double ACTIVE_MARKET_FEE_RATE = 0.0015;
+    double ACTIVE_MARKET_FEE_RATE = 0.00015;
 
     /**
      * Fee rate for fixed markets.
@@ -137,6 +138,7 @@ public interface Market extends Serializable {
             return switch (market.getType()) {
                 case ACTIVE_PRICE ->
                         ActivePriceMarket.serializer().serialize((ActivePriceMarket) market, type, context);
+                case FIXED_PRICE -> FixedPriceMarket.serializer().serialize((FixedPriceMarket) market, type, context);
                 default ->
                         throw new JsonParseException("Cannot serialize unknown implementation \"" + market.getClass().getSimpleName() + "\".");
             };
@@ -167,6 +169,7 @@ public interface Market extends Serializable {
 
             return switch (marketType) {
                 case ACTIVE_PRICE -> ActivePriceMarket.deserializer().deserialize(jsonElement, type, context);
+                case FIXED_PRICE -> FixedPriceMarket.deserializer().deserialize(jsonElement, type, context);
                 default -> null;
             };
         }

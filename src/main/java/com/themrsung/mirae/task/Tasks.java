@@ -3,6 +3,7 @@ package com.themrsung.mirae.task;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
 import com.themrsung.mirae.task.economy.InterestPayoutTask;
+import com.themrsung.mirae.task.economy.MarketUpdateTask;
 import com.themrsung.mirae.task.player.ScoreboardTask;
 import com.themrsung.mirae.task.server.NotifierTask;
 import com.themrsung.mirae.task.state.AutoSaveTask;
@@ -26,6 +27,7 @@ public final class Tasks {
     public static final @NotNull ScoreboardTask SCOREBOARD_TASK = new ScoreboardTask();
     public static final @NotNull NotifierTask NOTIFIER_TASK = new NotifierTask();
     public static final @NotNull InterestPayoutTask INTEREST_PAYOUT_TASK = new InterestPayoutTask();
+    public static final @NotNull MarketUpdateTask MARKET_UPDATE_TASK = new MarketUpdateTask();
 
     /**
      * The set of all tasks.
@@ -38,7 +40,8 @@ public final class Tasks {
             AUTO_SAVE_TASK,
             SCOREBOARD_TASK,
             NOTIFIER_TASK,
-            INTEREST_PAYOUT_TASK
+            INTEREST_PAYOUT_TASK,
+            MARKET_UPDATE_TASK
     );
 
     /**
@@ -67,6 +70,7 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, SCOREBOARD_TASK, 5, 5);
         s.scheduleSyncRepeatingTask(p, NOTIFIER_TASK, 20 * 60 * 5, 20 * 60 * 3);
         s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
+        s.scheduleSyncRepeatingTask(p, MARKET_UPDATE_TASK, 20, 200);
     }
 
     /**
