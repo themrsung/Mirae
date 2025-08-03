@@ -29,10 +29,7 @@ public enum VolatilityLevel {
      */
     RARE(2, 500),
 
-    /**
-     * Debug volatility.
-     */
-    THIN_BUT_WIDE(50, 64);
+    ;
 
     /**
      * Creates a new volatility level.

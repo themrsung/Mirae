@@ -38,7 +38,7 @@ public class TestCommand extends MiraeCommand {
             stable.setVolatilityLevel(VolatilityLevel.VERY_STABLE);
 
             ActivePriceMarket vol = new ActivePriceMarket("volatile_test", new ItemStack(Material.WHITE_CONCRETE), MarketCategory.NONE, 1500);
-            vol.setVolatilityLevel(VolatilityLevel.THIN_BUT_WIDE);
+            vol.setVolatilityLevel(VolatilityLevel.RARE);
 
             Mirae.getState().addMarket(stable);
             Mirae.getState().addMarket(vol);
