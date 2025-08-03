@@ -23,14 +23,19 @@ public class NotifierTask implements Runnable {
     public NotifierTask() {
         this.messages = Carousel.of(
                 PREFIX.append(Component.text("디스코드에서 공지를 확인하고 보이스챗에 참여하세요! ").style(MX.STYLE_NORMAL)
-                        .append(Component.text(" [클릭]").style(MX.STYLE_SPECIAL)
+                        .append(Component.text("[클릭]").style(MX.STYLE_SPECIAL)
                                 .hoverEvent(HoverEvent.showText(Component.text("디스코드에 가입합니다...").style(MX.STYLE_NORMAL)))
                                 .clickEvent(ClickEvent.openUrl("https://discord.gg/yuSj6SPDaH")))),
 
                 PREFIX.append(Component.text("스코어보드를 숨길 수 있습니다! ").style(MX.STYLE_NORMAL)
-                        .append(Component.text(" [클릭]").style(MX.STYLE_SPECIAL)
+                        .append(Component.text("[클릭]").style(MX.STYLE_SPECIAL)
                                 .hoverEvent(HoverEvent.showText(Component.text("/sb").style(MX.STYLE_NORMAL)))
-                                .clickEvent(ClickEvent.runCommand("/sb"))))
+                                .clickEvent(ClickEvent.runCommand("/sb")))),
+
+                PREFIX.append(Component.text("지역채팅을 사용할 수 있습니다.").style(MX.STYLE_NORMAL)
+                        .append(Component.text("[클릭]")
+                                .hoverEvent(HoverEvent.showText(Component.text("/l").style(MX.STYLE_WARNING)))
+                                .clickEvent(ClickEvent.runCommand("/localchat"))))
         );
 
 

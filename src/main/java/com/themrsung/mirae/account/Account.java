@@ -166,8 +166,18 @@ public interface Account extends Serializable {
 
     /// Economy
 
+    /**
+     * Returns the balance of this account.
+     *
+     * @return The balance of this account
+     */
     double getBalance();
 
+    /**
+     * Returns the coin balance of this account.
+     *
+     * @return The coin balance of this account
+     */
     long getCoinBalance();
 
     /**

@@ -22,6 +22,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,12 @@ public final class PlayerListener implements Listener {
      * Teleports of distance less than this value will not be logged.
      */
     public static final double TELEPORT_LOG_IGNORE_DISTANCE = 25;
+
+    /**
+     * Local chat distance.
+     */
+    public static final double LOCAL_CHAT_DISTANCE = 250;
+    private static final double LOCAL_CHAT_DISTANCE_SQUARED = Math.pow(LOCAL_CHAT_DISTANCE, 2);
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -99,7 +106,17 @@ public final class PlayerListener implements Listener {
             Bukkit.getConsoleSender().sendMessage(Component.text("[Muted] ").style(MX.STYLE_WARNING)
                     .append(message));
         } else {
+            Location from = e.getPlayer().getLocation();
+            boolean local = account.inLocalChat();
+
             Bukkit.getOnlinePlayers().forEach(p -> {
+                if (local) {
+                    Location to = p.getLocation();
+
+                    if (!Objects.equals(from.getWorld().getName(), to.getWorld().getName())) return;
+                    if (to.distanceSquared(from) > LOCAL_CHAT_DISTANCE_SQUARED) return;
+                }
+
                 Account a = MX.requireAccountNonNull(Mirae.getState().getAccount(p));
                 if (a.isIgnoringAccount(account) || account.isIgnoringAccount(a)) return;
 
@@ -118,7 +135,10 @@ public final class PlayerListener implements Listener {
 
         return Component.empty()
                 .append(local ? Component.text("[").style(MX.STYLE_NORMAL)
-                        .append(Component.text("지역").style(MX.STYLE_WARNING))
+                        .append(Component.text("지역").style(MX.STYLE_WARNING)
+                                .hoverEvent(HoverEvent.showText(Component.text(NumberFormat.getInstance().format(LOCAL_CHAT_DISTANCE) + "블럭 내 플레이어에게만 보여집니다.").style(MX.STYLE_NORMAL)))
+                                .clickEvent(ClickEvent.runCommand("/localchat"))
+                        )
                         .append(Component.text("] ").style(MX.STYLE_NORMAL)) :
                         Component.empty())
                 .append(sender.getTier().getDisplayName())

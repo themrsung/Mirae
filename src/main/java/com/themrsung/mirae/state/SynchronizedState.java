@@ -42,6 +42,7 @@ public class SynchronizedState implements State {
     SynchronizedState() {
         // Non-transient
         this.spawnPoint = null;
+        this.warpMap = new ConcurrentHashMap<>();
         this.accountMap = new ConcurrentHashMap<>();
         this.marketMap = new ConcurrentHashMap<>();
 
@@ -51,9 +52,10 @@ public class SynchronizedState implements State {
         this.lastActivityTimeMap = new ConcurrentHashMap<>();
     }
 
-    /// Spawn Point
+    /// Warps
 
     private @Nullable Location spawnPoint;
+    private final @NotNull Map<String, Location> warpMap;
 
     @Override
     public @Nullable Location getSpawnPoint() {
@@ -63,6 +65,36 @@ public class SynchronizedState implements State {
     @Override
     public synchronized void setSpawnPoint(@Nullable Location spawnPoint) {
         this.spawnPoint = spawnPoint;
+    }
+
+    @Override
+    public @NotNull Map<String, Location> getWarpMap() {
+        return Map.copyOf(warpMap);
+    }
+
+    @Override
+    public @Nullable Location getWarp(@Nullable String key) {
+        return warpMap.get(key);
+    }
+
+    @Override
+    public boolean hasWarp(@Nullable String key) {
+        return warpMap.containsKey(key);
+    }
+
+    @Override
+    public void setWarp(@NotNull String key, @NotNull Location value) {
+        warpMap.put(key, value);
+    }
+
+    @Override
+    public void removeWarp(@NotNull String key) {
+        warpMap.remove(key);
+    }
+
+    @Override
+    public void clearWarps() {
+        warpMap.clear();
     }
 
     /// Accounts
@@ -517,6 +549,7 @@ public class SynchronizedState implements State {
     @Override
     public void clearAll() {
         clearTransient();
+        clearWarps();
         clearAccounts();
         clearMarkets();
     }
@@ -563,7 +596,7 @@ public class SynchronizedState implements State {
 
         File dataFile = new File(SAVE_PATH + "/data.json");
         try (FileWriter writer = new FileWriter(dataFile)) {
-            StateData data = new StateData(spawnPoint != null ? new Coordinate(spawnPoint) : null);
+            StateData data = new StateData(this);
             writer.write(SERIALIZER.toJson(data));
         } catch (IOException e) {
             throw new IOException("Error saving state data.", e);
@@ -655,6 +688,14 @@ public class SynchronizedState implements State {
                     spawnPoint = s.asLocation();
                 } catch (IllegalArgumentException ignored) {
                 }
+
+                Map<String, Coordinate> warps = data.getWarpMap();
+                warps.forEach((k, v) -> {
+                    try {
+                        warpMap.put(k, v.asLocation());
+                    } catch (IllegalArgumentException ignored) {
+                    }
+                });
 
             } catch (IOException e) {
                 throw new IOException("Error loading data.", e);

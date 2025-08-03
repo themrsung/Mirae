@@ -38,7 +38,7 @@ public interface State {
     }
 
     ///
-    /// Spawn Point
+    /// Warps
     ///
 
     /**
@@ -54,6 +54,49 @@ public interface State {
      * @param spawnPoint The spawn point
      */
     void setSpawnPoint(@Nullable Location spawnPoint);
+
+    /**
+     * Returns the warp map.
+     *
+     * @return The warp map
+     */
+    @NotNull Map<String, Location> getWarpMap();
+
+    /**
+     * Returns the warp of matching key.
+     *
+     * @param key The key
+     * @return The warp location
+     */
+    @Nullable Location getWarp(@Nullable String key);
+
+    /**
+     * Returns whether there is a warp.
+     *
+     * @param key The key
+     * @return {@code true} if there is a warp
+     */
+    boolean hasWarp(@Nullable String key);
+
+    /**
+     * Sets the warp location.
+     *
+     * @param key   The warp key
+     * @param value The warp location
+     */
+    void setWarp(@NotNull String key, @NotNull Location value);
+
+    /**
+     * Removes the warp location.
+     *
+     * @param key The warp key
+     */
+    void removeWarp(@NotNull String key);
+
+    /**
+     * Clears the warp map.
+     */
+    void clearWarps();
 
     ///
     /// Accounts

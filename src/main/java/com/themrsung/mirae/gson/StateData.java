@@ -1,12 +1,15 @@
 package com.themrsung.mirae.gson;
 
 import com.google.gson.*;
+import com.themrsung.mirae.state.State;
 import com.themrsung.mirae.util.Coordinate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * State data.
@@ -34,15 +37,29 @@ public final class StateData implements Serializable {
     }
 
     /**
-     * Creates a new state data object.
+     * Creates a new data object.
      *
-     * @param spawnPoint The spawn point
+     * @param state The state
      */
-    public StateData(@Nullable Coordinate spawnPoint) {
-        this.spawnPoint = spawnPoint;
+    public StateData(@NotNull State state) {
+        this.spawnPoint = state.getSpawnPoint() != null ? new Coordinate(state.getSpawnPoint()) : null;
+
+        Map<String, Coordinate> warps = new HashMap<>();
+        state.getWarpMap().forEach((k, v) -> warps.put(k, new Coordinate(v)));
+
+        this.warpMap = Map.copyOf(warps);
     }
 
-    private final @Nullable Coordinate spawnPoint;
+    /**
+     * Private constructor.
+     */
+    private StateData() {
+        this.spawnPoint = null;
+        this.warpMap = new HashMap<>();
+    }
+
+    private @Nullable Coordinate spawnPoint;
+    private final @NotNull Map<String, Coordinate> warpMap;
 
     /**
      * Returns the spawn point.
@@ -54,14 +71,30 @@ public final class StateData implements Serializable {
     }
 
     /**
+     * Returns the warp map.
+     *
+     * @return The warp map
+     */
+    public @NotNull Map<String, Coordinate> getWarpMap() {
+        return Map.copyOf(warpMap);
+    }
+
+    /**
      * Serializer class.
      */
     private static final class Serializer implements JsonSerializer<StateData> {
         @Override
-        public JsonElement serialize(StateData pair, Type type, JsonSerializationContext context) {
+        public JsonElement serialize(StateData data, Type type, JsonSerializationContext context) {
             JsonObject object = new JsonObject();
 
-            object.add("spawnPoint", context.serialize(pair.spawnPoint));
+            object.add("spawnPoint", context.serialize(data.spawnPoint));
+
+            JsonArray warps = new JsonArray();
+            data.warpMap.forEach((k, v) -> {
+                StringCoordinatePair pair = new StringCoordinatePair(k, v);
+                warps.add(context.serialize(pair));
+            });
+            object.add("warps", warps);
 
             return object;
         }
@@ -76,14 +109,21 @@ public final class StateData implements Serializable {
             if (jsonElement == null || jsonElement.isJsonNull()) return null;
 
             JsonObject object = jsonElement.getAsJsonObject();
-
-            Coordinate spawnPoint = null;
+            StateData data = new StateData();
 
             if (object.has("spawnPoint") && !object.get("spawnPoint").isJsonNull()) {
-                spawnPoint = context.deserialize(object.get("spawnPoint"), Coordinate.class);
+                data.spawnPoint = context.deserialize(object.get("spawnPoint"), Coordinate.class);
             }
 
-            return new StateData(spawnPoint);
+            if (object.has("warps") && object.get("warps").isJsonArray()) {
+                JsonArray warps = object.get("warps").getAsJsonArray();
+                warps.forEach(warp -> {
+                    StringCoordinatePair pair = context.deserialize(warp, StringCoordinatePair.class);
+                    data.warpMap.put(pair.getKey(), pair.getValue());
+                });
+            }
+
+            return data;
         }
     }
 }
