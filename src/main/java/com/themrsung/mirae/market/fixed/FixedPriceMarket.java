@@ -180,7 +180,7 @@ public final class FixedPriceMarket extends AbstractMarket {
 
     @Override
     public @NotNull OrderResult buy(@NotNull Account account, @NotNull Inventory delivery, long quantity) {
-        if (buyPrice < 0) {
+        if (buyPrice < 0 || Mirae.getState().isEconomyFrozen()) {
             return new OrderResult(this, account, quantity, 0, 0, 0);
         }
 
@@ -197,7 +197,7 @@ public final class FixedPriceMarket extends AbstractMarket {
 
     @Override
     public @NotNull OrderResult sell(@NotNull Account account, @NotNull Inventory delivery, long quantity) {
-        if (sellPrice < 0) {
+        if (sellPrice < 0 || Mirae.getState().isEconomyFrozen()) {
             return new OrderResult(this, account, quantity, 0, 0, 0);
         }
 

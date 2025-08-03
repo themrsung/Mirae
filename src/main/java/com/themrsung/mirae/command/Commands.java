@@ -44,6 +44,7 @@ public final class Commands {
     public static final @NotNull MuteCommand MUTE_COMMAND = new MuteCommand();
     public static final @NotNull SetWarpCommand SET_WARP_COMMAND = new SetWarpCommand();
     public static final @NotNull DeleteWarpCommand DELETE_WARP_COMMAND = new DeleteWarpCommand();
+    public static final @NotNull FreezeEconomyCommand FREEZE_ECONOMY_COMMAND = new FreezeEconomyCommand();
 
     public static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     public static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
@@ -92,6 +93,7 @@ public final class Commands {
             MUTE_COMMAND,
             SET_WARP_COMMAND,
             DELETE_WARP_COMMAND,
+            FREEZE_ECONOMY_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,

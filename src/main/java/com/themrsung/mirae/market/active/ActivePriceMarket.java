@@ -2,6 +2,7 @@ package com.themrsung.mirae.market.active;
 
 import com.google.gson.*;
 import com.themrsung.mirae.MX;
+import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.market.*;
@@ -213,6 +214,10 @@ public final class ActivePriceMarket extends AbstractMarket {
     public @NotNull OrderResult buy(@NotNull Account account, @NotNull Inventory delivery, long quantity) {
         PriceQueryResult pqr = getBuyPrice(quantity);
 
+        if (Mirae.getState().isEconomyFrozen()) {
+            return new OrderResult(this, account, pqr.quantity(), 0, pqr.price(), 0);
+        }
+
         Order order = Order.player(account, OrderType.BUY_MARKET, pqr.quantity());
         orderChain.placeOrder(order);
         orderChain.processOrders();
@@ -237,6 +242,10 @@ public final class ActivePriceMarket extends AbstractMarket {
     @Override
     public @NotNull OrderResult sell(@NotNull Account account, @NotNull Inventory delivery, long quantity) {
         PriceQueryResult pqr = getSellPrice(quantity);
+
+        if (Mirae.getState().isEconomyFrozen()) {
+            return new OrderResult(this, account, pqr.quantity(), 0, pqr.price(), 0);
+        }
 
         Order order = Order.player(account, OrderType.SELL_MARKET, pqr.quantity());
         orderChain.placeOrder(order);

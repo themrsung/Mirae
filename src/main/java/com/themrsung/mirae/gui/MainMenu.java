@@ -84,7 +84,7 @@ public class MainMenu extends AbstractGUI {
 
         wilderness.setItemMeta(wildernessMeta);
         inventory.setItem(1, wilderness);
-        callbacks.put(1, () -> player.sendMessage("준비중입니다."));
+        callbacks.put(1, () -> Bukkit.dispatchCommand(player, "warp wild"));
 
         /// SHOPS
         ItemStack shops = new ItemStack(Material.RED_CONCRETE);
@@ -94,7 +94,7 @@ public class MainMenu extends AbstractGUI {
 
         shops.setItemMeta(shopsMeta);
         inventory.setItem(2, shops);
-        callbacks.put(2, () -> player.sendMessage("준비중입니다."));
+        callbacks.put(2, () -> Bukkit.dispatchCommand(player, "warp shop"));
 
         /// BACK (RECENT)
         ItemStack back = getBackButton();
