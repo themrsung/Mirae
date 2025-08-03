@@ -70,7 +70,7 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, SCOREBOARD_TASK, 5, 5);
         s.scheduleSyncRepeatingTask(p, NOTIFIER_TASK, 20 * 60 * 5, 20 * 60 * 3);
         s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
-        s.scheduleSyncRepeatingTask(p, MARKET_UPDATE_TASK, 20, 200);
+        s.scheduleSyncRepeatingTask(p, MARKET_UPDATE_TASK, 2, 200);
     }
 
     /**

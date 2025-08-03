@@ -66,6 +66,20 @@ public interface Market extends Serializable {
     @NotNull MarketType getType();
 
     /**
+     * Returns the category of this market.
+     *
+     * @return The category of this market
+     */
+    @NotNull MarketCategory getCategory();
+
+    /**
+     * Sets the category of this market.
+     *
+     * @param category The category
+     */
+    void setCategory(@NotNull MarketCategory category);
+
+    /**
      * Returns the item which is being traded.
      *
      * @return The item which is being traded

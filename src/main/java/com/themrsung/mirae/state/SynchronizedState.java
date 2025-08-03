@@ -186,7 +186,7 @@ public class SynchronizedState implements State {
 
     @Override
     public @NotNull List<Market> getMarkets() {
-        return List.of();
+        return List.copyOf(marketMap.values());
     }
 
     @Override
@@ -516,7 +516,7 @@ public class SynchronizedState implements State {
             .registerTypeAdapter(Fulfillment.class, Fulfillment.serializer())
             .registerTypeAdapter(OrderChain.class, OrderChain.serializer())
             .registerTypeAdapter(Coordinate.class, Coordinate.serializer())
-            .registerTypeAdapter(ItemStack.class, ItemStackGson.serializer())
+            .registerTypeHierarchyAdapter(ItemStack.class, ItemStackGson.serializer())
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.serializer())
             .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.serializer())
             .registerTypeAdapter(StateData.class, StateData.serializer())
@@ -530,7 +530,7 @@ public class SynchronizedState implements State {
             .registerTypeAdapter(Fulfillment.class, Fulfillment.deserializer())
             .registerTypeAdapter(OrderChain.class, OrderChain.deserializer())
             .registerTypeAdapter(Coordinate.class, Coordinate.deserializer())
-            .registerTypeAdapter(ItemStack.class, ItemStackGson.deserializer())
+            .registerTypeHierarchyAdapter(ItemStack.class, ItemStackGson.deserializer())
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.deserializer())
             .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.deserializer())
             .registerTypeAdapter(StateData.class, StateData.deserializer())

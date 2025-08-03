@@ -183,17 +183,28 @@ public final class OrderChain implements Serializable {
             OrderType buyType = b.getType();
             OrderType sellType = s.getType();
 
-            double buyPrice = b.getPriceOrdered();
-            double sellPrice = s.getPriceOrdered();
-
             boolean buyMarket = buyType.isMarket();
             boolean sellMarket = sellType.isMarket();
 
+            if (buyMarket && sellMarket) {
+                // Market order settlement is not supported yet.
+                return;
+            }
+
+            double buyPrice = b.getPriceOrdered();
+            double sellPrice = s.getPriceOrdered();
+
             // Return if there is a limit order and prices are incompatible
-            if (!(buyMarket && sellMarket) && buyPrice < sellPrice) return;
+            if (!(buyMarket || sellMarket) && buyPrice < sellPrice) return;
 
             long quantity = Math.min(b.getQuantityRemaining(), s.getQuantityRemaining());
-            double price = Math.round((b.getPriceOrdered() + s.getPriceOrdered()) / 2);
+            double price;
+
+            if (buyMarket || sellMarket) {
+                price = buyMarket ? s.getPriceOrdered() : b.getPriceOrdered();
+            } else {
+                price = Math.round((b.getPriceOrdered() + s.getQuantityOrdered()) / 2);
+            }
 
             b.onFulfilled(quantity, price);
             s.onFulfilled(quantity, price);
@@ -216,7 +227,7 @@ public final class OrderChain implements Serializable {
         switch (order.getType()) {
             case BUY_LIMIT, BUY_MARKET -> buyOrders.add(order);
             case SELL_LIMIT, SELL_MARKET -> sellOrders.add(order);
-            default -> throw new IllegalArgumentException("Unknown order type \"" + order.getType().toString() + "\".");
+            default -> throw new IllegalArgumentException("Unknown order type \"" + order.getType() + "\".");
         }
     }
 

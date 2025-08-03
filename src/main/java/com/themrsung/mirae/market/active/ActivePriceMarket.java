@@ -43,10 +43,11 @@ public final class ActivePriceMarket extends AbstractMarket {
      *
      * @param name         The name of the market
      * @param item         The item
+     * @param category     The category
      * @param defaultPrice The default price
      */
-    public ActivePriceMarket(@NotNull String name, @NotNull ItemStack item, double defaultPrice) {
-        super(UUID.randomUUID(), name, item);
+    public ActivePriceMarket(@NotNull String name, @NotNull ItemStack item, @NotNull MarketCategory category, double defaultPrice) {
+        super(UUID.randomUUID(), name, item, category);
 
         this.orderChain = new OrderChain();
         this.volatilityLevel = VolatilityLevel.MODERATE;
@@ -78,6 +79,7 @@ public final class ActivePriceMarket extends AbstractMarket {
      * @param uniqueId        The unique identifier
      * @param name            The name
      * @param item            The item
+     * @param category        The market category
      * @param defaultPrice    The default price
      * @param orderChain      The order chain
      * @param volatilityLevel The volatility level
@@ -86,10 +88,11 @@ public final class ActivePriceMarket extends AbstractMarket {
             @NotNull UUID uniqueId,
             @NotNull String name,
             @NotNull ItemStack item,
+            @NotNull MarketCategory category,
             double defaultPrice,
             @NotNull OrderChain orderChain,
             @NotNull VolatilityLevel volatilityLevel) {
-        super(uniqueId, name, item);
+        super(uniqueId, name, item, category);
         this.defaultPrice = defaultPrice;
         this.orderChain = orderChain;
         this.volatilityLevel = volatilityLevel;
@@ -221,12 +224,13 @@ public final class ActivePriceMarket extends AbstractMarket {
         Order order = Order.player(account, OrderType.BUY_MARKET, pqr.quantity());
         orderChain.placeOrder(order);
         orderChain.processOrders();
+        orderChain.cancelOrder(order);
 
         long quantityFulfilled = order.getQuantityFulfilled();
         double priceFulfilled = order.getPriceFulfilled();
 
         double volume = Math.abs(quantityFulfilled * priceFulfilled);
-        double fees = volume * (1 + ACTIVE_MARKET_FEE_RATE);
+        double fees = volume * ACTIVE_MARKET_FEE_RATE;
 
         double amountToWithdraw = Math.ceil(quantityFulfilled * priceFulfilled + fees);
         account.modifyBalance(-amountToWithdraw, EconomyCause.MARKET_TRANSACTION_BUY, "Bought items from market.");
@@ -250,12 +254,13 @@ public final class ActivePriceMarket extends AbstractMarket {
         Order order = Order.player(account, OrderType.SELL_MARKET, pqr.quantity());
         orderChain.placeOrder(order);
         orderChain.processOrders();
+        orderChain.cancelOrder(order);
 
         long quantityFulfilled = order.getQuantityFulfilled();
         double priceFulfilled = order.getPriceFulfilled();
 
         double volume = Math.abs(quantityFulfilled * priceFulfilled);
-        double fees = volume * (1 + ACTIVE_MARKET_FEE_RATE);
+        double fees = volume * ACTIVE_MARKET_FEE_RATE;
 
         double amountToDeposit = Math.floor(quantityFulfilled * priceFulfilled - fees);
         account.modifyBalance(amountToDeposit, EconomyCause.MARKET_TRANSACTION_SELL, "Sold items to market.");
@@ -356,7 +361,7 @@ public final class ActivePriceMarket extends AbstractMarket {
             volatilityLevel = context.deserialize(object.get("volatilityLevel"), VolatilityLevel.class);
 
 
-            return new ActivePriceMarket(uniqueId, name, item, defaultPrice, orderChain, volatilityLevel);
+            return new ActivePriceMarket(uniqueId, name, item, category, defaultPrice, orderChain, volatilityLevel);
         }
     }
 }

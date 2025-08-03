@@ -17,11 +17,13 @@ public abstract class AbstractMarket implements Market {
      * @param uniqueId The unique identifier
      * @param name     The name
      * @param item     The item
+     * @param category The category
      */
-    public AbstractMarket(@NotNull UUID uniqueId, @NotNull String name, @NotNull ItemStack item) {
+    public AbstractMarket(@NotNull UUID uniqueId, @NotNull String name, @NotNull ItemStack item, @NotNull MarketCategory category) {
         this.uniqueId = uniqueId;
         this.name = name;
         this.item = item.clone();
+        this.category = category;
     }
 
     /**
@@ -33,11 +35,13 @@ public abstract class AbstractMarket implements Market {
         this.uniqueId = m.getUniqueId();
         this.name = m.getName();
         this.item = m.getItem().clone();
+        this.category = m.getCategory();
     }
 
     private final @NotNull UUID uniqueId;
     private final @NotNull String name;
     private final @NotNull ItemStack item;
+    private @NotNull MarketCategory category;
 
     @Override
     public @NotNull UUID getUniqueId() {
@@ -54,6 +58,16 @@ public abstract class AbstractMarket implements Market {
         return item.clone();
     }
 
+    @Override
+    public @NotNull MarketCategory getCategory() {
+        return category;
+    }
+
+    @Override
+    public void setCategory(@NotNull MarketCategory category) {
+        this.category = category;
+    }
+
     /**
      * Serializer class.
      *
@@ -67,6 +81,7 @@ public abstract class AbstractMarket implements Market {
             object.add("uniqueId", context.serialize(market.getUniqueId()));
             object.add("name", context.serialize(market.getName()));
             object.add("item", context.serialize(market.getItem()));
+            object.add("category", context.serialize(market.getCategory()));
             object.add("type", context.serialize(market.getType()));
 
             return object;
@@ -83,6 +98,7 @@ public abstract class AbstractMarket implements Market {
         protected String name = null;
         protected ItemStack item = null;
         protected MarketType marketType = null;
+        protected MarketCategory category = null;
 
         @Override
         public abstract T deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException;
@@ -102,11 +118,6 @@ public abstract class AbstractMarket implements Market {
             }
 
             JsonObject object = jsonElement.getAsJsonObject();
-
-            UUID uniqueId = null;
-            String name = null;
-            ItemStack item = null;
-            MarketType marketType = null;
 
             if (!object.has("type") || object.get("type").isJsonNull()) {
                 throw new JsonParseException("Missing required parameter \"type\".");
@@ -134,6 +145,12 @@ public abstract class AbstractMarket implements Market {
             }
 
             item = context.deserialize(object.get("item"), ItemStack.class);
+
+            if (!object.has("category") || object.get("category").isJsonNull()) {
+                throw new JsonParseException("Missing required parameter \"category\".");
+            }
+
+            category = context.deserialize(object.get("category"), MarketCategory.class);
         }
     }
 }

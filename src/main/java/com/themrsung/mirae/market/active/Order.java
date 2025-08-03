@@ -216,7 +216,7 @@ public final class Order {
      */
     void onFulfilled(long quantity, double price) {
         long quantityBefore = quantityFulfilled;
-        double volumeBefore = priceFulfilled;
+        double volumeBefore = priceFulfilled * quantityBefore;
 
         quantityFulfilled += quantity;
 

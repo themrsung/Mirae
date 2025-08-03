@@ -42,11 +42,12 @@ public final class FixedPriceMarket extends AbstractMarket {
     /**
      * Creates a new fixed price market.
      *
-     * @param name The name of the market
-     * @param item The item
+     * @param name     The name of the market
+     * @param item     The item
+     * @param category The category
      */
-    public FixedPriceMarket(@NotNull String name, @NotNull ItemStack item) {
-        super(UUID.randomUUID(), name, item);
+    public FixedPriceMarket(@NotNull String name, @NotNull ItemStack item, @NotNull MarketCategory category) {
+        super(UUID.randomUUID(), name, item, category);
 
         this.buyPrice = 0;
         this.sellPrice = 0;
@@ -79,6 +80,7 @@ public final class FixedPriceMarket extends AbstractMarket {
      * @param uniqueId  The unique identifier
      * @param name      The name
      * @param item      The item
+     * @param category  The category
      * @param buyPrice  The buy price
      * @param sellPrice The sell price
      */
@@ -86,10 +88,11 @@ public final class FixedPriceMarket extends AbstractMarket {
             @NotNull UUID uniqueId,
             @NotNull String name,
             @NotNull ItemStack item,
+            @NotNull MarketCategory category,
             double buyPrice,
             double sellPrice
     ) {
-        super(uniqueId, name, item);
+        super(uniqueId, name, item, category);
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
 
@@ -201,15 +204,15 @@ public final class FixedPriceMarket extends AbstractMarket {
             return new OrderResult(this, account, quantity, 0, 0, 0);
         }
 
-        double amountToDeposit = Math.floor(buyPrice * quantity * (1 - FIXED_MARKET_FEE_RATE));
-        account.modifyBalance(-amountToDeposit, EconomyCause.MARKET_TRANSACTION_BUY, "Bought items from market.");
+        double amountToDeposit = Math.floor(sellPrice * quantity * (1 - FIXED_MARKET_FEE_RATE));
+        account.modifyBalance(-amountToDeposit, EconomyCause.MARKET_TRANSACTION_SELL, "Sold items to market.");
 
         ItemStack items = getItem();
         items.setAmount((int) quantity);
 
-        MX.giveItems(delivery, items);
+        MX.takeItems(delivery, items);
 
-        return new OrderResult(this, account, quantity, quantity, buyPrice, buyPrice);
+        return new OrderResult(this, account, quantity, quantity, sellPrice, sellPrice);
     }
 
     /**
@@ -274,7 +277,7 @@ public final class FixedPriceMarket extends AbstractMarket {
 
             sellPrice = object.get("sellPrice").getAsDouble();
 
-            return new FixedPriceMarket(uniqueId, name, item, buyPrice, sellPrice);
+            return new FixedPriceMarket(uniqueId, name, item, category, buyPrice, sellPrice);
         }
     }
 }
