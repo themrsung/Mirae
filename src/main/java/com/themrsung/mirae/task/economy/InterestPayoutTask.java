@@ -2,8 +2,8 @@ package com.themrsung.mirae.task.economy;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
+import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
-import com.themrsung.mirae.event.economy.EconomyCause;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -29,7 +29,7 @@ public class InterestPayoutTask implements Runnable {
      */
     public static double getDailyInterest(double principal) {
         int daysInYear = 365;
-        double dailyRate = Math.pow(1 + BASE_RATE, 1d / daysInYear);
+        double dailyRate = Math.pow(1 + BASE_RATE, 1d / daysInYear) - 1;
 
         return Math.min(principal * dailyRate, MAX_DAILY_INTEREST);
     }

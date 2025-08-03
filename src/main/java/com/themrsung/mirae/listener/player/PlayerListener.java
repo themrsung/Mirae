@@ -5,7 +5,7 @@ import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.account.AccountTitle;
-import com.themrsung.mirae.event.economy.EconomyCause;
+import com.themrsung.mirae.economy.EconomyCause;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

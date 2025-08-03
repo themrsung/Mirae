@@ -4,7 +4,7 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.MiraeCommand;
-import com.themrsung.mirae.event.economy.EconomyCause;
+import com.themrsung.mirae.economy.EconomyCause;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

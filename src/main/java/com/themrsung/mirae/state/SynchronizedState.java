@@ -3,9 +3,12 @@ package com.themrsung.mirae.state;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.themrsung.mirae.account.Account;
+import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
-import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.gson.*;
+import com.themrsung.mirae.market.Market;
+import com.themrsung.mirae.market.active.Fulfillment;
+import com.themrsung.mirae.market.active.OrderChain;
 import com.themrsung.mirae.social.DirectMessage;
 import com.themrsung.mirae.social.TeleportRequest;
 import com.themrsung.mirae.util.Coordinate;
@@ -40,6 +43,7 @@ public class SynchronizedState implements State {
         // Non-transient
         this.spawnPoint = null;
         this.accountMap = new ConcurrentHashMap<>();
+        this.marketMap = new ConcurrentHashMap<>();
 
         // Transient
         this.directMessages = Collections.synchronizedList(new ArrayList<>());
@@ -137,6 +141,51 @@ public class SynchronizedState implements State {
     @Override
     public void clearAccounts() {
         accountMap.clear();
+    }
+
+    /// Markets
+
+    private final @NotNull Map<UUID, Market> marketMap;
+
+    @Override
+    public @NotNull Map<UUID, Market> getMarketMap() {
+        return Map.copyOf(marketMap);
+    }
+
+    @Override
+    public @NotNull List<Market> getMarkets() {
+        return List.of();
+    }
+
+    @Override
+    public @Nullable Market getMarket(@Nullable UUID uniqueId) {
+        return marketMap.get(uniqueId);
+    }
+
+    @Override
+    public boolean hasMarket(@Nullable Market market) {
+        return false;
+    }
+
+    @Override
+    public boolean addMarket(@NotNull Market market) {
+        UUID uniqueId = market.getUniqueId();
+        if (marketMap.containsKey(uniqueId)) {
+            return false;
+        }
+
+        marketMap.put(market.getUniqueId(), market);
+        return true;
+    }
+
+    @Override
+    public boolean removeMarket(@NotNull Market market) {
+        return marketMap.remove(market.getUniqueId(), market);
+    }
+
+    @Override
+    public void clearMarkets() {
+        marketMap.clear();
     }
 
     /// Freezing
@@ -431,6 +480,9 @@ public class SynchronizedState implements State {
 
     private static final @NotNull Gson SERIALIZER = new GsonBuilder()
             .registerTypeHierarchyAdapter(Account.class, Account.serializer())
+            .registerTypeHierarchyAdapter(Market.class, Market.serializer())
+            .registerTypeAdapter(Fulfillment.class, Fulfillment.serializer())
+            .registerTypeAdapter(OrderChain.class, OrderChain.serializer())
             .registerTypeAdapter(Coordinate.class, Coordinate.serializer())
             .registerTypeAdapter(ItemStack.class, ItemStackGson.serializer())
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.serializer())
@@ -442,6 +494,9 @@ public class SynchronizedState implements State {
 
     private static final @NotNull Gson DESERIALIZER = new GsonBuilder()
             .registerTypeHierarchyAdapter(Account.class, Account.deserializer())
+            .registerTypeHierarchyAdapter(Market.class, Market.deserializer())
+            .registerTypeAdapter(Fulfillment.class, Fulfillment.deserializer())
+            .registerTypeAdapter(OrderChain.class, OrderChain.deserializer())
             .registerTypeAdapter(Coordinate.class, Coordinate.deserializer())
             .registerTypeAdapter(ItemStack.class, ItemStackGson.deserializer())
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.deserializer())
@@ -463,6 +518,7 @@ public class SynchronizedState implements State {
     public void clearAll() {
         clearTransient();
         clearAccounts();
+        clearMarkets();
     }
 
     @Override
@@ -528,6 +584,23 @@ public class SynchronizedState implements State {
                 throw new RuntimeException("Error saving account " + uuid, e);
             }
         });
+
+        File marketsDir = new File(SAVE_PATH + "/markets");
+        if (!marketsDir.exists() && !marketsDir.mkdirs()) {
+            throw new IOException("Unable to create markets folder.");
+        }
+
+        FileUtils.cleanDirectory(marketsDir);
+
+        marketMap.forEach((uuid, market) -> {
+            File file = new File(SAVE_PATH + "/markets/" + uuid + ".json");
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(SERIALIZER.toJson(market));
+                writer.flush();
+            } catch (IOException e) {
+                throw new RuntimeException("Error saving market " + uuid, e);
+            }
+        });
     }
 
     @Override
@@ -548,6 +621,25 @@ public class SynchronizedState implements State {
                         accountMap.put(accountId, account);
                     } catch (IOException e) {
                         throw new IOException("Error loading account file: " + file.getName(), e);
+                    }
+                }
+            }
+        }
+
+        File marketsDir = new File(SAVE_PATH + "/markets");
+        if (marketsDir.exists()) {
+            File[] marketFiles = marketsDir.listFiles();
+            if (marketFiles != null) {
+                for (File file : marketFiles) {
+                    if (!file.getName().endsWith(".json")) continue;
+
+                    try (FileReader reader = new FileReader(file)) {
+                        Market market = DESERIALIZER.fromJson(reader, Market.class);
+                        UUID marketId = market.getUniqueId();
+
+                        marketMap.put(marketId, market);
+                    } catch (IOException e) {
+                        throw new IOException("Error loading market file: " + file.getName(), e);
                     }
                 }
             }

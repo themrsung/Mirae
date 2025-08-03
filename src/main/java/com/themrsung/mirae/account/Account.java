@@ -2,7 +2,7 @@ package com.themrsung.mirae.account;
 
 import com.google.gson.*;
 import com.themrsung.mirae.Mirae;
-import com.themrsung.mirae.event.economy.EconomyCause;
+import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.gson.SkillTypeLongPair;
 import com.themrsung.mirae.gson.StringCoordinatePair;
 import com.themrsung.mirae.skill.SkillType;
@@ -31,6 +31,11 @@ public interface Account extends Serializable {
      * The default number of max homes.
      */
     int DEFAULT_MAX_HOMES = 3;
+
+    /**
+     * The default number of max sell listings.
+     */
+    int DEFAULT_MAX_SELL_LISTINGS = 10;
 
     ///
     /// Factory
@@ -286,6 +291,24 @@ public interface Account extends Serializable {
      * @param frozen {@code true} if frozen
      */
     void setWalletFrozen(boolean frozen);
+
+    ///
+    /// Trading
+    ///
+
+    /**
+     * Returns the maximum number of sell listings allowed.
+     *
+     * @return The maximum number of sell listings
+     */
+    int getMaxSellListings();
+
+    /**
+     * Sets the maximum number of sell listings allowed
+     *
+     * @param maxListings The maximum number
+     */
+    void setMaxSellListings(int maxListings);
 
     ///
     /// Homes
@@ -754,6 +777,10 @@ public interface Account extends Serializable {
             object.add("coinBalance", new JsonPrimitive(account.getCoinBalance()));
             object.add("walletFrozen", new JsonPrimitive(account.isWalletFrozen()));
 
+            // Trading
+
+            object.add("maxSellListings", new JsonPrimitive(account.getMaxSellListings()));
+
             // Homes
 
             Coordinate home = account.getHome() != null ? new Coordinate(account.getHome()) : null;
@@ -878,6 +905,12 @@ public interface Account extends Serializable {
 
             if (object.has("walletFrozen") && object.get("walletFrozen").isJsonPrimitive()) {
                 account.setWalletFrozen(object.get("walletFrozen").getAsBoolean());
+            }
+
+            // Trading
+
+            if (object.has("maxSellListings") && object.get("maxSellListings").isJsonPrimitive()) {
+                account.setMaxSellListings(object.get("maxSellListings").getAsInt());
             }
 
             // Homes

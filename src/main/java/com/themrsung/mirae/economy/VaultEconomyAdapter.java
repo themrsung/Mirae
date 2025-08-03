@@ -2,7 +2,6 @@ package com.themrsung.mirae.economy;
 
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
-import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.state.State;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;

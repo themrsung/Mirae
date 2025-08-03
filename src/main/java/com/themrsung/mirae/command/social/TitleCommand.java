@@ -38,11 +38,6 @@ public class TitleCommand extends MiraeCommand {
             return false;
         }
 
-        if (!sender.isOp()) {
-            sender.sendMessage(INSUFFICIENT_PERMISSIONS);
-            return false;
-        }
-
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
         if (args.length < 1) {

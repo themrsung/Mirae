@@ -22,7 +22,15 @@ public enum SkillType {
     /**
      * Carpentry skill.
      */
-    CARPENTRY(Component.text("벌목").style(Style.style().color(TextColor.fromHexString("#420b07")).build()));
+    CARPENTRY(Component.text("벌목").style(Style.style().color(TextColor.fromHexString("#420b07")).build())),
+
+    /**
+     * Trading skill.
+     */
+    TRADING(Component.text("벌목").style(Style.style().color(TextColor.fromHexString("#ff9752")).build())),
+
+
+    ;
 
     /**
      * Creates a new skill.

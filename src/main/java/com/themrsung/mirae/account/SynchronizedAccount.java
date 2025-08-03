@@ -1,9 +1,9 @@
 package com.themrsung.mirae.account;
 
 import com.themrsung.mirae.MX;
+import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.event.economy.AccountBalanceModifiedEvent;
 import com.themrsung.mirae.event.economy.AccountCoinBalanceModifiedEvent;
-import com.themrsung.mirae.event.economy.EconomyCause;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -44,6 +44,8 @@ public class SynchronizedAccount implements Account {
         this.coinBalance = 0;
         this.walletFrozen = false;
 
+        this.maxSellListings = DEFAULT_MAX_SELL_LISTINGS;
+
         this.extraHomeMap = new ConcurrentHashMap<>();
         this.maxExtraHomes = DEFAULT_MAX_HOMES;
 
@@ -73,6 +75,8 @@ public class SynchronizedAccount implements Account {
         this.balance = 0;
         this.coinBalance = 0;
         this.walletFrozen = false;
+
+        this.maxSellListings = DEFAULT_MAX_SELL_LISTINGS;
 
         this.extraHomeMap = new ConcurrentHashMap<>();
         this.maxExtraHomes = DEFAULT_MAX_HOMES;
@@ -298,6 +302,20 @@ public class SynchronizedAccount implements Account {
     @Override
     public void setWalletFrozen(boolean frozen) {
         this.walletFrozen = frozen;
+    }
+
+    /// Trading
+
+    private int maxSellListings;
+
+    @Override
+    public int getMaxSellListings() {
+        return maxSellListings;
+    }
+
+    @Override
+    public void setMaxSellListings(int maxListings) {
+        this.maxSellListings = maxListings;
     }
 
     /// Homes

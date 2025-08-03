@@ -1,8 +1,9 @@
 package com.themrsung.mirae.state;
 
 import com.themrsung.mirae.account.Account;
+import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
-import com.themrsung.mirae.event.economy.EconomyCause;
+import com.themrsung.mirae.market.Market;
 import com.themrsung.mirae.social.DirectMessage;
 import com.themrsung.mirae.social.TeleportRequest;
 import org.bukkit.Location;
@@ -140,6 +141,61 @@ public interface State {
      * Clears the account map.
      */
     void clearAccounts();
+
+    ///
+    /// Markets
+    ///
+
+    /**
+     * Returns the copied map of markets.
+     *
+     * @return The copied map of markets
+     */
+    @NotNull Map<UUID, Market> getMarketMap();
+
+    /**
+     * Returns the list of markets.
+     *
+     * @return The list of markets
+     */
+    @NotNull List<Market> getMarkets();
+
+    /**
+     * Returns the market with the matching unique identifier.
+     *
+     * @param uniqueId The unique identifier
+     * @return The market if present, {@code null} otherwise
+     */
+    @Nullable Market getMarket(@Nullable UUID uniqueId);
+
+    /**
+     * Returns whether this state has the given market.
+     *
+     * @param market The market to check
+     * @return {@code true} if the market is present
+     */
+    boolean hasMarket(@Nullable Market market);
+
+    /**
+     * Adds a market to this state.
+     *
+     * @param market The market to add
+     * @return {@code true} if the state was changed
+     */
+    boolean addMarket(@NotNull Market market);
+
+    /**
+     * Removes a market from this state.
+     *
+     * @param market The market to remove
+     * @return {@code true} if the state was changed
+     */
+    boolean removeMarket(@NotNull Market market);
+
+    /**
+     * Clears the market map.
+     */
+    void clearMarkets();
 
     ///
     /// Freezing

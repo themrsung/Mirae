@@ -1,6 +1,7 @@
 package com.themrsung.mirae.event.economy;
 
 import com.themrsung.mirae.account.Account;
+import com.themrsung.mirae.economy.EconomyCause;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

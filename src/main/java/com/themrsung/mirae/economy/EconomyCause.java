@@ -1,4 +1,4 @@
-package com.themrsung.mirae.event.economy;
+package com.themrsung.mirae.economy;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,12 +54,22 @@ public interface EconomyCause {
     /**
      * Initialized when loaded from disk.
      */
-    @NotNull EconomyCause INITIALIZED = new InitialCause("Initialized.");
+    @NotNull EconomyCause INITIALIZED = new InitialCause("Initialized");
 
     /**
      * Interest received to account.
      */
-    @NotNull EconomyCause INTEREST_RECEIVED = new InitialCause("Interest Received.");
+    @NotNull EconomyCause INTEREST_RECEIVED = new InitialCause("Interest Received");
+
+    /**
+     * Market transaction. (buy)
+     */
+    @NotNull EconomyCause MARKET_TRANSACTION_BUY = new InitialCause("Market Transaction (BUY)");
+
+    /**
+     * Market transaction. (sell)
+     */
+    @NotNull EconomyCause MARKET_TRANSACTION_SELL = new InitialCause("Market Transaction (SELL)");
 
     ///
     /// Custom cause
