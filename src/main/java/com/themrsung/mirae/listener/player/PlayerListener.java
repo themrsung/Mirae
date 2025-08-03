@@ -42,7 +42,7 @@ public final class PlayerListener implements Listener {
     /**
      * Local chat distance.
      */
-    public static final double LOCAL_CHAT_DISTANCE = 250;
+    public static final double LOCAL_CHAT_DISTANCE = 150;
     private static final double LOCAL_CHAT_DISTANCE_SQUARED = Math.pow(LOCAL_CHAT_DISTANCE, 2);
 
     @EventHandler
