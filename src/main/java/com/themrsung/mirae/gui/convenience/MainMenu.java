@@ -59,9 +59,6 @@ public class MainMenu extends AbstractGUI {
         initializeHomes();
         initializeLinks();
         initializeConveniences();
-
-        // Temporary
-        initializeLegacy();
     }
 
     private void initializeWarps() {
@@ -252,16 +249,6 @@ public class MainMenu extends AbstractGUI {
             unlockedAtGold.setItemMeta(meta);
             inventory.setItem(19, unlockedAtGold);
         }
-    }
-
-    @Deprecated
-    private void initializeLegacy() {
-        ItemStack legacy = getPreviousButton();
-        ItemMeta meta = legacy.getItemMeta();
-
-        legacy.setItemMeta(meta);
-        inventory.setItem(17, legacy);
-        callbacks.put(17, () -> Bukkit.dispatchCommand(player, "legacymenu"));
     }
 
     private final @NotNull Account account;
