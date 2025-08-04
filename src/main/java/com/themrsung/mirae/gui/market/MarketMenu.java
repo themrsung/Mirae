@@ -52,7 +52,8 @@ public class MarketMenu extends AbstractGUI {
     public MarketMenu(@NotNull Player player) {
         super(player, GUI_SIZE, Component.text("전체 상점").style(MX.STYLE_SPECIAL));
 
-        this.markets = List.copyOf(Mirae.getState().getMarkets());
+        this.markets = new ArrayList<>(Mirae.getState().getMarkets());
+        this.markets.sort(Comparator.comparing(Market::getName));
 
         this.currentPage = 0;
         this.numPages = Math.ceilDiv(markets.size(), PAGE_SIZE);
@@ -82,9 +83,10 @@ public class MarketMenu extends AbstractGUI {
     public MarketMenu(@NotNull Player player, @NotNull MarketCategory category, @Nullable Component title) {
         super(player, GUI_SIZE, Objects.requireNonNullElse(title, category.getDisplayName()));
 
-        this.markets = Mirae.getState().getMarkets().stream()
+        this.markets = new ArrayList<>(Mirae.getState().getMarkets().stream()
                 .filter(m -> m.getCategory() == category)
-                .toList();
+                .toList());
+        this.markets.sort(Comparator.comparing(Market::getName));
 
         this.currentPage = 0;
         this.numPages = Math.ceilDiv(markets.size(), PAGE_SIZE);
@@ -110,7 +112,8 @@ public class MarketMenu extends AbstractGUI {
                 .filter(filter)
                 .forEach(markets::add);
 
-        this.markets = List.copyOf(markets);
+        this.markets = new ArrayList<>(markets);
+        this.markets.sort(Comparator.comparing(Market::getName));
 
         this.currentPage = 0;
         this.numPages = Math.ceilDiv(markets.size(), PAGE_SIZE);
@@ -295,13 +298,21 @@ public class MarketMenu extends AbstractGUI {
     private void onBuyClick(@NotNull Account account, @NotNull Market market, int quantity) {
         PriceQueryResult pqr = market.getBuyPrice(quantity);
 
+        if (pqr.quantity() <= 0) {
+            player.sendMessage(Component.text("매수 가능한 물량이 없습니다!").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            return;
+        }
+
         if (Mirae.getState().isEconomyFrozen()) {
             player.sendMessage(Component.text("경제가 동결되었습니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
         if (account.isWalletFrozen()) {
             player.sendMessage(Component.text("계좌가 동결되었습니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
@@ -313,6 +324,7 @@ public class MarketMenu extends AbstractGUI {
 
         if (minimumBalance > 0 && account.getBalance() < minimumBalance) {
             player.sendMessage(Component.text("잔액이 부족합니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
@@ -322,6 +334,7 @@ public class MarketMenu extends AbstractGUI {
         int inventorySpace = MX.getRemainingSpaceFor(player.getInventory(), items);
         if (inventorySpace < quantity) {
             player.sendMessage(Component.text("인벤토리에 공간이 부족합니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
@@ -330,13 +343,21 @@ public class MarketMenu extends AbstractGUI {
     }
 
     private void onSellClick(@NotNull Account account, @NotNull Market market, int quantity) {
+        if (quantity <= 0) {
+            player.sendMessage(Component.text("아이템이 없습니다!").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            return;
+        }
+
         if (Mirae.getState().isEconomyFrozen()) {
             player.sendMessage(Component.text("경제가 동결되었습니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
         if (account.isWalletFrozen()) {
             player.sendMessage(Component.text("계좌가 동결되었습니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
@@ -346,6 +367,7 @@ public class MarketMenu extends AbstractGUI {
         int itemsInInventory = MX.countItems(player.getInventory(), items);
         if (itemsInInventory < quantity) {
             player.sendMessage(Component.text("아이템이 부족합니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
             return;
         }
 
@@ -362,6 +384,8 @@ public class MarketMenu extends AbstractGUI {
                 .append(Component.text("를 ").style(MX.STYLE_NORMAL))
                 .append(buy ? Component.text("구매").style(MX.STYLE_BUY) : Component.text("판매").style(MX.STYLE_SELL))
                 .append(Component.text("했습니다.").style(MX.STYLE_NORMAL)));
+
+        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
     }
 
     private void updateMarketData() {

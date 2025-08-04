@@ -34,6 +34,11 @@ public enum MarketCategory {
     SEAFOOD(Component.text("해산물").style(MX.STYLE_NORMAL)),
 
     /**
+     * Foods.
+     */
+    FOODS(Component.text("식품").style(MX.STYLE_NORMAL)),
+
+    /**
      * Basic blocks.
      */
     BASIC_BLOCKS(Component.text("블럭 (기본)").style(MX.STYLE_NORMAL)),

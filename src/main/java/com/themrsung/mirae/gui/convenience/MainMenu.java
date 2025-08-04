@@ -5,6 +5,7 @@ import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.gui.AbstractGUI;
+import com.themrsung.mirae.gui.donor.DonorMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.Style;
@@ -70,7 +71,10 @@ public class MainMenu extends AbstractGUI {
 
         spawn.setItemMeta(spawnMeta);
         inventory.setItem(0, spawn);
-        callbacks.put(0, () -> Bukkit.dispatchCommand(player, "spawn"));
+        callbacks.put(0, () -> {
+            Bukkit.dispatchCommand(player, "spawn");
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
 
         /// WILDERNESS
         ItemStack wilderness = new ItemStack(Material.DIRT);
@@ -80,7 +84,10 @@ public class MainMenu extends AbstractGUI {
 
         wilderness.setItemMeta(wildernessMeta);
         inventory.setItem(1, wilderness);
-        callbacks.put(1, () -> Bukkit.dispatchCommand(player, "warp wild"));
+        callbacks.put(1, () -> {
+            Bukkit.dispatchCommand(player, "warp wild");
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
 
         /// SHOPS
         ItemStack shops = new ItemStack(Material.RED_CONCRETE);
@@ -90,7 +97,10 @@ public class MainMenu extends AbstractGUI {
 
         shops.setItemMeta(shopsMeta);
         inventory.setItem(2, shops);
-        callbacks.put(2, () -> Bukkit.dispatchCommand(player, "warp shop"));
+        callbacks.put(2, () -> {
+            Bukkit.dispatchCommand(player, "warp shop");
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
 
         /// BACK (RECENT)
         ItemStack back = getBackButton();
@@ -101,7 +111,11 @@ public class MainMenu extends AbstractGUI {
 
         back.setItemMeta(backMeta);
         inventory.setItem(7, back);
-        callbacks.put(7, () -> Bukkit.dispatchCommand(player, "back"));
+        callbacks.put(7, () -> {
+
+            Bukkit.dispatchCommand(player, "back");
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
 
         /// BACK (DEATH)
         ItemStack death = getCancelButton();
@@ -112,7 +126,10 @@ public class MainMenu extends AbstractGUI {
 
         death.setItemMeta(deathMeta);
         inventory.setItem(8, death);
-        callbacks.put(8, () -> Bukkit.dispatchCommand(player, "back death"));
+        callbacks.put(8, () -> {
+            Bukkit.dispatchCommand(player, "back death");
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
     }
 
     private void initializeHomes() {
@@ -136,7 +153,10 @@ public class MainMenu extends AbstractGUI {
 
         home.setItemMeta(homeMeta);
         inventory.setItem(9, home);
-        callbacks.put(9, () -> Bukkit.dispatchCommand(player, "home"));
+        callbacks.put(9, () -> {
+            Bukkit.dispatchCommand(player, "home");
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
 
         /// EXTRA HOMES
         List<String> extraHomeKeys = account.getExtraHomeMap().keySet().stream()
@@ -165,11 +185,32 @@ public class MainMenu extends AbstractGUI {
 
             extraHome.setItemMeta(extraHomeMeta);
             inventory.setItem(slot, extraHome);
-            callbacks.put(slot, () -> Bukkit.dispatchCommand(player, "home " + key));
+            callbacks.put(slot, () -> {
+                Bukkit.dispatchCommand(player, "home " + key);
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            });
         }
     }
 
     private void initializeLinks() {
+        /// DONOR SHOP
+        ItemStack donorShop = new ItemStack(Material.NETHER_STAR);
+        ItemMeta donorShopMeta = donorShop.getItemMeta();
+
+        donorShopMeta.displayName(Component.text("후원 상점").style(MX.STYLE_SELL));
+        donorShopMeta.lore(List.of(
+                Component.text("후원 코인을 사용할 수 있습니다.").style(MX.STYLE_NORMAL)
+        ));
+
+        donorShop.setItemMeta(donorShopMeta);
+        inventory.setItem(17, donorShop);
+        callbacks.put(17, () -> {
+            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+            DonorMenu menu = new DonorMenu(player);
+            menu.openGUI();
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
+
         /// MINELIST
         ItemStack minelist = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
         ItemMeta minelistMeta = minelist.getItemMeta();

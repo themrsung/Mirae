@@ -2,6 +2,7 @@ package com.themrsung.mirae.command;
 
 import com.themrsung.mirae.command.admin.*;
 import com.themrsung.mirae.command.debug.TestCommand;
+import com.themrsung.mirae.command.donor.DonorShopCommand;
 import com.themrsung.mirae.command.economy.*;
 import com.themrsung.mirae.command.home.*;
 import com.themrsung.mirae.command.market.*;
@@ -80,6 +81,8 @@ public final class Commands {
 
     public static final @NotNull TestCommand TEST_COMMAND = new TestCommand();
 
+    public static final @NotNull DonorShopCommand DONOR_SHOP_COMMAND = new DonorShopCommand();
+
     private static final @NotNull Set<MiraeCommand> ALL_COMMANDS = Set.of(
             SPAWN_COMMAND,
             BACK_COMMAND,
@@ -135,7 +138,9 @@ public final class Commands {
 
             MONEY_SUPPLY_COMMAND,
 
-            TEST_COMMAND
+            TEST_COMMAND,
+
+            DONOR_SHOP_COMMAND
     );
 
     /**

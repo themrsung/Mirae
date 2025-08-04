@@ -6,6 +6,7 @@ import com.themrsung.mirae.command.MiraeCommand;
 import com.themrsung.mirae.market.Market;
 import com.themrsung.mirae.market.MarketCategory;
 import com.themrsung.mirae.market.active.ActivePriceMarket;
+import com.themrsung.mirae.market.active.VolatilityLevel;
 import com.themrsung.mirae.market.fixed.FixedPriceMarket;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -78,7 +79,24 @@ public class CreateMarketCommand extends MiraeCommand {
 
         String typeQuery = args[0];
         if (typeQuery.equalsIgnoreCase("active")) {
-            market = new ActivePriceMarket(name, item, category, initialPrice);
+            ActivePriceMarket apm = new ActivePriceMarket(name, item, category, initialPrice);
+            market = apm;
+
+            if (args.length > 4) {
+                String arg4 = args[4];
+                VolatilityLevel level;
+
+                try {
+                    level = VolatilityLevel.valueOf(arg4.toUpperCase());
+                } catch (IllegalArgumentException ignored) {
+                    level = null;
+                }
+
+                if (level != null) {
+                    apm.setVolatilityLevel(level);
+                }
+            }
+
         } else if (typeQuery.equalsIgnoreCase("fixed")) {
             market = new FixedPriceMarket(name, item, category);
             var fpm = (FixedPriceMarket) market;
@@ -92,11 +110,11 @@ public class CreateMarketCommand extends MiraeCommand {
         Mirae.getState().addMarket(market);
 
         sender.sendMessage(Component.text("상점이 추가되었습니다.").style(MX.STYLE_GOOD)
-                .append(Component.text(" [")).style(MX.STYLE_NORMAL)
+                .append(Component.text(" [").style(MX.STYLE_NORMAL))
                 .append(Component.text(market.getUniqueId().toString())).style(MX.STYLE_NORMAL)
                 .hoverEvent(HoverEvent.showText(Component.text("클릭하여 복사합니다...").style(MX.STYLE_NORMAL)))
                 .clickEvent(ClickEvent.copyToClipboard(market.getUniqueId().toString()))
-                .append(Component.text("]")));
+                .append(Component.text("]").style(MX.STYLE_NORMAL)));
 
         return true;
     }
@@ -112,6 +130,17 @@ public class CreateMarketCommand extends MiraeCommand {
                     .filter(s -> s.startsWith(args[2].toLowerCase()))
                     .toList();
             case 4 -> List.of("가격을 입력하세요...");
+            case 5 -> {
+                if (args[0].equalsIgnoreCase("active")) {
+                    yield Arrays.stream(VolatilityLevel.values())
+                            .map(VolatilityLevel::toString)
+                            .map(String::toLowerCase)
+                            .filter(s -> s.startsWith(args[4].toLowerCase()))
+                            .toList();
+                } else {
+                    yield List.of();
+                }
+            }
             default -> List.of();
         };
     }

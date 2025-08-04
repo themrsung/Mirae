@@ -71,6 +71,11 @@ public interface EconomyCause {
      */
     @NotNull EconomyCause MARKET_TRANSACTION_SELL = new InitialCause("Market Transaction (SELL)");
 
+    /**
+     * Buy from donor shop.
+     */
+    @NotNull EconomyCause DONOR_SHOP_BUY = new InitialCause("Bought item from Donor Shop");
+
     ///
     /// Custom cause
     ///

@@ -29,7 +29,10 @@ public enum VolatilityLevel {
      */
     RARE(2, 500),
 
-    ;
+    /**
+     * Speculative. Do not use frequently.
+     */
+    SPECULATIVE(20, 32);
 
     /**
      * Creates a new volatility level.

@@ -3,6 +3,8 @@ package com.themrsung.mirae.command.admin;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.command.MiraeCommand;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,7 +57,9 @@ public class ItemNameCommand extends MiraeCommand {
         }
 
         String rawName = String.join(" ", args);
-        Component itemName = MiniMessage.miniMessage().deserialize(rawName);
+        Component itemName = MiniMessage.miniMessage().deserialize(rawName).applyFallbackStyle(Style.style()
+                .decoration(TextDecoration.ITALIC, false)
+                .build());
 
         meta.displayName(itemName);
         meta.itemName(itemName);

@@ -208,8 +208,8 @@ public final class MX {
         int stackSize = item.getType().getMaxStackSize();
         int space = stackSize * queryLimit;
 
-        ItemStack[] contents = inventory.getContents();
-        for (int i = 0; i < Math.max(contents.length, queryLimit); i++) {
+        ItemStack[] contents = inventory.getStorageContents();
+        for (int i = 0; i < contents.length; i++) {
             ItemStack stack = contents[i];
 
             if (stack == null || stack.getType() == Material.AIR) continue;

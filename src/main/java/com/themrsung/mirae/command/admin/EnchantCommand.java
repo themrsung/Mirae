@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -144,10 +143,7 @@ public class EnchantCommand extends MiraeCommand {
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String @NotNull [] args) throws IllegalArgumentException {
         return switch (args.length) {
             case 1 -> {
-                List<String> enchantments = new ArrayList<>(Arrays.stream(Enchantment.values())
-                        .map(Enchantment::toString)
-                        .map(String::toLowerCase)
-                        .toList());
+                List<String> enchantments = new ArrayList<>();
 
                 enchantments.add("unbreakable");
                 enchantments.add("breakable");

@@ -4,6 +4,7 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.command.MiraeCommand;
 import com.themrsung.mirae.market.Market;
+import com.themrsung.mirae.market.MarketCategory;
 import com.themrsung.mirae.market.active.ActivePriceMarket;
 import com.themrsung.mirae.market.active.VolatilityLevel;
 import com.themrsung.mirae.market.fixed.FixedPriceMarket;
@@ -57,7 +58,12 @@ public class EditMarketCommand extends MiraeCommand {
             }
 
             sender.sendMessage(Component.text("시장 관리: ").style(MX.STYLE_NORMAL)
-                    .append(Component.text(market.getName())).style(MX.STYLE_SPECIAL));
+                    .append(Component.text(market.getName())));
+
+            sender.sendMessage(Component.text("  - 카테고리: ").style(MX.STYLE_NORMAL)
+                    .append(Component.text(market.getCategory().toString().toLowerCase()).style(MX.STYLE_SPECIAL)
+                            .hoverEvent(HoverEvent.showText(Component.text("클릭하여 수정합니다...")))
+                            .clickEvent(ClickEvent.suggestCommand("/editmarket " + market.getUniqueId() + " category "))));
 
             switch (market.getType()) {
                 case ACTIVE_PRICE -> {
@@ -87,7 +93,7 @@ public class EditMarketCommand extends MiraeCommand {
                 }
             }
 
-            sender.sendMessage(Component.text("[삭제하기]").style(MX.STYLE_ERROR)
+            sender.sendMessage(Component.text(" === [삭제하기] ===").style(MX.STYLE_ERROR)
                     .clickEvent(ClickEvent.suggestCommand("/removemarket " + market.getUniqueId())));
 
             return true;
@@ -110,6 +116,20 @@ public class EditMarketCommand extends MiraeCommand {
         }
 
         String param = args[1].toLowerCase();
+
+        if (param.equalsIgnoreCase("category")) {
+            try {
+                MarketCategory category = MarketCategory.valueOf(args[2].toUpperCase());
+                market.setCategory(category);
+                sender.sendMessage(EDIT_SUCCESSFUL);
+                return true;
+
+            } catch (IllegalArgumentException e) {
+                sender.sendMessage(INTERNAL_ERROR);
+                return false;
+            }
+        }
+
         return switch (market.getType()) {
             case ACTIVE_PRICE -> {
                 ActivePriceMarket apm = (ActivePriceMarket) market;
@@ -207,6 +227,12 @@ public class EditMarketCommand extends MiraeCommand {
                 } else if (args[1].equalsIgnoreCase("volatilitylevel")) {
                     yield Arrays.stream(VolatilityLevel.values())
                             .map(VolatilityLevel::toString)
+                            .map(String::toLowerCase)
+                            .filter(s -> s.startsWith(args[2].toLowerCase()))
+                            .toList();
+                } else if (args[1].equalsIgnoreCase("category")) {
+                    yield Arrays.stream(MarketCategory.values())
+                            .map(MarketCategory::toString)
                             .map(String::toLowerCase)
                             .filter(s -> s.startsWith(args[2].toLowerCase()))
                             .toList();
