@@ -18,7 +18,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Main Menu (Shift + F)
@@ -255,6 +255,7 @@ public class MainMenu extends AbstractGUI {
             inventory.setItem(18, workbench);
             callbacks.put(18, () -> {
                 player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
                 new VirtualWorkbench(player).openGUI();
             });
         } else {
@@ -266,6 +267,7 @@ public class MainMenu extends AbstractGUI {
 
             unlockedAtGreen.setItemMeta(meta);
             inventory.setItem(18, unlockedAtGreen);
+            callbacks.put(18, () -> player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1));
         }
 
         if (account.getTier().isAtLeast(AccountTier.GOLD)) {
@@ -278,6 +280,7 @@ public class MainMenu extends AbstractGUI {
             inventory.setItem(19, enderChest);
             callbacks.put(19, () -> {
                 player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
                 new VirtualEnderChest(player).openGUI();
             });
         } else {
@@ -289,6 +292,7 @@ public class MainMenu extends AbstractGUI {
 
             unlockedAtGold.setItemMeta(meta);
             inventory.setItem(19, unlockedAtGold);
+            callbacks.put(19, () -> player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1));
         }
     }
 
@@ -297,9 +301,7 @@ public class MainMenu extends AbstractGUI {
 
     @Override
     protected void onClick(@NotNull InventoryClickEvent e) {
-        Inventory clicked = e.getClickedInventory();
-        if (clicked == null || clicked.getHolder() != null) return;
-
+        if (!Objects.equals(inventory, e.getClickedInventory())) return;
         e.setCancelled(true);
 
         int slot = e.getSlot();

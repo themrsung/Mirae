@@ -407,6 +407,7 @@ public class MarketMenu extends AbstractGUI {
 
     @Override
     protected void onClick(@NotNull InventoryClickEvent e) {
+        if (!Objects.equals(inventory, e.getClickedInventory())) return;
         e.setCancelled(true);
 
         var callback = callbacks.get(e.getSlot());

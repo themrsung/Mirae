@@ -8,18 +8,21 @@ import com.themrsung.mirae.economy.EconomyResult;
 import com.themrsung.mirae.gui.AbstractGUI;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Menu for donors.
@@ -38,6 +41,16 @@ public class DonorMenu extends AbstractGUI {
             return n - 9;
         }
     }
+
+    /**
+     * Random player head price.
+     */
+    public static final long RANDOM_PLAYER_HEAD_PRICE = 3;
+
+    /**
+     * Recent days.
+     */
+    public static final int RANDOM_PLAYER_RECENT_DAYS = 5;
 
     /**
      * Creates a new menu.
@@ -59,7 +72,7 @@ public class DonorMenu extends AbstractGUI {
         inventory.clear();
         callbacks.clear();
 
-        // Donor info
+        /// Donor info
         CustomStack medalStack = CustomStack.getInstance("iageneric:donator_medal");
         if (medalStack != null) {
             ItemStack medalItem = medalStack.getItemStack();
@@ -79,6 +92,7 @@ public class DonorMenu extends AbstractGUI {
             callbacks.put(0, () -> player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1));
         }
 
+        /// EXTRA HOME
         ItemStack buyHome = new ItemStack(Material.WHITE_STAINED_GLASS);
         ItemMeta homeMeta = buyHome.getItemMeta();
 
@@ -120,10 +134,66 @@ public class DonorMenu extends AbstractGUI {
             player.sendMessage(Component.text("추가 홈을 구입하였습니다!").style(MX.STYLE_GOOD));
             player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
         });
+
+        /// RANDOM PLAYER HEAD
+        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta headMeta = (SkullMeta) playerHead.getItemMeta();
+
+        headMeta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("935084d8-c05e-46ab-b8a1-b04d4f049584")));
+        headMeta.displayName(Component.text("랜덤 머리").style(MX.STYLE_GOOD));
+        headMeta.lore(List.of(
+                Component.text("최근 " + RANDOM_PLAYER_RECENT_DAYS + "일간 접속한 플레이어 중 랜덤으로 머리를 획득합니다.").style(MX.STYLE_NORMAL),
+                Component.text("  - 가격: ").style(MX.STYLE_NORMAL)
+                        .append(Component.text(MX.formatCoinBalance(RANDOM_PLAYER_HEAD_PRICE)).style(MX.STYLE_SPECIAL))
+        ));
+
+        playerHead.setItemMeta(headMeta);
+        inventory.setItem(3, playerHead);
+        callbacks.put(3, () -> {
+            long balance = account.getCoinBalance();
+
+            if (balance < RANDOM_PLAYER_HEAD_PRICE) {
+                player.sendMessage(Component.text("후원 코인이 부족합니다.").style(MX.STYLE_ERROR));
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+                return;
+            }
+
+            LocalDateTime cutoff = LocalDateTime.now().minusDays(RANDOM_PLAYER_RECENT_DAYS);
+
+            Set<UUID> playerIds = Bukkit.getOnlinePlayers().stream().map(OfflinePlayer::getUniqueId).collect(Collectors.toSet());
+            Mirae.getState().getAccounts().forEach(a -> {
+                LocalDateTime lastSeen = a.getLastSeenTime();
+                if (lastSeen == null || lastSeen.isBefore(cutoff)) return;
+
+                playerIds.add(a.getUniqueId());
+            });
+
+            List<UUID> playerIdList = new ArrayList<>(playerIds);
+            Collections.shuffle(playerIdList);
+
+            OfflinePlayer target = Bukkit.getOfflinePlayer(playerIdList.getFirst());
+            Account targetAccount = MX.requireAccountNonNull(Mirae.getState().getAccount(target));
+
+            String targetName = targetAccount.getName();
+
+            EconomyResult result = Mirae.getState().withdrawCoinBalance(account, RANDOM_PLAYER_HEAD_PRICE, EconomyCause.DONOR_SHOP_BUY, "Bought random player head.");
+            if (!result.isSuccess()) {
+                player.sendMessage(Component.text("오류가 발생했습니다."));
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+                return;
+            }
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " minecraft:player_head[minecraft:profile=" + targetName + "]");
+
+            player.sendMessage(targetAccount.getDisplayName(MX.STYLE_SPECIAL)
+                    .append(Component.text("님의 머리를 획득했습니다.").style(MX.STYLE_NORMAL)));
+            player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+        });
     }
 
     @Override
     protected void onClick(@NotNull InventoryClickEvent e) {
+        if (!Objects.equals(inventory, e.getClickedInventory())) return;
         e.setCancelled(true);
 
         Runnable callback = callbacks.get(e.getSlot());
