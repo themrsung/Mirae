@@ -412,6 +412,8 @@ public final class MX {
     public static @NotNull String getKoreanMaterialName(@NotNull Material material) {
         return switch (material) {
             case DRAGON_EGG -> "Nine_heads의 알";
+            case DRAGON_HEAD -> "Nine_heads의 첫번째 머리";
+            case DRAGON_BREATH -> "Nine_heads의 숨결";
             case NETHER_STAR -> "asqwzx의 별";
 
             case NETHERITE_SWORD -> "네더라이트 칼";
