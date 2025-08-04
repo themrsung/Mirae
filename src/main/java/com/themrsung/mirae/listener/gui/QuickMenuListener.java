@@ -1,7 +1,7 @@
 package com.themrsung.mirae.listener.gui;
 
 import com.themrsung.mirae.gui.GUI;
-import com.themrsung.mirae.gui.MainMenu;
+import com.themrsung.mirae.gui.convenience.MainMenu;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;

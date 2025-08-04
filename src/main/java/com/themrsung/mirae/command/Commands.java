@@ -44,6 +44,8 @@ public final class Commands {
     public static final @NotNull GetTitleCommand GET_TITLE_COMMAND = new GetTitleCommand();
     public static final @NotNull SetDisplayNameCommand SET_DISPLAY_NAME_COMMAND = new SetDisplayNameCommand();
     public static final @NotNull MuteCommand MUTE_COMMAND = new MuteCommand();
+    public static final @NotNull ItemNameCommand ITEM_NAME_COMMAND = new ItemNameCommand();
+    public static final @NotNull EnchantCommand ENCHANT_COMMAND = new EnchantCommand();
 
     public static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     public static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
@@ -99,6 +101,8 @@ public final class Commands {
             GET_TITLE_COMMAND,
             SET_DISPLAY_NAME_COMMAND,
             MUTE_COMMAND,
+            ITEM_NAME_COMMAND,
+            ENCHANT_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,

@@ -6,9 +6,13 @@ import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.gui.AbstractGUI;
 import com.themrsung.mirae.market.Market;
 import com.themrsung.mirae.market.MarketCategory;
+import com.themrsung.mirae.market.OrderResult;
 import com.themrsung.mirae.market.PriceQueryResult;
+import com.themrsung.mirae.market.active.ActivePriceMarket;
+import com.themrsung.mirae.market.fixed.FixedPriceMarket;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -17,10 +21,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -38,6 +40,11 @@ public class MarketMenu extends AbstractGUI {
     public static final int PAGE_SIZE = 45;
 
     /**
+     * Safety margin for balance checks.
+     */
+    public static final double BUY_SAFETY_MARGIN = 0.005;
+
+    /**
      * Creates a new market menu.
      *
      * @param player The player
@@ -45,9 +52,14 @@ public class MarketMenu extends AbstractGUI {
     public MarketMenu(@NotNull Player player) {
         super(player, GUI_SIZE, Component.text("전체 상점").style(MX.STYLE_SPECIAL));
 
-        this.markets = Mirae.getState().getMarkets();
+        this.markets = List.copyOf(Mirae.getState().getMarkets());
 
-        initializeTest();
+        this.currentPage = 0;
+        this.numPages = Math.ceilDiv(markets.size(), PAGE_SIZE);
+
+        this.callbacks = new HashMap<>();
+
+        initialize();
     }
 
     /**
@@ -74,7 +86,12 @@ public class MarketMenu extends AbstractGUI {
                 .filter(m -> m.getCategory() == category)
                 .toList();
 
-        initializeTest();
+        this.currentPage = 0;
+        this.numPages = Math.ceilDiv(markets.size(), PAGE_SIZE);
+
+        this.callbacks = new HashMap<>();
+
+        initialize();
     }
 
     /**
@@ -95,89 +112,282 @@ public class MarketMenu extends AbstractGUI {
 
         this.markets = List.copyOf(markets);
 
-        initializeTest();
+        this.currentPage = 0;
+        this.numPages = Math.ceilDiv(markets.size(), PAGE_SIZE);
+
+        this.callbacks = new HashMap<>();
+
+        initialize();
     }
 
     private final List<Market> markets;
     private int updateTask;
 
-    private void initializeTest() {
+    private int currentPage;
+    private final int numPages;
+
+    private final Map<Integer, Consumer<? super InventoryClickEvent>> callbacks;
+
+    private void initialize() {
         updateTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Mirae.getInstance(), this::updateMarketData, 10, 1);
+
+        renderNavigation();
         updateMarketData();
     }
 
-    private void updateMarketData() {
-        for (int i = 0; i < Math.min(markets.size(), PAGE_SIZE); i++) {
-            Market market = markets.get(i);
-            ItemStack item = market.getItem();
-            int stackSize = item.getType().getMaxStackSize();
-
-            PriceQueryResult buyOne = market.getBuyPrice(1);
-            PriceQueryResult buyStack = market.getBuyPrice(stackSize);
-
-            PriceQueryResult sellOne = market.getSellPrice(1);
-            PriceQueryResult sellStack = market.getSellPrice(stackSize);
-
-            int itemsInInventory = MX.countItems(player.getInventory(), item);
-            PriceQueryResult sellAll = market.getSellPrice(itemsInInventory);
-
-            List<String> rawLore = List.of(
-                    "1개 구매: " + MX.formatBalance(buyOne.volume()) + " (좌클릭)",
-                    buyStack.quantity() + "개 구매: " + MX.formatBalance(buyStack.volume()) + " (Shift + 좌클릭)",
-                    "1개 판매: " + MX.formatBalance(sellOne.volume()) + " (우클릭)",
-                    sellStack.quantity() + "개 판매: " + MX.formatBalance(sellStack.volume()) + " (Shift + 우클릭)",
-                    sellAll.quantity() + "개 판매: " + MX.formatBalance(sellAll.volume()) + " (Q)",
-                    "매수잔량: " + market.getTotalBidQuantity() + " / 매도잔량: " + market.getTotalAskQuantity()
-            );
-
-            List<Component> lore = rawLore.stream().map(l -> (Component) Component.text(l)).toList();
-
-            ItemMeta meta = item.getItemMeta();
-
-            List<Component> existingLore = meta.lore();
-            List<Component> finalLore = new ArrayList<>();
-
-            if (existingLore != null) {
-                finalLore.addAll(existingLore);
-                if (!existingLore.isEmpty()) finalLore.add(Component.empty());
+    private void renderNavigation() {
+        /// 52: PREVIOUS
+        ItemStack previous = getPreviousButton();
+        inventory.setItem(52, previous);
+        callbacks.put(52, e -> {
+            if (currentPage == 0) {
+                player.sendMessage(Component.text("첫번째 페이지입니다.").style(MX.STYLE_WARNING));
+            } else {
+                currentPage--;
+                player.sendMessage(Component.text("이전 페이지로 이동합니다.").style(MX.STYLE_GOOD));
             }
 
-            finalLore.addAll(lore);
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            updateMarketData();
+        });
 
-            meta.lore(finalLore);
+        /// 53: NEXT
+        ItemStack next = getNextButton();
+        inventory.setItem(53, next);
+        callbacks.put(53, e -> {
+            if (currentPage >= numPages - 1) {
+                player.sendMessage(Component.text("마지막 페이지입니다.").style(MX.STYLE_WARNING));
+            } else {
+                currentPage++;
+                player.sendMessage(Component.text("다음 페이지로 이동합니다.").style(MX.STYLE_GOOD));
+            }
 
-            item.setItemMeta(meta);
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            updateMarketData();
+        });
+    }
 
-            inventory.setItem(i, item);
+    private void renderBlank(int slot) {
+        inventory.setItem(slot, null);
+        callbacks.put(slot, null);
+    }
+
+    private void renderItem(int slot, Market market) {
+        ItemStack item = market.getItem();
+        ItemMeta meta = item.getItemMeta();
+        List<Component> lore = new ArrayList<>(Objects.requireNonNullElse(meta.lore(), List.of()));
+
+        int stackSize = item.getType().getMaxStackSize();
+
+        int itemCount = MX.countItems(player.getInventory(), item);
+
+        switch (market) {
+            case ActivePriceMarket apm -> {
+                PriceQueryResult buyOne = market.getBuyPrice(1);
+                if (buyOne.quantity() < 1) {
+                    lore.add(Component.text("판매가: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text("(재고 없음)").style(MX.STYLE_BUY)));
+                } else {
+                    lore.add(Component.text("판매가").style(MX.STYLE_NORMAL));
+                    lore.add(Component.text("  - 1개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(buyOne.volume())).style(MX.STYLE_BUY))
+                            .append(Component.text(" [좌클릭]").style(MX.STYLE_NORMAL)));
+
+                    if (stackSize > 1) {
+                        PriceQueryResult buyStack = market.getBuyPrice(stackSize);
+                        if (buyStack.quantity() > 1) {
+                            lore.add(Component.text("  - " + buyStack.quantity() + "개: ").style(MX.STYLE_NORMAL)
+                                    .append(Component.text(MX.formatBalance(buyStack.volume())).style(MX.STYLE_BUY))
+                                    .append(Component.text(" [Shift + 좌클릭]").style(MX.STYLE_NORMAL)));
+                        }
+                    }
+                }
+
+                PriceQueryResult sellOne = market.getSellPrice(1);
+                if (sellOne.quantity() < 1) {
+                    lore.add(Component.text("매입가: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text("(매입 중단)").style(MX.STYLE_SELL)));
+                } else {
+                    lore.add(Component.text("매입가").style(MX.STYLE_NORMAL));
+                    lore.add(Component.text("  - 1개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(sellOne.volume())).style(MX.STYLE_SELL))
+                            .append(Component.text(" [우클릭]").style(MX.STYLE_NORMAL)));
+
+                    if (stackSize > 1) {
+                        PriceQueryResult sellStack = market.getSellPrice(stackSize);
+                        if (sellStack.quantity() > 1) {
+                            lore.add(Component.text("  - " + sellStack.quantity() + "개: ").style(MX.STYLE_NORMAL)
+                                    .append(Component.text(MX.formatBalance(sellStack.volume())).style(MX.STYLE_SELL))
+                                    .append(Component.text(" [Shift + 우클릭]").style(MX.STYLE_NORMAL)));
+
+                            PriceQueryResult sellAll = market.getSellPrice(itemCount);
+
+                            lore.add(Component.text("  - " + sellAll.quantity() + "개: ").style(MX.STYLE_NORMAL)
+                                    .append(Component.text(MX.formatBalance(sellAll.volume())).style(MX.STYLE_SELL))
+                                    .append(Component.text(" [Q]").style(MX.STYLE_NORMAL)));
+                        }
+                    }
+                }
+            }
+
+            case FixedPriceMarket fpm -> {
+                PriceQueryResult buy = fpm.getBuyPrice(1);
+                PriceQueryResult sell = fpm.getSellPrice(1);
+
+                double buyPrice = buy.price();
+                double sellPrice = sell.price();
+
+                boolean canBuy = buyPrice >= 0;
+                boolean canSell = sellPrice >= 0;
+
+                if (canBuy) {
+                    lore.add(Component.text("판매가").style(MX.STYLE_NORMAL));
+                    lore.add(Component.text("  - 1개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(buyPrice)).style(MX.STYLE_BUY))
+                            .append(Component.text(" [좌클릭]").style(MX.STYLE_NORMAL)));
+
+                    lore.add(Component.text("  - " + stackSize + "개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(buyPrice * stackSize)).style(MX.STYLE_BUY))
+                            .append(Component.text(" [Shift + 좌클릭]").style(MX.STYLE_NORMAL)));
+                } else {
+                    lore.add(Component.text("판매가: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text("(재고 없음)").style(MX.STYLE_BUY)));
+                }
+
+                if (canSell) {
+                    lore.add(Component.text("매입가").style(MX.STYLE_NORMAL));
+                    lore.add(Component.text("  - 1개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(sellPrice)).style(MX.STYLE_SELL))
+                            .append(Component.text(" [우클릭]").style(MX.STYLE_NORMAL)));
+
+                    lore.add(Component.text("  - " + stackSize + "개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(sellPrice * stackSize)).style(MX.STYLE_SELL))
+                            .append(Component.text(" [Shift + 우클릭]").style(MX.STYLE_NORMAL)));
+
+                    lore.add(Component.text("  - " + itemCount + "개: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text(MX.formatBalance(sellPrice * itemCount)).style(MX.STYLE_SELL))
+                            .append(Component.text(" [Q]").style(MX.STYLE_NORMAL)));
+                } else {
+                    lore.add(Component.text("매입가: ").style(MX.STYLE_NORMAL)
+                            .append(Component.text("(매입 중단)").style(MX.STYLE_SELL)));
+                }
+            }
+
+            default -> renderBlank(slot);
+        }
+
+        meta.lore(lore);
+        item.setItemMeta(meta);
+        inventory.setItem(slot, item);
+
+        Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
+        callbacks.put(slot, e -> {
+            switch (e.getClick()) {
+                case LEFT -> onBuyClick(account, market, 1);
+                case SHIFT_LEFT -> onBuyClick(account, market, stackSize);
+                case RIGHT -> onSellClick(account, market, 1);
+                case SHIFT_RIGHT -> onSellClick(account, market, stackSize);
+                case DROP, CONTROL_DROP -> onSellClick(account, market, itemCount);
+            }
+        });
+    }
+
+    private void onBuyClick(@NotNull Account account, @NotNull Market market, int quantity) {
+        PriceQueryResult pqr = market.getBuyPrice(quantity);
+
+        if (Mirae.getState().isEconomyFrozen()) {
+            player.sendMessage(Component.text("경제가 동결되었습니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        if (account.isWalletFrozen()) {
+            player.sendMessage(Component.text("계좌가 동결되었습니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        // Calculations are complex to allow negative price trades
+
+        double absoluteVolume = Math.abs(pqr.volume());
+        double safetyMargin = absoluteVolume * BUY_SAFETY_MARGIN;
+        double minimumBalance = pqr.volume() + safetyMargin;
+
+        if (minimumBalance > 0 && account.getBalance() < minimumBalance) {
+            player.sendMessage(Component.text("잔액이 부족합니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        ItemStack items = market.getItem();
+        items.setAmount(quantity);
+
+        int inventorySpace = MX.getRemainingSpaceFor(player.getInventory(), items);
+        if (inventorySpace < quantity) {
+            player.sendMessage(Component.text("인벤토리에 공간이 부족합니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        OrderResult result = market.buy(account, player.getInventory(), quantity);
+        notifyPlayer(items, (int) result.quantityFulfilled(), true);
+    }
+
+    private void onSellClick(@NotNull Account account, @NotNull Market market, int quantity) {
+        if (Mirae.getState().isEconomyFrozen()) {
+            player.sendMessage(Component.text("경제가 동결되었습니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        if (account.isWalletFrozen()) {
+            player.sendMessage(Component.text("계좌가 동결되었습니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        ItemStack items = market.getItem();
+        items.setAmount(quantity);
+
+        int itemsInInventory = MX.countItems(player.getInventory(), items);
+        if (itemsInInventory < quantity) {
+            player.sendMessage(Component.text("아이템이 부족합니다.").style(MX.STYLE_ERROR));
+            return;
+        }
+
+        OrderResult result = market.sell(account, player.getInventory(), quantity);
+        notifyPlayer(items, (int) result.quantityFulfilled(), false);
+    }
+
+    private void notifyPlayer(@NotNull ItemStack item, int quantity, boolean buy) {
+        Component name = Component.text(item.getType().toString()).style(MX.STYLE_SPECIAL);
+
+        player.sendMessage(name
+                .appendSpace()
+                .append(Component.text(quantity + "개").style(MX.STYLE_SPECIAL))
+                .append(Component.text("를 ").style(MX.STYLE_NORMAL))
+                .append(buy ? Component.text("구매").style(MX.STYLE_BUY) : Component.text("판매").style(MX.STYLE_SELL))
+                .append(Component.text("했습니다.").style(MX.STYLE_NORMAL)));
+    }
+
+    private void updateMarketData() {
+        int j = 0;
+        int start = currentPage * PAGE_SIZE;
+        int end = Math.min(start + PAGE_SIZE, markets.size());
+
+        for (int i = start; i < end; i++) {
+            renderItem(j++, markets.get(i));
+        }
+
+        // 나머지 칸 빈칸 처리
+        while (j < PAGE_SIZE) {
+            renderBlank(j++);
         }
 
         player.updateInventory();
     }
 
-    //
-    //
-    ///
-    // TODO ADD PAGES
-    //
-    //
-
-    /// //
-
     @Override
     protected void onClick(@NotNull InventoryClickEvent e) {
         e.setCancelled(true);
 
-        Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
-
-        int slot = e.getSlot();
-        if (slot >= markets.size()) return;
-
-        Market market = markets.get(slot);
-        switch (e.getClick()) {
-            case LEFT -> market.buy(account, player.getInventory(), 1);
-            case SHIFT_LEFT -> market.buy(account, player.getInventory(), 64); // TODO
-            case RIGHT -> market.sell(account, player.getInventory(), 1);
-            case SHIFT_RIGHT -> market.sell(account, player.getInventory(), 64); // TODO
+        var callback = callbacks.get(e.getSlot());
+        if (callback != null) {
+            callback.accept(e);
         }
 
         updateMarketData();

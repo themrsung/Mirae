@@ -87,6 +87,9 @@ public class EditMarketCommand extends MiraeCommand {
                 }
             }
 
+            sender.sendMessage(Component.text("[삭제하기]").style(MX.STYLE_ERROR)
+                    .clickEvent(ClickEvent.suggestCommand("/removemarket " + market.getUniqueId())));
+
             return true;
         } else if (args.length < 3) {
             sender.sendMessage(Component.text("/editmarket 고유번호"));

@@ -1,11 +1,10 @@
-package com.themrsung.mirae.gui;
+package com.themrsung.mirae.gui.convenience;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
-import com.themrsung.mirae.gui.convenience.VirtualEnderChest;
-import com.themrsung.mirae.gui.convenience.VirtualWorkbench;
+import com.themrsung.mirae.gui.AbstractGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.Style;

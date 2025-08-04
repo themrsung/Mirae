@@ -205,7 +205,7 @@ public final class FixedPriceMarket extends AbstractMarket {
         }
 
         double amountToDeposit = Math.floor(sellPrice * quantity * (1 - FIXED_MARKET_FEE_RATE));
-        account.modifyBalance(-amountToDeposit, EconomyCause.MARKET_TRANSACTION_SELL, "Sold items to market.");
+        account.modifyBalance(amountToDeposit, EconomyCause.MARKET_TRANSACTION_SELL, "Sold items to market.");
 
         ItemStack items = getItem();
         items.setAmount((int) quantity);

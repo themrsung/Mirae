@@ -294,7 +294,8 @@ public final class ActivePriceMarket extends AbstractMarket {
 
         long existingOrders = existingBuy + existingSell;
         double remainingOrderRatio = (double) existingOrders / (double) volatilityLevel.getTotalOrderCount();
-        if (remainingOrderRatio > SERVER_ORDER_UPDATE_THRESHOLD) return;
+        if (remainingOrderRatio > SERVER_ORDER_UPDATE_THRESHOLD || existingOrders > volatilityLevel.getTotalOrderCount())
+            return;
 
         boolean marketBuying = existingSell >= existingBuy;
 
