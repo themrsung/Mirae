@@ -1,4 +1,4 @@
-package com.themrsung.mirae.command.admin;
+package com.themrsung.mirae.command.warp;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;

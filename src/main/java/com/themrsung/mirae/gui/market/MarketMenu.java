@@ -57,7 +57,7 @@ public class MarketMenu extends AbstractGUI {
      * @param category The category
      */
     public MarketMenu(@NotNull Player player, @NotNull MarketCategory category) {
-        this(player, category, null);
+        this(player, category, category.getDisplayName());
     }
 
     /**

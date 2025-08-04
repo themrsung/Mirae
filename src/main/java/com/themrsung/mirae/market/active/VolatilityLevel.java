@@ -62,4 +62,13 @@ public enum VolatilityLevel {
     public long getQuantityPerStep() {
         return quantityPerStep;
     }
+
+    /**
+     * Returns the total order volume.
+     *
+     * @return The total order volume
+     */
+    public long getTotalOrderCount() {
+        return numSteps * quantityPerStep * 2;
+    }
 }

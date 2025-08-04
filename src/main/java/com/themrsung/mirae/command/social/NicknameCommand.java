@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Nickname command.
@@ -60,6 +61,13 @@ public class NicknameCommand extends MiraeCommand {
         } else {
             displayName = Component.text(messageRaw.substring(0, Math.min(messageRaw.length(), 10)))
                     .style(MX.STYLE_SPECIAL);
+        }
+
+        if (Mirae.getState().getAccounts().stream()
+                .map(Account::getDisplayName)
+                .anyMatch(n -> Objects.equals(n, displayName))) {
+            sender.sendMessage(NAME_ALREADY_TAKEN);
+            return false;
         }
 
         account.setDisplayName(displayName);

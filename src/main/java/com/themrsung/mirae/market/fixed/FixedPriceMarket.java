@@ -156,7 +156,7 @@ public final class FixedPriceMarket extends AbstractMarket {
     public void setSellPrice(double sellPrice) {
         double previous = this.sellPrice;
 
-        this.sellPrice = buyPrice;
+        this.sellPrice = sellPrice;
 
         try {
             requireValidSpread();

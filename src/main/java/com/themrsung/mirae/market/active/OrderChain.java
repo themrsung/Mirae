@@ -6,10 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * An order chain.
@@ -18,7 +16,7 @@ public final class OrderChain implements Serializable {
     /**
      * The recent fulfillment cutoff.
      */
-    public static final int RECENT_FULFILLMENT_CUTOFF = 50;
+    public static final int RECENT_FULFILLMENT_CUTOFF = 5;
 
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
@@ -46,7 +44,7 @@ public final class OrderChain implements Serializable {
      */
     public OrderChain() {
         this.recentPrice = Double.NaN;
-        this.fulfillmentStack = new Stack<>();
+        this.fulfillmentQueue = new ConcurrentLinkedQueue<>();
 
         this.buyOrders = Collections.synchronizedList(new ArrayList<>());
         this.sellOrders = Collections.synchronizedList(new ArrayList<>());
@@ -59,16 +57,16 @@ public final class OrderChain implements Serializable {
      */
     public OrderChain(@NotNull OrderChain c) {
         this.recentPrice = c.recentPrice;
-        this.fulfillmentStack = new Stack<>();
+        this.fulfillmentQueue = new ArrayDeque<>();
 
         this.buyOrders = Collections.synchronizedList(new ArrayList<>(c.buyOrders));
         this.sellOrders = Collections.synchronizedList(new ArrayList<>(c.sellOrders));
 
-        this.fulfillmentStack.addAll(c.fulfillmentStack);
+        this.fulfillmentQueue.addAll(c.fulfillmentQueue);
     }
 
     private double recentPrice;
-    private final @NotNull Stack<Fulfillment> fulfillmentStack;
+    private final @NotNull Queue<Fulfillment> fulfillmentQueue;
 
     private transient final @NotNull List<Order> buyOrders;
     private transient final @NotNull List<Order> sellOrders;
@@ -88,7 +86,7 @@ public final class OrderChain implements Serializable {
      * @return The list of recent fulfillments
      */
     public @NotNull List<Fulfillment> getRecentFulfillments() {
-        return List.copyOf(fulfillmentStack);
+        return List.copyOf(fulfillmentQueue);
     }
 
     /**
@@ -97,7 +95,7 @@ public final class OrderChain implements Serializable {
      * @return The recent fulfillment quantity sum
      */
     public long getRecentFulfillmentQuantity() {
-        return fulfillmentStack.stream().mapToLong(Fulfillment::quantity).sum();
+        return fulfillmentQueue.stream().mapToLong(Fulfillment::quantity).sum();
     }
 
     /**
@@ -109,12 +107,12 @@ public final class OrderChain implements Serializable {
         double tally = 0;
         long quantity = 0;
 
-        for (Fulfillment f : List.copyOf(fulfillmentStack)) {
+        for (Fulfillment f : List.copyOf(fulfillmentQueue)) {
             tally += f.price() * f.quantity();
             quantity += f.quantity();
         }
 
-        if (quantity == 0) return 0;
+        if (quantity == 0) return recentPrice;
         return Math.round(tally / quantity);
     }
 
@@ -123,7 +121,7 @@ public final class OrderChain implements Serializable {
      *
      * @return The current market price
      */
-    public double getMarketPrice() {
+    public synchronized double getMarketPrice() {
         sortOrders();
 
         Order firstBuy = buyOrders.getFirst();
@@ -164,7 +162,7 @@ public final class OrderChain implements Serializable {
     /**
      * Sorts the order list.
      */
-    public void sortOrders() {
+    public synchronized void sortOrders() {
         buyOrders.sort(Order::buyCompare);
         sellOrders.sort(Order::sellCompare);
     }
@@ -172,50 +170,56 @@ public final class OrderChain implements Serializable {
     /**
      * Process outstanding orders.
      */
-    public void processOrders() {
+    public synchronized void processOrders() {
         clearFulfilledOrders();
         sortOrders();
 
-        List<Order> buy = List.copyOf(buyOrders);
-        List<Order> sell = List.copyOf(sellOrders);
+        List<Order> buy = new ArrayList<>(buyOrders);
+        List<Order> sell = new ArrayList<>(sellOrders);
 
-        buy.forEach(b -> sell.forEach(s -> {
-            OrderType buyType = b.getType();
-            OrderType sellType = s.getType();
+        buy.forEach(b -> {
+            if (b.getQuantityRemaining() <= 0) return;
 
-            boolean buyMarket = buyType.isMarket();
-            boolean sellMarket = sellType.isMarket();
+            sell.forEach(s -> {
+                if (b.getQuantityRemaining() <= 0 || s.getQuantityRemaining() <= 0) return;
 
-            if (buyMarket && sellMarket) {
-                // Market order settlement is not supported yet.
-                return;
-            }
+                OrderType buyType = b.getType();
+                OrderType sellType = s.getType();
 
-            double buyPrice = b.getPriceOrdered();
-            double sellPrice = s.getPriceOrdered();
+                boolean buyMarket = buyType.isMarket();
+                boolean sellMarket = sellType.isMarket();
 
-            // Return if there is a limit order and prices are incompatible
-            if (!(buyMarket || sellMarket) && buyPrice < sellPrice) return;
+                if (buyMarket && sellMarket) {
+                    // Market order settlement is not supported yet.
+                    return;
+                }
 
-            long quantity = Math.min(b.getQuantityRemaining(), s.getQuantityRemaining());
-            double price;
+                double buyPrice = b.getPriceOrdered();
+                double sellPrice = s.getPriceOrdered();
 
-            if (buyMarket || sellMarket) {
-                price = buyMarket ? s.getPriceOrdered() : b.getPriceOrdered();
-            } else {
-                price = Math.round((b.getPriceOrdered() + s.getQuantityOrdered()) / 2);
-            }
+                // Return if there is a limit order and prices are incompatible
+                if (!(buyMarket || sellMarket) && buyPrice < sellPrice) return;
 
-            b.onFulfilled(quantity, price);
-            s.onFulfilled(quantity, price);
+                long quantity = Math.min(b.getQuantityRemaining(), s.getQuantityRemaining());
+                double price;
 
-            recentPrice = price;
-            fulfillmentStack.add(new Fulfillment(quantity, price));
+                if (buyMarket || sellMarket) {
+                    price = buyMarket ? sellPrice : buyPrice;
+                } else {
+                    price = Math.round((buyPrice + sellPrice) / 2);
+                }
 
-            if (fulfillmentStack.size() > RECENT_FULFILLMENT_CUTOFF) {
-                fulfillmentStack.pop();
-            }
-        }));
+                b.onFulfilled(quantity, price);
+                s.onFulfilled(quantity, price);
+
+                recentPrice = price;
+                fulfillmentQueue.offer(new Fulfillment(quantity, price));
+
+                if (fulfillmentQueue.size() > RECENT_FULFILLMENT_CUTOFF) {
+                    fulfillmentQueue.poll();
+                }
+            });
+        });
     }
 
     /**
@@ -223,7 +227,7 @@ public final class OrderChain implements Serializable {
      *
      * @param order The order
      */
-    public void placeOrder(@NotNull Order order) {
+    public synchronized void placeOrder(@NotNull Order order) {
         switch (order.getType()) {
             case BUY_LIMIT, BUY_MARKET -> buyOrders.add(order);
             case SELL_LIMIT, SELL_MARKET -> sellOrders.add(order);
@@ -237,22 +241,22 @@ public final class OrderChain implements Serializable {
      * @param order The order to cancel
      * @return {@code true} if it was cancelled
      */
-    public boolean cancelOrder(@NotNull Order order) {
+    public synchronized boolean cancelOrder(@NotNull Order order) {
         return buyOrders.remove(order) || sellOrders.remove(order);
     }
 
     /**
      * Clears fulfilled orders.
      */
-    public void clearFulfilledOrders() {
+    public synchronized void clearFulfilledOrders() {
         buyOrders.removeIf(o -> o.getQuantityRemaining() <= 0);
-        sellOrders.removeIf(o -> o.getQuantityOrdered() <= 0);
+        sellOrders.removeIf(o -> o.getQuantityRemaining() <= 0);
     }
 
     /**
      * Clears sender-less (server) orders.
      */
-    public void clearServerOrders() {
+    public synchronized void clearServerOrders() {
         buyOrders.removeIf(o -> !o.hasSender());
         sellOrders.removeIf(o -> !o.hasSender());
     }
@@ -262,7 +266,7 @@ public final class OrderChain implements Serializable {
      *
      * @param cutoff The cutoff time
      */
-    public void clearOrders(@NotNull LocalDateTime cutoff) {
+    public synchronized void clearOrders(@NotNull LocalDateTime cutoff) {
         buyOrders.removeIf(o -> o.getTime().isBefore(cutoff));
         sellOrders.removeIf(o -> o.getTime().isBefore(cutoff));
     }
@@ -270,7 +274,7 @@ public final class OrderChain implements Serializable {
     /**
      * Clears the order list.
      */
-    public void clearOrders() {
+    public synchronized void clearOrders() {
         buyOrders.clear();
         sellOrders.clear();
     }
@@ -286,7 +290,7 @@ public final class OrderChain implements Serializable {
             object.add("recentPrice", new JsonPrimitive(chain.recentPrice));
 
             JsonArray fulfillments = new JsonArray();
-            chain.fulfillmentStack.forEach(f -> fulfillments.add(context.serialize(f)));
+            chain.fulfillmentQueue.forEach(f -> fulfillments.add(context.serialize(f)));
 
             object.add("fulfillmentStack", fulfillments);
 
@@ -311,7 +315,7 @@ public final class OrderChain implements Serializable {
 
             if (object.has("fulfillmentStack") && object.get("fulfillmentStack").isJsonArray()) {
                 JsonArray fulfillments = object.get("fulfillmentStack").getAsJsonArray();
-                fulfillments.forEach(f -> chain.fulfillmentStack.add(context.deserialize(f, Fulfillment.class)));
+                fulfillments.forEach(f -> chain.fulfillmentQueue.add(context.deserialize(f, Fulfillment.class)));
             }
 
             return chain;

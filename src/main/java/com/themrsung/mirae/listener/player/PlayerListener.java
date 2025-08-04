@@ -13,13 +13,17 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
@@ -58,6 +62,8 @@ public final class PlayerListener implements Listener {
 
             account.modifyBalance(STARTING_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting balance");
             account.modifyCoinBalance(STARTING_COIN_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting coin balance");
+
+            giveStartingItems(player);
         } else {
             // Rejoin
             account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
@@ -214,5 +220,18 @@ public final class PlayerListener implements Listener {
                 .append(Component.text("-").style(MX.STYLE_ERROR))
                 .append(Component.text("] ").style(MX.STYLE_NORMAL))
                 .append(account.getDisplayName(MX.STYLE_SPECIAL)));
+    }
+
+    private static void giveStartingItems(@NotNull Player player) {
+        ItemStack axe = new ItemStack(Material.IRON_AXE);
+        ItemMeta axeMeta = axe.getItemMeta();
+
+        axeMeta.addEnchant(Enchantment.UNBREAKING, 3, true);
+        axe.setItemMeta(axeMeta);
+
+        MX.giveItems(player.getInventory(), axe);
+
+        ItemStack steak = new ItemStack(Material.COOKED_BEEF, 64);
+        MX.giveItems(player.getInventory(), steak);
     }
 }

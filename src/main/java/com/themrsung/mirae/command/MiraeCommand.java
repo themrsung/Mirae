@@ -31,6 +31,9 @@ public abstract class MiraeCommand extends Command {
     public static final @NotNull Component INSUFFICIENT_SPACE_IN_INVENTORY = Component.text("인벤토리에 공간이 부족합니다.").style(MX.STYLE_WARNING);
     public static final @NotNull Component CANNOT_DO_THIS_TO_SELF = Component.text("본인에게 적용할 수 없습니다.").style(MX.STYLE_WARNING);
     public static final @NotNull Component CANNOT_FIND_WARP = Component.text("워프 지점을 찾을 수 없습니다.").style(MX.STYLE_WARNING);
+    public static final @NotNull Component CANNOT_FIND_CATEGORY = Component.text("카테고리를 찾을 수 없습니다.").style(MX.STYLE_WARNING);
+    public static final @NotNull Component CANNOT_FIND_MARKET = Component.text("시장을 찾을 수 없습니다.").style(MX.STYLE_WARNING);
+    public static final @NotNull Component NAME_ALREADY_TAKEN = Component.text("이미 사용 중인 이름입니다.").style(MX.STYLE_WARNING);
 
     public static final @NotNull Component TELEPORTED_SUCCESSFULLY = Component.text("성공적으로 텔레포트하였습니다.").style(MX.STYLE_GOOD);
     public static final @NotNull Component TELEPORT_REQUEST_ACCEPTED = Component.text("텔레포트 요청을 수락했습니다.").style(MX.STYLE_GOOD);
@@ -41,6 +44,7 @@ public abstract class MiraeCommand extends Command {
     public static final @NotNull Component HOME_DELETED = Component.text("홈이 삭제되었습니다.").style(MX.STYLE_GOOD);
     public static final @NotNull Component NICKNAME_RESET = Component.text("닉네임을 초기화했습니다.").style(MX.STYLE_GOOD);
     public static final @NotNull Component NICKNAME_SET = Component.text("닉네임이 설정되었습니다.").style(MX.STYLE_GOOD);
+    public static final @NotNull Component EDIT_SUCCESSFUL = Component.text("성공적으로 수정되었습니다.").style(MX.STYLE_GOOD);
 
     /**
      * Creates a new command.

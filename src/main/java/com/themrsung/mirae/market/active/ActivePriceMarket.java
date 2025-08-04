@@ -17,6 +17,11 @@ import java.util.UUID;
  * A market where price changes actively.
  */
 public final class ActivePriceMarket extends AbstractMarket {
+    /**
+     * Server order update threshold.
+     */
+    public static final double SERVER_ORDER_UPDATE_THRESHOLD = 0.7;
+
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();
 
@@ -277,8 +282,24 @@ public final class ActivePriceMarket extends AbstractMarket {
      * Updates server orders.
      */
     public void updateServerOrders() {
-        double recentPrice = orderChain.getRecentPrice();
-        double basePrice = Double.isFinite(recentPrice) ? recentPrice : defaultPrice; // Negative prices allowed
+        long existingBuy = orderChain.getBuyOrders().stream()
+                .filter(o -> !o.hasSender())
+                .mapToLong(Order::getQuantityRemaining)
+                .sum();
+
+        long existingSell = orderChain.getSellOrders().stream()
+                .filter(o -> !o.hasSender())
+                .mapToLong(Order::getQuantityRemaining)
+                .sum();
+
+        long existingOrders = existingBuy + existingSell;
+        double remainingOrderRatio = (double) existingOrders / (double) volatilityLevel.getTotalOrderCount();
+        if (remainingOrderRatio > SERVER_ORDER_UPDATE_THRESHOLD) return;
+
+        boolean marketBuying = existingSell >= existingBuy;
+
+        double average = orderChain.getWeightedAveragePrice();
+        double basePrice = Double.isFinite(average) ? average : defaultPrice + (marketBuying ? 1 : 0);
 
         orderChain.clearServerOrders();
 

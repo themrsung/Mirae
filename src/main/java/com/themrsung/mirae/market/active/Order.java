@@ -54,7 +54,23 @@ public final class Order {
      * @return The result
      */
     public static int buyCompare(@NotNull Order a, @NotNull Order b) {
-        return sellCompare(b, a);
+        int m1 = a.getType().isMarket() ? 1 : 0;
+        int m2 = b.getType().isMarket() ? 1 : 0;
+        int marketCompare = -Integer.compare(m1, m2);
+
+        if (marketCompare != 0) return marketCompare;
+
+        double p1 = a.getType().isLimit() ? a.priceOrdered : Double.MAX_VALUE;
+        double p2 = b.getType().isLimit() ? b.priceOrdered : Double.MAX_VALUE;
+        int priceCompare = -Double.compare(p1, p2);
+
+        if (priceCompare != 0) return priceCompare;
+
+        long q1 = a.getQuantityRemaining();
+        long q2 = b.getQuantityRemaining();
+        int quantityCompare = -Long.compare(q1, q2);
+
+        return quantityCompare;
     }
 
     /**
@@ -65,40 +81,23 @@ public final class Order {
      * @return The result
      */
     public static int sellCompare(@NotNull Order a, @NotNull Order b) {
-        // Compare market
-        int marketCompare = marketCompare(a, b);
+        int m1 = a.getType().isMarket() ? 1 : 0;
+        int m2 = b.getType().isMarket() ? 1 : 0;
+        int marketCompare = -Integer.compare(m1, m2);
+
         if (marketCompare != 0) return marketCompare;
 
-        // Compare price
-        int priceCompare = Double.compare(a.priceOrdered, b.priceOrdered);
-        if (priceCompare != 0) return priceCompare; // Price is equal. Incomparable yet.
+        double p1 = a.getType().isLimit() ? a.priceOrdered : -Double.MAX_VALUE;
+        double p2 = b.getType().isLimit() ? b.priceOrdered : -Double.MAX_VALUE;
+        int priceCompare = Double.compare(p1, p2);
 
-        int quantityCompare = Long.compare(a.getQuantityRemaining(), b.getQuantityRemaining());
-        if (quantityCompare != 0) return quantityCompare; // Quantity is equal. Incomparable yet.
+        if (priceCompare != 0) return priceCompare;
 
-        // Prefer player orders over server orders.
-        if (a.hasSender() && b.hasSender()) {
-            return 0;
-        } else if (a.hasSender()) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
+        long q1 = a.getQuantityRemaining();
+        long q2 = b.getQuantityRemaining();
+        int quantityCompare = -Long.compare(q1, q2);
 
-    private static int marketCompare(@NotNull Order a, @NotNull Order b) {
-        int marketCompare;
-        if (a.type.isMarket() && b.type.isMarket()) {
-            // Both orders are market; Compare remaining quantity
-            marketCompare = -Long.compare(a.getQuantityRemaining(), b.getQuantityRemaining());
-        } else if (a.type.isMarket()) {
-            marketCompare = 1; // Only A is market
-        } else if (b.type.isMarket()) {
-            marketCompare = -1; // Only B is market
-        } else {
-            marketCompare = 0; // Both orders are limit. Incomparable yet.
-        }
-        return marketCompare;
+        return quantityCompare;
     }
 
     /**

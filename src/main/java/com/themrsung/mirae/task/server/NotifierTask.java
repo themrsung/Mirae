@@ -32,8 +32,8 @@ public class NotifierTask implements Runnable {
                                 .hoverEvent(HoverEvent.showText(Component.text("/sb").style(MX.STYLE_NORMAL)))
                                 .clickEvent(ClickEvent.runCommand("/sb")))),
 
-                PREFIX.append(Component.text("지역채팅을 사용할 수 있습니다.").style(MX.STYLE_NORMAL)
-                        .append(Component.text("[클릭]")
+                PREFIX.append(Component.text("지역채팅을 사용할 수 있습니다. ").style(MX.STYLE_NORMAL)
+                        .append(Component.text("[클릭]").style(MX.STYLE_SPECIAL)
                                 .hoverEvent(HoverEvent.showText(Component.text("/l").style(MX.STYLE_WARNING)))
                                 .clickEvent(ClickEvent.runCommand("/localchat"))))
         );

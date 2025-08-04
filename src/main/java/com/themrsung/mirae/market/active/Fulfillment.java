@@ -43,7 +43,14 @@ public record Fulfillment(
     private static final class Serializer implements JsonSerializer<Fulfillment> {
         @Override
         public JsonElement serialize(Fulfillment f, Type type, JsonSerializationContext context) {
-            return null;
+            if (f == null) return null;
+
+            JsonObject object = new JsonObject();
+
+            object.add("quantity", new JsonPrimitive(f.quantity));
+            object.add("price", new JsonPrimitive(f.price));
+
+            return object;
         }
     }
 
@@ -53,7 +60,26 @@ public record Fulfillment(
     private static final class Deserializer implements JsonDeserializer<Fulfillment> {
         @Override
         public Fulfillment deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-            return null;
+            if (jsonElement == null || jsonElement.isJsonNull()) return null;
+
+            JsonObject object = jsonElement.getAsJsonObject();
+
+            long quantity;
+            double price;
+
+            if (!object.has("quantity") || object.get("quantity").isJsonNull()) {
+                throw new JsonParseException("Missing required parameter \"quantity\".");
+            }
+
+            quantity = object.get("quantity").getAsLong();
+
+            if (!object.has("price") || object.get("price").isJsonNull()) {
+                throw new JsonParseException("Missing required parameter \"price\".");
+            }
+
+            price = object.get("price").getAsDouble();
+
+            return new Fulfillment(quantity, price);
         }
     }
 }

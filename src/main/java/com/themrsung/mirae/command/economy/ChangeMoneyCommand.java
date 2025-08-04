@@ -1,4 +1,4 @@
-package com.themrsung.mirae.command.admin;
+package com.themrsung.mirae.command.economy;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
@@ -15,16 +15,16 @@ import java.util.Optional;
 import static com.themrsung.mirae.Mirae.getState;
 
 /**
- * Change coin balance command.
+ * Change money command.
  */
-public class ChangeCoinCommand extends MiraeCommand {
+public class ChangeMoneyCommand extends MiraeCommand {
     /**
      * Creates a new command.
      */
-    public ChangeCoinCommand() {
-        super("changecoin");
+    public ChangeMoneyCommand() {
+        super("changemoney");
         setAliases(List.of(
-                "editcoin"
+                "editmoney"
         ));
     }
 
@@ -36,7 +36,7 @@ public class ChangeCoinCommand extends MiraeCommand {
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("/changecoin 대상 금액").style(MX.STYLE_WARNING));
+            sender.sendMessage(Component.text("/changemoney 대상 금액").style(MX.STYLE_WARNING));
             return false;
         }
 
@@ -52,13 +52,13 @@ public class ChangeCoinCommand extends MiraeCommand {
         }
 
         Account account = optionalAccount.get();
-        long change = Math.round(MX.parseDouble(args[1]));
+        double change = MX.parseDouble(args[1]);
 
-        long after = account.modifyCoinBalance(change, EconomyCause.ADMIN_COMMAND);
+        double after = account.modifyBalance(change, EconomyCause.ADMIN_COMMAND);
 
         sender.sendMessage(account.getDisplayName(MX.STYLE_SPECIAL)
-                .append(Component.text("의 코인 잔고를 ").style(MX.STYLE_NORMAL))
-                .append(Component.text(MX.formatCoinBalance(after)).style(MX.STYLE_SPECIAL))
+                .append(Component.text("의 잔고를 ").style(MX.STYLE_NORMAL))
+                .append(Component.text(MX.formatBalance(after)).style(MX.STYLE_SPECIAL))
                 .append(Component.text("으로 설정했습니다.").style(MX.STYLE_NORMAL)));
         return true;
     }
