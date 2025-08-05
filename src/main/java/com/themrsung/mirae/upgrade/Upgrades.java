@@ -3,6 +3,7 @@ package com.themrsung.mirae.upgrade;
 import com.themrsung.mirae.upgrade.avengers.CaptainShieldRecipe;
 import com.themrsung.mirae.upgrade.avengers.StormbreakerRecipe;
 import com.themrsung.mirae.upgrade.avengers.ThorHammerRecipe;
+import com.themrsung.mirae.upgrade.composition.CoalToDiamondRecipe;
 import com.themrsung.mirae.upgrade.composition.IronToolToDiamondRecipe;
 import com.themrsung.mirae.upgrade.composition.NetheriteToVibraniumRecipe;
 import com.themrsung.mirae.upgrade.composition.WoodenToolToNetheriteRecipe;
@@ -26,6 +27,7 @@ public class Upgrades {
             new ImprintRemoveRecipe(),
 
             new NetheriteToVibraniumRecipe(),
+            new CoalToDiamondRecipe(),
             new IronToolToDiamondRecipe(),
             new WoodenToolToNetheriteRecipe()
     );
