@@ -29,6 +29,10 @@ public enum SkillType {
      */
     TRADING(Component.text("벌목").style(Style.style().color(TextColor.fromHexString("#ff9752")).build())),
 
+    /**
+     * Upgrading skill.
+     */
+    UPGRADING(Component.text("강화").style(Style.style().color(TextColor.fromHexString("#5fdd96")).build())),
 
     ;
 

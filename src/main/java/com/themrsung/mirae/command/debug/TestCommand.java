@@ -1,16 +1,9 @@
 package com.themrsung.mirae.command.debug;
 
-import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.command.MiraeCommand;
-import com.themrsung.mirae.gui.market.MarketMenu;
-import com.themrsung.mirae.market.MarketCategory;
-import com.themrsung.mirae.market.active.ActivePriceMarket;
-import com.themrsung.mirae.market.active.VolatilityLevel;
-import com.themrsung.mirae.market.fixed.FixedPriceMarket;
-import org.bukkit.Material;
+import com.themrsung.mirae.gui.upgrade.UpgradeMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -33,38 +26,41 @@ public class TestCommand extends MiraeCommand {
             return false;
         }
 
-        if (args.length > 0 && args[0].equalsIgnoreCase("markets")) {
-            ActivePriceMarket stable = new ActivePriceMarket("stable_test", new ItemStack(Material.BLACK_CONCRETE), MarketCategory.NONE, 1500);
-            stable.setVolatilityLevel(VolatilityLevel.VERY_STABLE);
+        UpgradeMenu swordMenu = new UpgradeMenu(player);
+        swordMenu.openGUI();
 
-            ActivePriceMarket vol = new ActivePriceMarket("volatile_test", new ItemStack(Material.WHITE_CONCRETE), MarketCategory.NONE, 1500);
-            vol.setVolatilityLevel(VolatilityLevel.RARE);
-
-            Mirae.getState().addMarket(stable);
-            Mirae.getState().addMarket(vol);
-
-            FixedPriceMarket tradable = new FixedPriceMarket("tradable", new ItemStack(Material.DIRT), MarketCategory.NONE);
-            FixedPriceMarket buyOnly = new FixedPriceMarket("buy_only", new ItemStack(Material.ENDER_PEARL), MarketCategory.NONE);
-            FixedPriceMarket sellOnly = new FixedPriceMarket("sell_only", new ItemStack(Material.COBBLESTONE), MarketCategory.NONE);
-
-            Mirae.getState().addMarket(tradable);
-            Mirae.getState().addMarket(buyOnly);
-            Mirae.getState().addMarket(sellOnly);
-
-            sender.sendMessage("markets created");
-            return true;
-        }
-
-        if (args.length > 0 && args[0].equalsIgnoreCase("reset")) {
-            Mirae.getState().clearMarkets();
-            sender.sendMessage("markets reset");
-            return true;
-        }
-
-        player.sendMessage(Mirae.getState().getMarkets().size() + "개의 시장이 존재합니다.");
-
-        MarketMenu menu = new MarketMenu(player, MarketCategory.NONE);
-        menu.openGUI();
+//        if (args.length > 0 && args[0].equalsIgnoreCase("markets")) {
+//            ActivePriceMarket stable = new ActivePriceMarket("stable_test", new ItemStack(Material.BLACK_CONCRETE), MarketCategory.NONE, 1500);
+//            stable.setVolatilityLevel(VolatilityLevel.VERY_STABLE);
+//
+//            ActivePriceMarket vol = new ActivePriceMarket("volatile_test", new ItemStack(Material.WHITE_CONCRETE), MarketCategory.NONE, 1500);
+//            vol.setVolatilityLevel(VolatilityLevel.RARE);
+//
+//            Mirae.getState().addMarket(stable);
+//            Mirae.getState().addMarket(vol);
+//
+//            FixedPriceMarket tradable = new FixedPriceMarket("tradable", new ItemStack(Material.DIRT), MarketCategory.NONE);
+//            FixedPriceMarket buyOnly = new FixedPriceMarket("buy_only", new ItemStack(Material.ENDER_PEARL), MarketCategory.NONE);
+//            FixedPriceMarket sellOnly = new FixedPriceMarket("sell_only", new ItemStack(Material.COBBLESTONE), MarketCategory.NONE);
+//
+//            Mirae.getState().addMarket(tradable);
+//            Mirae.getState().addMarket(buyOnly);
+//            Mirae.getState().addMarket(sellOnly);
+//
+//            sender.sendMessage("markets created");
+//            return true;
+//        }
+//
+//        if (args.length > 0 && args[0].equalsIgnoreCase("reset")) {
+//            Mirae.getState().clearMarkets();
+//            sender.sendMessage("markets reset");
+//            return true;
+//        }
+//
+//        player.sendMessage(Mirae.getState().getMarkets().size() + "개의 시장이 존재합니다.");
+//
+//        MarketMenu menu = new MarketMenu(player, MarketCategory.NONE);
+//        menu.openGUI();
         return true;
     }
 }

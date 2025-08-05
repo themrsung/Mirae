@@ -4,19 +4,14 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.MiraeCommand;
-import com.themrsung.mirae.economy.CoinVersion;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
-import dev.lone.itemsadder.api.CustomStack;
+import com.themrsung.mirae.item.CustomItem;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -37,36 +32,9 @@ public class CoinCommand extends MiraeCommand {
     }
 
     public static @NotNull ItemStack getCoinItem() {
-        return getCoinItem(CoinVersion.CURRENT);
+        return CustomItem.DONOR_COIN.getItem();
     }
 
-    public static @NotNull ItemStack getCoinItem(@NotNull CoinVersion version) {
-
-        /// Legacy support here
-
-        assert version == CoinVersion.VERSION_1;
-
-        CustomStack stack = CustomStack.getInstance("iageneric:coin");
-        if (stack == null) {
-            throw new RuntimeException("Unable to get coin item.");
-        }
-
-        ItemStack item = stack.getItemStack();
-        ItemMeta meta = item.getItemMeta();
-
-        Component name = MiniMessage.miniMessage().deserialize("<gradient:green:gold>후원 코인<reset>")
-                .style(Style.style().decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.BOLD).build());
-
-        meta.itemName(name);
-        meta.displayName(name);
-        meta.lore(List.of(
-                Component.text("후원을 통해 얻을 수 있습니다.").style(MX.STYLE_NORMAL)
-        ));
-
-        item.setItemMeta(meta);
-
-        return item;
-    }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {

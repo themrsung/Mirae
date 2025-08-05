@@ -699,8 +699,18 @@ public interface Account extends Serializable {
 
     /// Misc.
 
+    /**
+     * Returns whether the account is hiding the scoreboard.
+     *
+     * @return {@code true} if the account is hiding the scoreboard
+     */
     boolean hideScoreboard();
 
+    /**
+     * Sets whether the account is hiding the scoreboard.
+     *
+     * @param hideScoreboard {@code true} to hide
+     */
     void setHideScoreboard(boolean hideScoreboard);
 
     ///

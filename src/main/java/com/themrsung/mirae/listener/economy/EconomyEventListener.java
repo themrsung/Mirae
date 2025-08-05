@@ -4,9 +4,9 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTitle;
-import com.themrsung.mirae.economy.CoinVersion;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.TitleVersion;
+import com.themrsung.mirae.item.CustomItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Sound;
@@ -29,7 +29,7 @@ public final class EconomyEventListener implements Listener {
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
         ItemStack item = e.getItem();
-        if (item == null || !CoinVersion.isValidCoin(item)) return;
+        if (item == null || !CustomItem.DONOR_COIN.isItem(item)) return;
 
         e.setCancelled(true);
 

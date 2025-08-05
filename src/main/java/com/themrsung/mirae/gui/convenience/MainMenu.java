@@ -6,6 +6,7 @@ import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.gui.AbstractGUI;
 import com.themrsung.mirae.gui.donor.DonorMenu;
+import com.themrsung.mirae.gui.upgrade.UpgradeMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.Style;
@@ -193,6 +194,24 @@ public class MainMenu extends AbstractGUI {
     }
 
     private void initializeLinks() {
+        /// UPGRADES
+        ItemStack upgradeMenu = new ItemStack(Material.CHIPPED_ANVIL);
+        ItemMeta upgradeMenuMeta = upgradeMenu.getItemMeta();
+
+        upgradeMenuMeta.displayName(Component.text("강화 메뉴").style(MX.STYLE_SPECIAL));
+        upgradeMenuMeta.lore(List.of(
+                Component.text("강화를 이용합니다.").style(MX.STYLE_NORMAL)
+        ));
+
+        upgradeMenu.setItemMeta(upgradeMenuMeta);
+        inventory.setItem(16, upgradeMenu);
+        callbacks.put(16, () -> {
+            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+            UpgradeMenu menu = new UpgradeMenu(player);
+            menu.openGUI();
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
+
         /// DONOR SHOP
         ItemStack donorShop = new ItemStack(Material.NETHER_STAR);
         ItemMeta donorShopMeta = donorShop.getItemMeta();
