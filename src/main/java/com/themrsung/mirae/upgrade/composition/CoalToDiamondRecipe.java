@@ -18,7 +18,7 @@ public class CoalToDiamondRecipe implements UpgradeRecipe {
         ItemStack coal = new ItemStack(Material.COAL);
         if (!coal.isSimilar(left)) return null;
 
-        ItemStack uraniumIngot = CustomItem.URANIUM_INGOT.getItem();
+        ItemStack uraniumIngot = CustomItem.URANIUM_RAW.getItem();
         if (!uraniumIngot.isSimilar(right)) return null;
 
         int amount = left.getAmount();
