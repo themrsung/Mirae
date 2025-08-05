@@ -38,6 +38,6 @@ public class ThorHammerRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.02;
+        return 0.03;
     }
 }

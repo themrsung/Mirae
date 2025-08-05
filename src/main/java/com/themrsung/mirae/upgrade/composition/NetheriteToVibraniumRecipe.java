@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 public class NetheriteToVibraniumRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
-        if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
-
         ItemStack netheriteIngot = new ItemStack(Material.NETHERITE_INGOT);
         if (!netheriteIngot.isSimilar(left)) return null;
 
@@ -32,6 +30,6 @@ public class NetheriteToVibraniumRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 1;
+        return 0.95;
     }
 }

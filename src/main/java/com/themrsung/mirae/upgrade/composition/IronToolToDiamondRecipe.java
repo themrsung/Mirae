@@ -28,8 +28,6 @@ public class IronToolToDiamondRecipe implements UpgradeRecipe {
 
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
-        if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
-
         if (!TOOLS.contains(left.getType())) return null;
 
         ItemStack uranium = CustomItem.URANIUM_RAW.getItem();

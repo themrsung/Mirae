@@ -38,6 +38,6 @@ public class CaptainShieldRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.01;
+        return 0.001;
     }
 }

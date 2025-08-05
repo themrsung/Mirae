@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 public class CoalToDiamondRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
-        if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
-
         ItemStack coal = new ItemStack(Material.COAL);
         if (!coal.isSimilar(left)) return null;
 

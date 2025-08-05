@@ -123,11 +123,13 @@ public class UpgradeMenu extends AbstractUpgradeMenu {
             } else {
                 player.sendMessage(UPGRADE_FAIL_MESSAGE);
                 player.playSound(player, UPGRADE_FAIL_SOUND, 1, 1);
+
+                inventory.setItem(SLOT_LEFT, null);
             }
 
             inventory.setItem(SLOT_RIGHT, null);
 
-            if (baseRate < 1 && ticket != null) {
+            if (baseRate < 1 && CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket)) {
                 inventory.setItem(SLOT_TICKET, null);
 
                 double random2 = random.nextDouble();

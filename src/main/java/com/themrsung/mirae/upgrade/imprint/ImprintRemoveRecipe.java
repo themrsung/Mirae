@@ -17,15 +17,13 @@ import java.util.Objects;
 public class ImprintRemoveRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
-        if (ticket != null) return null;
-
         ItemMeta meta = left.getItemMeta();
         List<Component> lore = meta.lore();
 
         if (lore == null || lore.stream().noneMatch(l -> Objects.equals(l, SUCCESS_TICKET_IMPRINT))) return null;
 
         if (!CustomItem.DONOR_COIN.isItem(right) || right.getAmount() != 3) return null;
-        if (left.getAmount() != 3) return null;
+        if (right.getAmount() != 3) return null;
 
         lore.removeIf(l -> Objects.equals(l, SUCCESS_TICKET_IMPRINT));
         meta.lore(lore);

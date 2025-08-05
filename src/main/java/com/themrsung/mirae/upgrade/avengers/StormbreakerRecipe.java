@@ -38,6 +38,6 @@ public class StormbreakerRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.0015;
+        return 0.01;
     }
 }
