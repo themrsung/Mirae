@@ -2,6 +2,7 @@ package com.themrsung.mirae.task;
 
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
+import com.themrsung.mirae.task.abuse.TransferAmountMonitorTask;
 import com.themrsung.mirae.task.economy.InterestPayoutTask;
 import com.themrsung.mirae.task.economy.MarketUpdateTask;
 import com.themrsung.mirae.task.player.ScoreboardTask;
@@ -28,6 +29,7 @@ public final class Tasks {
     public static final @NotNull NotifierTask NOTIFIER_TASK = new NotifierTask();
     public static final @NotNull InterestPayoutTask INTEREST_PAYOUT_TASK = new InterestPayoutTask();
     public static final @NotNull MarketUpdateTask MARKET_UPDATE_TASK = new MarketUpdateTask();
+    public static final @NotNull TransferAmountMonitorTask TRANSFER_AMOUNT_MONITOR_TASK = new TransferAmountMonitorTask();
 
     /**
      * The set of all tasks.
@@ -41,7 +43,8 @@ public final class Tasks {
             SCOREBOARD_TASK,
             NOTIFIER_TASK,
             INTEREST_PAYOUT_TASK,
-            MARKET_UPDATE_TASK
+            MARKET_UPDATE_TASK,
+            TRANSFER_AMOUNT_MONITOR_TASK
     );
 
     /**
@@ -71,6 +74,7 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, NOTIFIER_TASK, 20 * 60 * 5, 20 * 60 * 3);
         s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
         s.scheduleSyncRepeatingTask(p, MARKET_UPDATE_TASK, 50, 200);
+        s.scheduleSyncRepeatingTask(p, TRANSFER_AMOUNT_MONITOR_TASK, 300, 200);
     }
 
     /**

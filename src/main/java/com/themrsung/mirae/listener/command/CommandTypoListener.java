@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Command typo listener.
  */
-public final class CommandTypoListener implements Listener {
+public class CommandTypoListener implements Listener {
     private static final @NotNull Map<String, String> TYPO_MAP;
 
     static {

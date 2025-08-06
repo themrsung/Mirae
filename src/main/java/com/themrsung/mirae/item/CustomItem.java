@@ -44,11 +44,6 @@ public interface CustomItem {
     /// MATERIALS
 
     /**
-     * Vibranium ore.
-     */
-    @NotNull CustomItem VIBRANIUM_ORE = new ItemsAdderItem("ultimate_armors:dark_ore");
-
-    /**
      * Raw Vibranium.
      */
     @NotNull CustomItem VIBRANIUM_RAW = new ItemsAdderItem("ultimate_armors:raw_dark");
@@ -57,11 +52,6 @@ public interface CustomItem {
      * Vibranium ingot.
      */
     @NotNull CustomItem VIBRANIUM_INGOT = new ItemsAdderItem("ultimate_armors:dark_ingot");
-
-    /**
-     * Uranium ore.
-     */
-    @NotNull CustomItem URANIUM_ORE = new ItemsAdderItem("ultimate_armors:jade_ore");
 
     /**
      * Raw Uranium.

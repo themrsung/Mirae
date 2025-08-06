@@ -52,7 +52,7 @@ public class Upgrades {
         if (defaultRate >= 1) return defaultRate; // No need to modify
 
         // Add 0.4%p per level
-        double probabilityPoints = (double) Math.min(skillLevel, 90) / 250;
+        double probabilityPoints = (double) Math.min(skillLevel, 100) / 250;
         return Math.min(defaultRate + probabilityPoints, 0.99);
     }
 }

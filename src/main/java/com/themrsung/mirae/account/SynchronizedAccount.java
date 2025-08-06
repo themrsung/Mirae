@@ -4,6 +4,7 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.event.economy.AccountBalanceModifiedEvent;
 import com.themrsung.mirae.event.economy.AccountCoinBalanceModifiedEvent;
+import com.themrsung.mirae.event.skill.AccountSkillLevelModifiedEvent;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -416,12 +417,19 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public void setSkillLevel(@NotNull SkillType type, long level) {
+        long levelBefore = getSkillLevel(type);
         skillLevelMap.put(type, level);
+
+        Bukkit.getPluginManager().callEvent(new AccountSkillLevelModifiedEvent(this, type, levelBefore, level));
     }
 
     @Override
     public void incrementLevel(@NotNull SkillType type) {
-        skillLevelMap.put(type, getSkillLevel(type) + 1);
+        long levelBefore = getSkillLevel(type);
+        long levelAfter = levelBefore + 1;
+        skillLevelMap.put(type, levelAfter);
+
+        Bukkit.getPluginManager().callEvent(new AccountSkillLevelModifiedEvent(this, type, levelBefore, levelAfter));
     }
 
     @Override
@@ -431,14 +439,21 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public void decrementLevel(@NotNull SkillType type, boolean allowNegativeLevel) {
-        long current = getSkillLevel(type);
-        if (current <= 0 && !allowNegativeLevel) return;
+        long levelBefore = getSkillLevel(type);
+        if (levelBefore <= 0 && !allowNegativeLevel) return;
 
-        skillLevelMap.put(type, current - 1);
+        long levelAfter = levelBefore - 1;
+        skillLevelMap.put(type, levelAfter);
+
+        Bukkit.getPluginManager().callEvent(new AccountSkillLevelModifiedEvent(this, type, levelBefore, levelAfter));
     }
 
     @Override
     public void clearSkillLevels() {
+        skillLevelMap.forEach((k, v) -> {
+            if (v != 0) Bukkit.getPluginManager().callEvent(new AccountSkillLevelModifiedEvent(this, k, v, 0));
+        });
+
         skillLevelMap.clear();
     }
 

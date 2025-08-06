@@ -3,7 +3,7 @@ package com.themrsung.mirae.task.abuse;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.listener.Listeners;
-import com.themrsung.mirae.listener.command.AntiSpamListener;
+import com.themrsung.mirae.listener.abuse.AntiSpamListener;
 import io.papermc.paper.ban.BanListType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -25,8 +25,8 @@ public class AntiSpamBanTask implements Runnable {
     public void run() {
         AntiSpamListener listener = Listeners.ANTI_SPAM_LISTENER;
 
-        listener.forEachCommand((id, count) -> banSpammer(id, count, 10));
-        listener.forEachChat((id, count) -> banSpammer(id, count, 7));
+        listener.forEachCommand((id, count) -> banSpammer(id, count, 15));
+        listener.forEachChat((id, count) -> banSpammer(id, count, 10));
 
         listener.clearSpamCounts();
     }

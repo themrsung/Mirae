@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 /**
  * Listens for and handles GUI actions.
  */
-public final class GUIActionListener implements Listener {
+public class GUIActionListener implements Listener {
     /**
      * Creates a new listener.
      */

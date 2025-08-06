@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Shulker box listener.
  */
-public final class ShulkerBoxListener implements Listener {
+public class ShulkerBoxListener implements Listener {
     @EventHandler
     public void onInventoryClick(PlayerInteractEvent e) {
         if (!e.getAction().isRightClick()) return;

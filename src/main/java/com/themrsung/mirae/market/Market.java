@@ -17,16 +17,6 @@ import java.util.UUID;
  */
 public interface Market extends Serializable {
     /**
-     * Fee rate for active markets.
-     */
-    double ACTIVE_MARKET_FEE_RATE = 0.00015;
-
-    /**
-     * Fee rate for fixed markets.
-     */
-    double FIXED_MARKET_FEE_RATE = 0.0;
-
-    /**
      * Returns the serializer instance.
      *
      * @return The serializer instance

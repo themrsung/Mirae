@@ -187,7 +187,7 @@ public final class FixedPriceMarket extends AbstractMarket {
             return new OrderResult(this, account, quantity, 0, 0, 0);
         }
 
-        double amountToWithdraw = Math.ceil(buyPrice * quantity * (1 + FIXED_MARKET_FEE_RATE));
+        double amountToWithdraw = Math.ceil(buyPrice * quantity * (1 + Markets.getFixedFeeRateFor(account)));
         account.modifyBalance(-amountToWithdraw, EconomyCause.MARKET_TRANSACTION_BUY, "Bought items from market.");
 
         ItemStack items = getItem();
@@ -204,7 +204,7 @@ public final class FixedPriceMarket extends AbstractMarket {
             return new OrderResult(this, account, quantity, 0, 0, 0);
         }
 
-        double amountToDeposit = Math.floor(sellPrice * quantity * (1 - FIXED_MARKET_FEE_RATE));
+        double amountToDeposit = Math.floor(sellPrice * quantity * (1 - Markets.getFixedFeeRateFor(account)));
         account.modifyBalance(amountToDeposit, EconomyCause.MARKET_TRANSACTION_SELL, "Sold items to market.");
 
         ItemStack items = getItem();

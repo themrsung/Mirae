@@ -34,7 +34,7 @@ import java.util.Objects;
 /**
  * Player related event listener.
  */
-public final class PlayerListener implements Listener {
+public class PlayerListener implements Listener {
     public static final double STARTING_BALANCE = 0;
     public static final long STARTING_COIN_BALANCE = 0;
 

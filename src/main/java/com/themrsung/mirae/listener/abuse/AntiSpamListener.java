@@ -1,4 +1,4 @@
-package com.themrsung.mirae.listener.command;
+package com.themrsung.mirae.listener.abuse;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 /**
  * Anti spam listener.
  */
-public final class AntiSpamListener implements Listener {
+public class AntiSpamListener implements Listener {
     /**
      * Creates a new listener.
      */

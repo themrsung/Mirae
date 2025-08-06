@@ -7,6 +7,8 @@ import com.themrsung.mirae.command.economy.*;
 import com.themrsung.mirae.command.home.*;
 import com.themrsung.mirae.command.market.*;
 import com.themrsung.mirae.command.misc.*;
+import com.themrsung.mirae.command.skill.SetSkillLevelCommand;
+import com.themrsung.mirae.command.skill.SkillLevelCommand;
 import com.themrsung.mirae.command.social.*;
 import com.themrsung.mirae.command.stats.MoneySupplyCommand;
 import com.themrsung.mirae.command.teleport.*;
@@ -81,6 +83,9 @@ public final class Commands {
 
     public static final @NotNull DonorShopCommand DONOR_SHOP_COMMAND = new DonorShopCommand();
 
+    public static final @NotNull SkillLevelCommand SKILL_LEVEL_COMMAND = new SkillLevelCommand();
+    public static final @NotNull SetSkillLevelCommand SET_SKILL_LEVEL_COMMAND = new SetSkillLevelCommand();
+
     private static final @NotNull Set<MiraeCommand> ALL_COMMANDS = Set.of(
             SPAWN_COMMAND,
             BACK_COMMAND,
@@ -139,7 +144,10 @@ public final class Commands {
 
             TEST_COMMAND,
 
-            DONOR_SHOP_COMMAND
+            DONOR_SHOP_COMMAND,
+
+            SKILL_LEVEL_COMMAND,
+            SET_SKILL_LEVEL_COMMAND
     );
 
     /**

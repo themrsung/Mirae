@@ -4,6 +4,7 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
+import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -70,6 +71,19 @@ public class ScoreboardTask implements Runnable {
             Score score7 = obj.getScore("Money Supply");
             score7.customName(Component.text("통화량: ").style(MX.STYLE_NORMAL).append(moneySupply));
             score7.setScore(i--);
+
+            Score score8 = obj.getScore("Empty3");
+            score8.customName(Component.empty());
+            score8.setScore(i--);
+
+            for (SkillType type : SkillType.values()) {
+                Score score = obj.getScore("Skill: " + type.toString());
+                score.customName(type.getDisplayName()
+                        .append(Component.text(": ").style(MX.STYLE_NORMAL))
+                        .append(Component.text(account.getSkillLevel(type) + "레벨").style(MX.STYLE_GOOD)));
+
+                score.setScore(i--);
+            }
 
             p.setScoreboard(board);
         });

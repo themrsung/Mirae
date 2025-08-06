@@ -235,7 +235,7 @@ public final class ActivePriceMarket extends AbstractMarket {
         double priceFulfilled = order.getPriceFulfilled();
 
         double volume = Math.abs(quantityFulfilled * priceFulfilled);
-        double fees = volume * ACTIVE_MARKET_FEE_RATE;
+        double fees = volume * Markets.getActiveFeeRateFor(account);
 
         double amountToWithdraw = Math.ceil(quantityFulfilled * priceFulfilled + fees);
         account.modifyBalance(-amountToWithdraw, EconomyCause.MARKET_TRANSACTION_BUY, "Bought items from market.");
@@ -265,7 +265,7 @@ public final class ActivePriceMarket extends AbstractMarket {
         double priceFulfilled = order.getPriceFulfilled();
 
         double volume = Math.abs(quantityFulfilled * priceFulfilled);
-        double fees = volume * ACTIVE_MARKET_FEE_RATE;
+        double fees = volume * Markets.getActiveFeeRateFor(account);
 
         double amountToDeposit = Math.floor(quantityFulfilled * priceFulfilled - fees);
         account.modifyBalance(amountToDeposit, EconomyCause.MARKET_TRANSACTION_SELL, "Sold items to market.");
@@ -300,7 +300,8 @@ public final class ActivePriceMarket extends AbstractMarket {
         boolean marketBuying = existingSell >= existingBuy;
 
         double average = orderChain.getWeightedAveragePrice();
-        double basePrice = Double.isFinite(average) ? average : defaultPrice + (marketBuying ? 1 : 0);
+        double tickSize = Markets.getTickSizeAt(average);
+        double basePrice = Markets.snapToNearestTick(Double.isFinite(average) ? average : defaultPrice + (marketBuying ? tickSize : 0));
 
         orderChain.clearServerOrders();
 
@@ -308,9 +309,10 @@ public final class ActivePriceMarket extends AbstractMarket {
         long quantityPerStep = volatilityLevel.getQuantityPerStep();
 
         // Place buy orders
-        double buyPrice = basePrice - 1;
+        double buyPrice = basePrice - Markets.getTickSizeAt(basePrice);
         for (int i = 0; i < numSteps; i++) {
-            double p = buyPrice--;
+            double p = buyPrice;
+            buyPrice -= Markets.getTickSizeAt(buyPrice);
 
             Order order = Order.server(OrderType.BUY_LIMIT, quantityPerStep, p);
             orderChain.placeOrder(order);
@@ -319,7 +321,8 @@ public final class ActivePriceMarket extends AbstractMarket {
         // Place sell orders
         double sellPrice = basePrice;
         for (int i = 0; i < numSteps; i++) {
-            double p = sellPrice++;
+            double p = sellPrice;
+            sellPrice += Markets.getTickSizeAt(sellPrice);
             Order order = Order.server(OrderType.SELL_LIMIT, quantityPerStep, p);
             orderChain.placeOrder(order);
         }

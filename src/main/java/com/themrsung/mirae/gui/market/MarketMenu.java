@@ -397,7 +397,6 @@ public class MarketMenu extends AbstractGUI {
             renderItem(j++, markets.get(i));
         }
 
-        // 나머지 칸 빈칸 처리
         while (j < PAGE_SIZE) {
             renderBlank(j++);
         }

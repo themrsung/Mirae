@@ -97,7 +97,7 @@ public class UpgradeMenu extends AbstractUpgradeMenu {
             double finalRate = CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) ? 1 : baseRate;
 
             Random random = new Random();
-            double random1 = random.nextDouble() + Double.MIN_VALUE;
+            double random1 = random.nextDouble();
 
             boolean success = finalRate >= 1 || random1 < finalRate;
 

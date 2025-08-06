@@ -16,6 +16,7 @@ public abstract class MiraeCommand extends Command {
     public static final @NotNull Component INTERNAL_ERROR = Component.text("오류가 발생했습니다. 관리자에게 문의하세요.").style(MX.STYLE_ERROR);
     public static final @NotNull Component INSUFFICIENT_FUNDS = Component.text("잔액이 부족합니다.").style(MX.STYLE_ERROR);
 
+    public static final @NotNull Component COOLTIME_REMAINING = Component.text("명령어를 너무 자주 호출했습니다. 잠시 후에 시도해주세요.").style(MX.STYLE_WARNING);
     public static final @NotNull Component CANNOT_BE_USED_BY_CONSOLE = Component.text("콘솔에서 사용할 수 없는 명령어입니다.").style(MX.STYLE_WARNING);
     public static final @NotNull Component CANNOT_FIND_ACCOUNT = Component.text("계정을 찾을 수 없습니다.").style(MX.STYLE_WARNING);
     public static final @NotNull Component COUNTERPARTY_IS_IGNORING_YOU = Component.text("상대방이 본인을 차단하고 있습니다.").style(MX.STYLE_WARNING);

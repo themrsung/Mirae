@@ -1,12 +1,15 @@
 package com.themrsung.mirae.listener;
 
-import com.themrsung.mirae.listener.command.AntiSpamListener;
+import com.themrsung.mirae.listener.abuse.AntiSpamListener;
+import com.themrsung.mirae.listener.abuse.TransferAmountListener;
 import com.themrsung.mirae.listener.command.CommandTypoListener;
 import com.themrsung.mirae.listener.economy.EconomyEventListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
 import com.themrsung.mirae.listener.gui.QuickMenuListener;
+import com.themrsung.mirae.listener.mining.CustomBlockSilkTouchListener;
 import com.themrsung.mirae.listener.player.PlayerListener;
 import com.themrsung.mirae.listener.player.ShulkerBoxListener;
+import com.themrsung.mirae.listener.skill.SkillRestrictionListener;
 import com.themrsung.mirae.listener.skill.SkillUpgradeListener;
 import com.themrsung.mirae.listener.social.SocialSpyListener;
 import org.bukkit.event.Listener;
@@ -26,7 +29,10 @@ public final class Listeners {
     public static final @NotNull SocialSpyListener SOCIAL_SPY_LISTENER = new SocialSpyListener();
     public static final @NotNull AntiSpamListener ANTI_SPAM_LISTENER = new AntiSpamListener();
     public static final @NotNull SkillUpgradeListener SKILL_UPGRADE_LISTENER = new SkillUpgradeListener();
+    public static final @NotNull SkillRestrictionListener SKILL_RESTRICTION_LISTENER = new SkillRestrictionListener();
     public static final @NotNull QuickMenuListener QUICK_MENU_LISTENER = new QuickMenuListener();
+    public static final @NotNull CustomBlockSilkTouchListener CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER = new CustomBlockSilkTouchListener();
+    public static final @NotNull TransferAmountListener TRANSFER_AMOUNT_LISTENER = new TransferAmountListener();
 
     /**
      * The set of all listeners.
@@ -40,7 +46,10 @@ public final class Listeners {
             SOCIAL_SPY_LISTENER,
             ANTI_SPAM_LISTENER,
             SKILL_UPGRADE_LISTENER,
-            QUICK_MENU_LISTENER
+            SKILL_RESTRICTION_LISTENER,
+            QUICK_MENU_LISTENER,
+            CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER,
+            TRANSFER_AMOUNT_LISTENER
     );
 
     /**

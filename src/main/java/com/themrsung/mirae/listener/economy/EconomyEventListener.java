@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 /**
  * Listens for economy events.
  */
-public final class EconomyEventListener implements Listener {
+public class EconomyEventListener implements Listener {
     @EventHandler
     public void onCoinRedeemed(PlayerInteractEvent e) {
         if (!e.getAction().isRightClick()) return;
