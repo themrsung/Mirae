@@ -2,10 +2,12 @@ package com.themrsung.mirae.listener;
 
 import com.themrsung.mirae.listener.abuse.AntiSpamListener;
 import com.themrsung.mirae.listener.abuse.TransferAmountListener;
+import com.themrsung.mirae.listener.banknote.BanknoteListener;
 import com.themrsung.mirae.listener.command.CommandTypoListener;
 import com.themrsung.mirae.listener.economy.EconomyEventListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
 import com.themrsung.mirae.listener.gui.QuickMenuListener;
+import com.themrsung.mirae.listener.lootbox.LootBoxRedemptionListener;
 import com.themrsung.mirae.listener.mining.CustomBlockSilkTouchListener;
 import com.themrsung.mirae.listener.player.PlayerListener;
 import com.themrsung.mirae.listener.player.ShulkerBoxListener;
@@ -33,6 +35,8 @@ public final class Listeners {
     public static final @NotNull QuickMenuListener QUICK_MENU_LISTENER = new QuickMenuListener();
     public static final @NotNull CustomBlockSilkTouchListener CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER = new CustomBlockSilkTouchListener();
     public static final @NotNull TransferAmountListener TRANSFER_AMOUNT_LISTENER = new TransferAmountListener();
+    public static final @NotNull LootBoxRedemptionListener LOOT_BOX_REDEMPTION_LISTENER = new LootBoxRedemptionListener();
+    public static final @NotNull BanknoteListener BANKNOTE_LISTENER = new BanknoteListener();
 
     /**
      * The set of all listeners.
@@ -49,7 +53,9 @@ public final class Listeners {
             SKILL_RESTRICTION_LISTENER,
             QUICK_MENU_LISTENER,
             CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER,
-            TRANSFER_AMOUNT_LISTENER
+            TRANSFER_AMOUNT_LISTENER,
+            LOOT_BOX_REDEMPTION_LISTENER,
+            BANKNOTE_LISTENER
     );
 
     /**

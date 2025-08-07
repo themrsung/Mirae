@@ -1,7 +1,7 @@
 package com.themrsung.mirae.command.debug;
 
 import com.themrsung.mirae.command.MiraeCommand;
-import com.themrsung.mirae.gui.upgrade.UpgradeMenu;
+import com.themrsung.mirae.item.lootbox.LootBox;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +26,12 @@ public class TestCommand extends MiraeCommand {
             return false;
         }
 
-        UpgradeMenu swordMenu = new UpgradeMenu(player);
-        swordMenu.openGUI();
+        player.getInventory().addItem(
+                LootBox.PURPLE_BOX.getItem(),
+                LootBox.RED_BOX.getItem(),
+                LootBox.ORANGE_BOX.getItem(),
+                LootBox.GREEN_BOX.getItem()
+        );
 
 //        if (args.length > 0 && args[0].equalsIgnoreCase("markets")) {
 //            ActivePriceMarket stable = new ActivePriceMarket("stable_test", new ItemStack(Material.BLACK_CONCRETE), MarketCategory.NONE, 1500);

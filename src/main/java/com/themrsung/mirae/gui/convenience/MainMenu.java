@@ -73,8 +73,8 @@ public class MainMenu extends AbstractGUI {
         spawn.setItemMeta(spawnMeta);
         inventory.setItem(0, spawn);
         callbacks.put(0, () -> {
-            Bukkit.dispatchCommand(player, "spawn");
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            Bukkit.dispatchCommand(player, "spawn");
         });
 
         /// WILDERNESS
@@ -86,8 +86,8 @@ public class MainMenu extends AbstractGUI {
         wilderness.setItemMeta(wildernessMeta);
         inventory.setItem(1, wilderness);
         callbacks.put(1, () -> {
-            Bukkit.dispatchCommand(player, "warp wild");
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            Bukkit.dispatchCommand(player, "warp wild");
         });
 
         /// SHOPS
@@ -99,8 +99,8 @@ public class MainMenu extends AbstractGUI {
         shops.setItemMeta(shopsMeta);
         inventory.setItem(2, shops);
         callbacks.put(2, () -> {
-            Bukkit.dispatchCommand(player, "warp shop");
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            Bukkit.dispatchCommand(player, "warp shop");
         });
 
         /// BACK (RECENT)
@@ -113,9 +113,8 @@ public class MainMenu extends AbstractGUI {
         back.setItemMeta(backMeta);
         inventory.setItem(7, back);
         callbacks.put(7, () -> {
-
-            Bukkit.dispatchCommand(player, "back");
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            Bukkit.dispatchCommand(player, "back");
         });
 
         /// BACK (DEATH)
@@ -128,8 +127,8 @@ public class MainMenu extends AbstractGUI {
         death.setItemMeta(deathMeta);
         inventory.setItem(8, death);
         callbacks.put(8, () -> {
-            Bukkit.dispatchCommand(player, "back death");
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+            Bukkit.dispatchCommand(player, "back death");
         });
     }
 

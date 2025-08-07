@@ -38,6 +38,7 @@ public final class Commands {
     public static final @NotNull ChangeMoneyCommand CHANGE_MONEY_COMMAND = new ChangeMoneyCommand();
     public static final @NotNull ChangeCoinCommand CHANGE_COIN_COMMAND = new ChangeCoinCommand();
     public static final @NotNull FreezeEconomyCommand FREEZE_ECONOMY_COMMAND = new FreezeEconomyCommand();
+    public static final @NotNull WithdrawCommand WITHDRAW_COMMAND = new WithdrawCommand();
 
     public static final @NotNull SetTierCommand SET_TIER_COMMAND = new SetTierCommand();
     public static final @NotNull SetTitleCommand SET_TITLE_COMMAND = new SetTitleCommand();
@@ -101,6 +102,7 @@ public final class Commands {
             CHANGE_MONEY_COMMAND,
             CHANGE_COIN_COMMAND,
             FREEZE_ECONOMY_COMMAND,
+            WITHDRAW_COMMAND,
 
             SET_TIER_COMMAND,
             SET_TITLE_COMMAND,

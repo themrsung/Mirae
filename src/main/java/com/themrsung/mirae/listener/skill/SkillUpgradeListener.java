@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -132,25 +133,33 @@ public class SkillUpgradeListener implements Listener {
     static {
         Map<Material, Double> map = new HashMap<>();
 
-        map.put(Material.STONE, 1d / 1000000);
-        map.put(Material.DEEPSLATE, 1d / 700000);
-        map.put(Material.COAL_ORE, 1d / 10000);
-        map.put(Material.DEEPSLATE_COAL_ORE, 1d / 10000);
-        map.put(Material.IRON_ORE, 1d / 7500);
-        map.put(Material.DEEPSLATE_IRON_ORE, 1d / 7500);
-        map.put(Material.COPPER_ORE, 1d / 7500);
-        map.put(Material.DEEPSLATE_COPPER_ORE, 1d / 7500);
-        map.put(Material.EMERALD_ORE, 1d / 1000);
-        map.put(Material.DEEPSLATE_EMERALD_ORE, 1d / 1000);
-        map.put(Material.DIAMOND_ORE, 1d / 1000);
-        map.put(Material.DEEPSLATE_DIAMOND_ORE, 1d / 1000);
-        map.put(Material.ANCIENT_DEBRIS, 1.5d / 100);
+        map.put(Material.STONE, 1d / 50000);
+        map.put(Material.DEEPSLATE, 1d / 35000);
+        map.put(Material.COAL_ORE, 1d / 3500);
+        map.put(Material.DEEPSLATE_COAL_ORE, 1d / 3000);
+        map.put(Material.IRON_ORE, 1d / 1500);
+        map.put(Material.DEEPSLATE_IRON_ORE, 1d / 1000);
+        map.put(Material.COPPER_ORE, 1d / 750);
+        map.put(Material.DEEPSLATE_COPPER_ORE, 1d / 500);
+        map.put(Material.GOLD_ORE, 1d / 750);
+        map.put(Material.DEEPSLATE_GOLD_ORE, 1d / 500);
+        map.put(Material.LAPIS_ORE, 1d / 500);
+        map.put(Material.DEEPSLATE_LAPIS_ORE, 1d / 250);
+        map.put(Material.REDSTONE_ORE, 1d / 500);
+        map.put(Material.DEEPSLATE_REDSTONE_ORE, 1d / 250);
+        map.put(Material.NETHER_QUARTZ_ORE, 1d / 250);
+        map.put(Material.EMERALD_ORE, 1d / 200);
+        map.put(Material.DEEPSLATE_EMERALD_ORE, 1d / 100);
+        map.put(Material.DIAMOND_ORE, 1d / 100);
+        map.put(Material.DEEPSLATE_DIAMOND_ORE, 1d / 75);
 
         ORE_CHANCE_MAP = Map.copyOf(map);
     }
 
     @EventHandler
     public void onOreMined(BlockBreakEvent e) {
+        if (e.isCancelled()) return;
+
         Player player = e.getPlayer();
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
@@ -175,20 +184,37 @@ public class SkillUpgradeListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onAncientDebrisCooked(FurnaceExtractEvent e) {
+        if (e.getItemType() != Material.NETHERITE_SCRAP) return;
+
+        Player player = e.getPlayer();
+        Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
+
+        Random random = new Random();
+        double random1 = random.nextDouble();
+
+        if (random1 < (1d / 50)) {
+            account.incrementLevel(SkillType.MINING);
+        }
+    }
+
     private static final @NotNull Map<Material, Double> WOOD_CHANCE_MAP = Map.of(
-            Material.OAK_LOG, 1d / 1000,
-            Material.BIRCH_LOG, 1d / 1000,
-            Material.SPRUCE_LOG, 1d / 1000,
-            Material.JUNGLE_LOG, 1d / 1000,
-            Material.ACACIA_LOG, 1d / 1000,
-            Material.DARK_OAK_LOG, 1d / 1000,
-            Material.PALE_OAK_LOG, 1d / 1000,
-            Material.CHERRY_LOG, 1d / 1000,
-            Material.MANGROVE_LOG, 1d / 1000
+            Material.OAK_LOG, 1d / 500,
+            Material.BIRCH_LOG, 1d / 500,
+            Material.SPRUCE_LOG, 1d / 500,
+            Material.JUNGLE_LOG, 1d / 500,
+            Material.ACACIA_LOG, 1d / 500,
+            Material.DARK_OAK_LOG, 1d / 500,
+            Material.PALE_OAK_LOG, 1d / 500,
+            Material.CHERRY_LOG, 1d / 500,
+            Material.MANGROVE_LOG, 1d / 500
     );
 
     @EventHandler
     public void onWoodChopped(BlockBreakEvent e) {
+        if (e.isCancelled()) return;
+
         Player player = e.getPlayer();
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
@@ -209,13 +235,13 @@ public class SkillUpgradeListener implements Listener {
     }
 
     private static final @NotNull Map<Material, Double> CROP_CHANCE_MAP = Map.of(
-            Material.WHEAT, 1d / 1000,
-            Material.POTATO, 1d / 1000,
-            Material.BEETROOT, 1d / 1000,
-            Material.CARROT, 1d / 1000,
-            Material.MELON, 1d / 1000,
-            Material.PUMPKIN, 1d / 1000,
-            Material.SWEET_BERRY_BUSH, 1d / 1000
+            Material.WHEAT, 1d / 500,
+            Material.POTATO, 1d / 500,
+            Material.BEETROOT, 1d / 500,
+            Material.CARROT, 1d / 500,
+            Material.MELON, 1d / 500,
+            Material.PUMPKIN, 1d / 500,
+            Material.SWEET_BERRY_BUSH, 1d / 500
     );
 
     @EventHandler

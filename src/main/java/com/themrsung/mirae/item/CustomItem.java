@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Custom item.
  */
-public interface CustomItem {
+public interface CustomItem extends ItemSupplier {
     /// TICKET / COUPONS
 
     /**
@@ -62,13 +62,6 @@ public interface CustomItem {
      * Uranium ingot.
      */
     @NotNull CustomItem URANIUM_INGOT = new ItemsAdderItem("ultimate_armors:jade_ingot");
-
-    /**
-     * Returns a new item instance.
-     *
-     * @return The item
-     */
-    @NotNull ItemStack getItem();
 
     /**
      * Checks if the given item instance is this custom item.
