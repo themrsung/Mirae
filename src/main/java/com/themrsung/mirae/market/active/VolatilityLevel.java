@@ -7,27 +7,27 @@ public enum VolatilityLevel {
     /**
      * Very stable. Equivalent to fixed-price markets in most cases.
      */
-    VERY_STABLE(20, 7500),
+    VERY_STABLE(20, 1728),
 
     /**
      * Mostly stable. Has some fluctuations in price.
      */
-    STABLE(10, 5000),
+    STABLE(10, 1152),
 
     /**
      * Moderate stability. Price fluctuates, but is reasonable.
      */
-    MODERATE(10, 2500),
+    MODERATE(10, 576),
 
     /**
      * Illiquid and volatile. Good for speculative goods.
      */
-    ILLIQUID(5, 1000),
+    ILLIQUID(5, 320),
 
     /**
      * Rare. Very illiquid and incredibly volatile.
      */
-    RARE(2, 500),
+    RARE(2, 64),
 
     /**
      * Speculative. Do not use frequently.
