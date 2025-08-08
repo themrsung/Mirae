@@ -3,9 +3,11 @@ package com.themrsung.mirae.gui.donor;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
+import com.themrsung.mirae.account.AccountTitle;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
 import com.themrsung.mirae.gui.AbstractGUI;
+import com.themrsung.mirae.item.lootbox.LootBox;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -51,6 +53,11 @@ public class DonorMenu extends AbstractGUI {
      * Recent days.
      */
     public static final int RANDOM_PLAYER_RECENT_DAYS = 5;
+
+    /**
+     * Random title price.
+     */
+    public static final long RANDOM_TITLE_PRICE = 1;
 
     /**
      * Creates a new menu.
@@ -188,6 +195,47 @@ public class DonorMenu extends AbstractGUI {
             player.sendMessage(targetAccount.getDisplayName(MX.STYLE_SPECIAL)
                     .append(Component.text("님의 머리를 획득했습니다.").style(MX.STYLE_NORMAL)));
             player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+        });
+
+        /// RANDOM TITLE BOX
+        ItemStack randomTitle = new ItemStack(Material.BOOK);
+        ItemMeta titleMeta = randomTitle.getItemMeta();
+
+        titleMeta.displayName(Component.text("랜덤 칭호").style(MX.STYLE_GOOD));
+        titleMeta.lore(List.of(
+                Component.text("총 " + AccountTitle.getAcquirableTitles().size() + "개의 칭호 중 하나를 받을 수 있는 랜덤 박스를 획득합니다.").style(MX.STYLE_NORMAL),
+                Component.text("  - 가격: ").style(MX.STYLE_NORMAL)
+                        .append(Component.text(MX.formatCoinBalance(RANDOM_TITLE_PRICE)).style(MX.STYLE_SPECIAL))
+        ));
+
+        randomTitle.setItemMeta(titleMeta);
+        inventory.setItem(4, randomTitle);
+        callbacks.put(4, () -> {
+            long balance = account.getCoinBalance();
+
+            if (balance < RANDOM_TITLE_PRICE) {
+                player.sendMessage(Component.text("후원 코인이 부족합니다.").style(MX.STYLE_ERROR));
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+                return;
+            }
+
+            EconomyResult result = Mirae.getState().withdrawCoinBalance(account, RANDOM_TITLE_PRICE, EconomyCause.DONOR_SHOP_BUY, "Bought random title box.");
+            if (!result.isSuccess()) {
+                player.sendMessage(Component.text("오류가 발생했습니다."));
+                player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+                return;
+            }
+
+            LootBox emojiBox = LootBox.TITLE_BOX;
+            ItemStack boxItem = emojiBox.getItem();
+            int remaining = MX.giveItems(player.getInventory(), boxItem);
+            if (remaining > 0) {
+                player.getWorld().dropItem(player.getLocation(), boxItem);
+            }
+
+            player.sendMessage(Component.text("랜덤 칭호 박스를 획득했습니다!").style(MX.STYLE_GOOD));
+            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+
         });
     }
 

@@ -48,6 +48,8 @@ public class BanknoteListener implements Listener {
             if (failed > 0) {
                 player.getWorld().dropItem(player.getLocation(), item);
             }
+
+            return;
         }
 
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);

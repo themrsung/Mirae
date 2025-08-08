@@ -1,5 +1,6 @@
 package com.themrsung.mirae.item.lootbox;
 
+import com.themrsung.mirae.account.AccountTitle;
 import com.themrsung.mirae.item.CustomItem;
 import com.themrsung.mirae.item.EnchantedItemSupplier;
 import net.kyori.adventure.text.Component;
@@ -101,13 +102,29 @@ public interface LootBox extends CustomItem {
             .build();
 
     /**
+     * The title loot box.
+     */
+    @NotNull LootBox TITLE_BOX = ItemsAdderLootBox.builder()
+            .instanceId("iageneric:golden_key")
+            .displayName(Component.text("칭호 박스").style(Style.style()
+                    .color(TextColor.fromHexString("#8350df"))
+                    .decorate(TextDecoration.BOLD)
+                    .decoration(TextDecoration.ITALIC, false)
+                    .build()))
+            .rewards(AccountTitle.getAcquirableTitles().stream()
+                    .map(title -> LootBoxReward.fromSupplier(1, title::generateItem, LootBoxReward.Rarity.DEFAULT))
+                    .toList())
+            .build();
+
+    /**
      * The set of boxes.
      */
     @NotNull Set<LootBox> BOXES = Set.of(
             PURPLE_BOX,
             RED_BOX,
             ORANGE_BOX,
-            GREEN_BOX
+            GREEN_BOX,
+            TITLE_BOX
     );
 
     /// BODY

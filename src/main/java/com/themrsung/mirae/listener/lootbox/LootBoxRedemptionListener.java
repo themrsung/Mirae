@@ -52,13 +52,12 @@ public class LootBoxRedemptionListener implements Listener {
                 }
 
                 if (reward.getRarity().shouldBroadcast()) {
-                    Bukkit.broadcast(account.getDisplayName(MX.STYLE_SPECIAL)
-                            .append(Component.text("님이 랜덤박스로 [").style(MX.STYLE_NORMAL))
-                            .append(displayName.hoverEvent(rewardItem.asHoverEvent()))
-                            .append(Component.text("]을 획득했습니다!").style(MX.STYLE_NORMAL)));
-
                     Bukkit.getOnlinePlayers().forEach(p -> {
                         p.playSound(p, reward.getRarity().getSound(), 1, 1);
+                        p.sendMessage(account.getDisplayName(MX.STYLE_SPECIAL)
+                                .append(Component.text("님이 랜덤박스로 [").style(MX.STYLE_NORMAL))
+                                .append(displayName.hoverEvent(rewardItem.asHoverEvent()))
+                                .append(Component.text("]을 획득했습니다!").style(MX.STYLE_NORMAL)));
                     });
 
                 } else {

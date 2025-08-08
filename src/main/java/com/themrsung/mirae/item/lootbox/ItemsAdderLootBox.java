@@ -170,7 +170,7 @@ public class ItemsAdderLootBox extends ItemsAdderItem implements LootBox {
          * @return {@code this}
          */
         public @NotNull Builder rewards(@NotNull List<LootBoxReward> rewardList) {
-            this.rewards = rewardList;
+            rewards.addAll(rewardList);
             return this;
         }
 

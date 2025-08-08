@@ -192,6 +192,8 @@ public class PlayerListener implements Listener {
         e.setKeepInventory(true);
         e.setKeepLevel(true);
 
+        e.setShowDeathMessages(true);
+
         Player player = e.getPlayer();
         Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
 
