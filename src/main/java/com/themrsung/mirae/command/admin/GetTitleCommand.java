@@ -3,10 +3,10 @@ package com.themrsung.mirae.command.admin;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.account.AccountTitle;
 import com.themrsung.mirae.command.MiraeCommand;
+import com.themrsung.mirae.item.economy.TitleItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -43,9 +43,9 @@ public class GetTitleCommand extends MiraeCommand {
         }
 
         AccountTitle title = AccountTitle.getOrEmpty(args[0].toLowerCase());
-        ItemStack item = title.generateItem();
+        TitleItem item = new TitleItem(title);
 
-        player.getInventory().addItem(item);
+        player.getInventory().addItem(item.getItem());
         sender.sendMessage(Component.text("칭호 \"").style(MX.STYLE_NORMAL)
                 .append(title.getValue())
                 .append(Component.text("\"을 생성했습니다.").style(MX.STYLE_NORMAL)));

@@ -38,23 +38,23 @@ public final class Banknotes {
         if (meta == null) return new BanknoteQueryResult(false);
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        double amount = Objects.requireNonNullElse(container.get(Banknotes.key("banknote.amount"), PersistentDataType.DOUBLE), 0d);
-        String signature = Objects.requireNonNullElse(container.get(Banknotes.key("banknote.signature"), PersistentDataType.STRING), "");
+        double amount = Objects.requireNonNullElse(container.get(key("banknote.amount"), PersistentDataType.DOUBLE), 0d);
+        String signature = Objects.requireNonNullElse(container.get(key("banknote.signature"), PersistentDataType.STRING), "");
         Banknote.Version version;
 
         try {
-            String versionRaw = Objects.requireNonNullElse(container.get(Banknotes.key("banknote.version"), PersistentDataType.STRING), "");
+            String versionRaw = Objects.requireNonNullElse(container.get(key("banknote.version"), PersistentDataType.STRING), "");
             version = Banknote.Version.valueOf(versionRaw.toUpperCase());
         } catch (IllegalArgumentException e) {
             return new BanknoteQueryResult(false);
         }
 
-        Component displayName = Banknotes.displayName(amount, version);
+        Component displayName = displayName(amount, version);
         if (!Objects.equals(meta.displayName(), displayName))
             return new BanknoteQueryResult(false, version, Double.NaN);
 
         String dataToSign = amount + "|" + version + "|mirae";
-        String signatureOnNote = Banknotes.sign(dataToSign, version.getPrivateKey());
+        String signatureOnNote = sign(dataToSign, version.getPrivateKey());
 
         if (Objects.equals(signature, signatureOnNote)) {
             return new BanknoteQueryResult(true, version, amount);

@@ -1,21 +1,19 @@
 package com.themrsung.mirae.account;
 
 import com.themrsung.mirae.MX;
-import com.themrsung.mirae.economy.TitleVersion;
+import com.themrsung.mirae.item.economy.TitleItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -45,15 +43,23 @@ public enum AccountTitle {
             .hoverEvent(HoverEvent.showText(Component.text("J").style(MX.STYLE_WARNING)))
             .build())),
 
+    BETA_TESTER("beta_tester", Component.text("베타 테스터").style(Style.style()
+            .color(TextColor.fromHexString("#3dff21"))
+            .decorate(TextDecoration.BOLD)
+            .hoverEvent(HoverEvent.showText(Component.text("베타 테스트에 하루 1시간 이상 참여하셨습니다.").style(MX.STYLE_GOOD)))
+            .build())),
+
     /**
      * End crystal emoji. Reserved for Early Donors.
      */
-    END_CRYSTAL("end_crystal", Component.text(":mc_end:crystal:")),
+    END_CRYSTAL("end_crystal", Component.text(":mc_end_crystal:")
+            .hoverEvent(HoverEvent.showText(Component.text("사전예약자").style(MX.STYLE_SPECIAL)))),
 
     /**
      * Nether star emoji. Reserved for donors.
      */
-    NETHER_STAR("nether_star", Component.text(":mc_nether_star:")),
+    NETHER_STAR("nether_star", Component.text(":mc_nether_star:")
+            .hoverEvent(HoverEvent.showText(Component.text("후원자").style(MX.STYLE_SPECIAL)))),
 
     /// Acquirable
 
@@ -331,8 +337,7 @@ public enum AccountTitle {
     WOODEN_SWORD("wooden_sword", Component.text(":mc_wooden_sword:")),
     WRITABLE_BOOK("writable_book", Component.text(":mc_writable_book:")),
     WRITTEN_BOOK("written_book", Component.text(":mc_written_book:")),
-    YELLOW_DYE("yellow_dye", Component.text(":mc_yellow_dye:"))
-    ;
+    YELLOW_DYE("yellow_dye", Component.text(":mc_yellow_dye:"));
 
     /**
      * The set of special titles.
@@ -354,10 +359,41 @@ public enum AccountTitle {
 
     /**
      * Returns the set of acquirable titles.
+     *
      * @return The set of acquirable titles
      */
     public static @NotNull Set<AccountTitle> getAcquirableTitles() {
         return ACQUIRABLE_TITLES;
+    }
+
+    /**
+     * Returns whether the given item is an account title.
+     *
+     * @param item The item
+     * @return The result
+     */
+    public static @NotNull AccountTitleQueryResult isTitle(@Nullable ItemStack item) {
+        if (item == null) return new AccountTitleQueryResult(false, null);
+        boolean isEnchantedBook = item.getType() == Material.ENCHANTED_BOOK;
+
+        ItemMeta meta = item.getItemMeta();
+        List<Component> lore = meta.lore();
+
+        boolean hasLore = lore != null && lore.contains(TitleItem.LORE);
+
+        Component name = meta.displayName();
+        if (name == null) return new AccountTitleQueryResult(false, null);
+
+        if (!isEnchantedBook || !hasLore) return new AccountTitleQueryResult(false, null);
+
+        AccountTitle title = Arrays.stream(values())
+                .filter(t -> Objects.equals(t.value, name))
+                .findAny()
+                .orElse(null);
+
+        if (title == null) return new AccountTitleQueryResult(false, null);
+
+        return new AccountTitleQueryResult(true, title);
     }
 
     /**
@@ -430,28 +466,6 @@ public enum AccountTitle {
      * @return The title item
      */
     public @NotNull ItemStack generateItem() {
-        return generateItem(TitleVersion.CURRENT);
-    }
-
-    /**
-     * Generates and returns a new account title item.
-     *
-     * @param version The version
-     * @return The item
-     */
-    public @NotNull ItemStack generateItem(@NotNull TitleVersion version) {
-        /// Legacy support here
-
-        assert version == TitleVersion.VERSION_1;
-
-        ItemStack stack = new ItemStack(version.getItemType());
-        ItemMeta meta = stack.getItemMeta();
-
-        meta.itemName(Component.text(key));
-        meta.displayName(value);
-        meta.lore(List.of(TitleVersion.VERSION_1_LORE));
-
-        stack.setItemMeta(meta);
-        return stack;
+        return new TitleItem(this).getItem();
     }
 }

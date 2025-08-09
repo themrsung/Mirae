@@ -27,6 +27,7 @@ import java.util.Objects;
  * A banknote item.
  */
 public class Banknote extends ItemsAdderItem {
+
     /**
      * Creates a new banknote.
      *
