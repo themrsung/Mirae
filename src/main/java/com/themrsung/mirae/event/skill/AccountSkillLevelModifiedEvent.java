@@ -13,6 +13,7 @@ public class AccountSkillLevelModifiedEvent extends MiraeEvent {
      * Creates a new skill level modified event.
      *
      * @param account The account
+     * @param type The skill type
      * @param before  The level before
      * @param after   The level after
      */

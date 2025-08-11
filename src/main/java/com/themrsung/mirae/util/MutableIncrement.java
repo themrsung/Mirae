@@ -41,7 +41,7 @@ public final class MutableIncrement {
      * @param i The starting index
      */
     private MutableIncrement(int i) {
-        this.i = 0;
+        this.i = i;
     }
 
     private int i;
