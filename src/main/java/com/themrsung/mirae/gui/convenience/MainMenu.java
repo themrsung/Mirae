@@ -5,6 +5,7 @@ import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.gui.AbstractGUI;
+import com.themrsung.mirae.gui.cooking.CookingMenu;
 import com.themrsung.mirae.gui.donor.DonorMenu;
 import com.themrsung.mirae.gui.upgrade.UpgradeMenu;
 import net.kyori.adventure.text.Component;
@@ -193,13 +194,31 @@ public class MainMenu extends AbstractGUI {
     }
 
     private void initializeLinks() {
+        /// COOKING
+        ItemStack cookingMenu = new ItemStack(Material.CAKE);
+        ItemMeta cookingMenuMeta = cookingMenu.getItemMeta();
+
+        cookingMenuMeta.displayName(Component.text("요리 메뉴").style(MX.STYLE_SPECIAL));
+        cookingMenuMeta.lore(List.of(
+                Component.text("요리 메뉴로 이동합니다.").style(MX.STYLE_NORMAL)
+        ));
+
+        cookingMenu.setItemMeta(cookingMenuMeta);
+        inventory.setItem(15, cookingMenu);
+        callbacks.put(15, () -> {
+            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+            CookingMenu menu = new CookingMenu(player);
+            menu.openGUI();
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
+
         /// UPGRADES
         ItemStack upgradeMenu = new ItemStack(Material.CHIPPED_ANVIL);
         ItemMeta upgradeMenuMeta = upgradeMenu.getItemMeta();
 
         upgradeMenuMeta.displayName(Component.text("강화 메뉴").style(MX.STYLE_SPECIAL));
         upgradeMenuMeta.lore(List.of(
-                Component.text("강화를 이용합니다.").style(MX.STYLE_NORMAL)
+                Component.text("강화 메뉴로 이동합니다.").style(MX.STYLE_NORMAL)
         ));
 
         upgradeMenu.setItemMeta(upgradeMenuMeta);

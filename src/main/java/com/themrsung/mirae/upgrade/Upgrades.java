@@ -7,7 +7,7 @@ import com.themrsung.mirae.upgrade.composition.CoalToDiamondRecipe;
 import com.themrsung.mirae.upgrade.composition.IronToolToDiamondRecipe;
 import com.themrsung.mirae.upgrade.composition.NetheriteToVibraniumRecipe;
 import com.themrsung.mirae.upgrade.composition.WoodenToolToNetheriteRecipe;
-import com.themrsung.mirae.upgrade.debug.TestRecipe;
+import com.themrsung.mirae.upgrade.debug.TestUpgradeRecipe;
 import com.themrsung.mirae.upgrade.imprint.ImprintRemoveRecipe;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,9 +16,9 @@ import java.util.Set;
 /**
  * Upgrades for items.
  */
-public class Upgrades {
+public final class Upgrades {
     private static final @NotNull Set<UpgradeRecipe> RECIPES = Set.of(
-            new TestRecipe(),
+            new TestUpgradeRecipe(),
 
             new StormbreakerRecipe(),
             new ThorHammerRecipe(),
@@ -54,5 +54,14 @@ public class Upgrades {
         // Add 0.4%p per level
         double probabilityPoints = (double) Math.min(skillLevel, 100) / 250;
         return Math.min(defaultRate + probabilityPoints, 0.99);
+    }
+
+    /**
+     * Prevents instantiation.
+     *
+     * @throws Exception Always
+     */
+    private Upgrades() throws Exception {
+        throw new Exception("Cannot instantiate class.");
     }
 }

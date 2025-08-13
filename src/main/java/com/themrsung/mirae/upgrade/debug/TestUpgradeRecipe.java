@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Test recipe.
  */
-public class TestRecipe implements UpgradeRecipe {
+public class TestUpgradeRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
         ItemStack diamondSword = new ItemStack(Material.DIAMOND_SWORD);

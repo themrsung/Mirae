@@ -22,7 +22,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Sword upgrade menu.
+ * General upgrade menu.
  */
 public class UpgradeMenu extends AbstractUpgradeMenu {
     /**

@@ -1,6 +1,7 @@
 package com.themrsung.mirae.command;
 
 import com.themrsung.mirae.command.admin.*;
+import com.themrsung.mirae.command.cooking.CookingCommand;
 import com.themrsung.mirae.command.debug.TestCommand;
 import com.themrsung.mirae.command.donor.DonorShopCommand;
 import com.themrsung.mirae.command.economy.*;
@@ -87,6 +88,8 @@ public final class Commands {
     public static final @NotNull SkillLevelCommand SKILL_LEVEL_COMMAND = new SkillLevelCommand();
     public static final @NotNull SetSkillLevelCommand SET_SKILL_LEVEL_COMMAND = new SetSkillLevelCommand();
 
+    public static final @NotNull CookingCommand COOKING_COMMAND = new CookingCommand();
+
     private static final @NotNull Set<MiraeCommand> ALL_COMMANDS = Set.of(
             SPAWN_COMMAND,
             BACK_COMMAND,
@@ -149,7 +152,9 @@ public final class Commands {
             DONOR_SHOP_COMMAND,
 
             SKILL_LEVEL_COMMAND,
-            SET_SKILL_LEVEL_COMMAND
+            SET_SKILL_LEVEL_COMMAND,
+
+            COOKING_COMMAND
     );
 
     /**
