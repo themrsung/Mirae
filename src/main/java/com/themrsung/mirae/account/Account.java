@@ -85,6 +85,13 @@ public interface Account extends Serializable {
     @NotNull Component getDisplayName(@Nullable Style fallbackStyle);
 
     /**
+     * Returns the raw display name.
+     *
+     * @return The raw display name if present, {@code null} otherwise
+     */
+    @Nullable Component getRawDisplayName();
+
+    /**
      * Returns whether this account has a display name.
      *
      * @return {@code true} if it has a display name
@@ -780,7 +787,8 @@ public interface Account extends Serializable {
 
             object.add("uniqueId", context.serialize(account.getUniqueId()));
             object.add("name", context.serialize(account.getName()));
-            object.add("displayName", account.hasDisplayName() ? GsonComponentSerializer.gson().serializeToTree(account.getDisplayName(Style.empty())) : JsonNull.INSTANCE);
+            object.add("displayName", account.hasDisplayName() ? GsonComponentSerializer.gson()
+                    .serializeToTree(Objects.requireNonNullElse(account.getRawDisplayName(), Component.empty())) : JsonNull.INSTANCE);
 
             // Tier & Title
 

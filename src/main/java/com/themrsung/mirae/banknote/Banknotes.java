@@ -38,12 +38,12 @@ public final class Banknotes {
         if (meta == null) return new BanknoteQueryResult(false);
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        double amount = Objects.requireNonNullElse(container.get(key("banknote.amount"), PersistentDataType.DOUBLE), 0d);
-        String signature = Objects.requireNonNullElse(container.get(key("banknote.signature"), PersistentDataType.STRING), "");
+        double amount = Objects.requireNonNullElse(container.get(key("mirae.banknote.amount"), PersistentDataType.DOUBLE), 0d);
+        String signature = Objects.requireNonNullElse(container.get(key("mirae.banknote.signature"), PersistentDataType.STRING), "");
         Banknote.Version version;
 
         try {
-            String versionRaw = Objects.requireNonNullElse(container.get(key("banknote.version"), PersistentDataType.STRING), "");
+            String versionRaw = Objects.requireNonNullElse(container.get(key("mirae.banknote.version"), PersistentDataType.STRING), "");
             version = Banknote.Version.valueOf(versionRaw.toUpperCase());
         } catch (IllegalArgumentException e) {
             return new BanknoteQueryResult(false);

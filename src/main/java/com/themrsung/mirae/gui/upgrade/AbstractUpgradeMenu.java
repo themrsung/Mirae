@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Upgrade menu.
+ * Abstract upgrade menu.
  */
 public abstract class AbstractUpgradeMenu extends AbstractGUI {
     public static final int MENU_SIZE = 27;
@@ -30,7 +30,6 @@ public abstract class AbstractUpgradeMenu extends AbstractGUI {
     public static final int SLOT_TICKET = 14;
     public static final int SLOT_CONFIRM = 16;
 
-    public static final @NotNull Sound UPGRADE_TRY_SOUND = Sound.BLOCK_ANVIL_USE;
     public static final @NotNull Sound UPGRADE_SUCCESS_SOUND = Sound.UI_TOAST_CHALLENGE_COMPLETE;
     public static final @NotNull Sound UPGRADE_FAIL_SOUND = Sound.BLOCK_ANVIL_BREAK;
 
@@ -60,6 +59,7 @@ public abstract class AbstractUpgradeMenu extends AbstractGUI {
      * Creates a new menu.
      *
      * @param player The player
+     * @param title  The title
      */
     public AbstractUpgradeMenu(@NotNull Player player, @Nullable Component title) {
         super(player, MENU_SIZE, Objects.requireNonNullElse(title, Component.text("아이템 강화").style(MX.STYLE_GOOD)));

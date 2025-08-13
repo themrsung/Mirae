@@ -129,6 +129,11 @@ public class SynchronizedAccount implements Account {
     }
 
     @Override
+    public @Nullable Component getRawDisplayName() {
+        return displayName;
+    }
+
+    @Override
     public boolean hasDisplayName() {
         return !MX.isBlank(displayName);
     }

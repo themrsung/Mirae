@@ -1,6 +1,6 @@
 package com.themrsung.mirae.item.avengers;
 
-import com.themrsung.mirae.item.ItemsAdderItem;
+import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Thor's hammer.
  */
-public class ThorHammer extends ItemsAdderItem {
+public class ThorHammer extends ModifiableItemsAdderItem {
     /**
      * Creates a new Thor's Hammer.
      */
     public ThorHammer() {
-        super("stellar_heroes:mythic_hammer");
+        super("stellar_heroes:mythic_hammer", "mirae.item.thor_hammer");
     }
 
     @Override

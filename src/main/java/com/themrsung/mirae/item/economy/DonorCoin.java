@@ -1,7 +1,7 @@
 package com.themrsung.mirae.item.economy;
 
 import com.themrsung.mirae.MX;
-import com.themrsung.mirae.item.ItemsAdderItem;
+import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -12,12 +12,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class DonorCoin extends ItemsAdderItem {
+/**
+ * A donor coin.
+ */
+public class DonorCoin extends ModifiableItemsAdderItem {
     /**
-     * Creates a new Thor's Hammer.
+     * Creates a new donor coin.
      */
     public DonorCoin() {
-        super("iageneric:coin");
+        super("iageneric:coin", "mirae.item.donor_coin");
     }
 
     @Override

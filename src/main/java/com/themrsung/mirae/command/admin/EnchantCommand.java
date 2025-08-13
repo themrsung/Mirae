@@ -2,6 +2,7 @@ package com.themrsung.mirae.command.admin;
 
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.command.MiraeCommand;
+import com.themrsung.mirae.enchant.CustomEnchantment;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.Component;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -85,13 +87,22 @@ public class EnchantCommand extends MiraeCommand {
             return true;
         }
 
-        Enchantment enchantment;
+        boolean isNative;
+
+        Enchantment enchantment = null;
+        CustomEnchantment custom = null;
 
         try {
             enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).getOrThrow(NamespacedKey.minecraft(args[0]));
+            isNative = true;
         } catch (Throwable e) {
-            sender.sendMessage(Component.text("인챈트명을 확인해주세요.").style(MX.STYLE_WARNING));
-            return false;
+            try {
+                custom = CustomEnchantment.Value.valueOf(args[0].toUpperCase());
+                isNative = false;
+            } catch (Throwable ignored) {
+                sender.sendMessage(Component.text("인챈트명을 확인해주세요.").style(MX.STYLE_WARNING));
+                return false;
+            }
         }
 
         int level;
@@ -113,26 +124,31 @@ public class EnchantCommand extends MiraeCommand {
 
         ItemMeta meta = item.getItemMeta();
 
-        if (level <= 0) {
-            if (meta != null && meta.hasEnchant(enchantment)) {
-                meta.removeEnchant(enchantment);
+        if (isNative) {
+            if (level <= 0) {
+                if (meta != null && meta.hasEnchant(enchantment)) {
+                    meta.removeEnchant(enchantment);
 
-                item.setItemMeta(meta);
-                player.getInventory().setItemInMainHand(item);
+                    item.setItemMeta(meta);
+                    player.getInventory().setItemInMainHand(item);
 
-                sender.sendMessage(Component.text("인챈트가 제거되었습니다.").style(MX.STYLE_GOOD));
-                return true;
+                    sender.sendMessage(Component.text("인챈트가 제거되었습니다.").style(MX.STYLE_GOOD));
+                    return true;
+                } else {
+                    sender.sendMessage(Component.text("해당 인챈트가 존재하지 않습니다.").style(MX.STYLE_WARNING));
+                    return false;
+                }
             } else {
-                sender.sendMessage(Component.text("해당 인챈트가 존재하지 않습니다.").style(MX.STYLE_WARNING));
-                return false;
+                if (meta != null) {
+                    meta.addEnchant(enchantment, level, true);
+                }
             }
+
+            item.setItemMeta(meta);
         } else {
-            if (meta != null) {
-                meta.addEnchant(enchantment, level, true);
-            }
+            custom.setEnchantLevel(item, level);
         }
 
-        item.setItemMeta(meta);
         player.getInventory().setItemInMainHand(item);
 
         sender.sendMessage(Component.text("인챈트가 적용되었습니다.").style(MX.STYLE_GOOD));
@@ -147,6 +163,17 @@ public class EnchantCommand extends MiraeCommand {
 
                 enchantments.add("unbreakable");
                 enchantments.add("breakable");
+
+                Arrays.stream(Enchantment.values()).forEach(e -> {
+                    enchantments.add(e.getKey().getKey().toLowerCase());
+                });
+
+                Arrays.stream(CustomEnchantment.Value.values()).forEach(e -> {
+                    enchantments.add(e.toString().toLowerCase());
+                });
+
+                enchantments.removeIf(e -> !e.startsWith(args[0].toLowerCase()));
+
                 yield enchantments;
             }
             case 2 -> List.of("레벨을 입력하세요. (인챈트 제거: -1)");

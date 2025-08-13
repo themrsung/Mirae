@@ -64,9 +64,9 @@ public class Banknote extends ItemsAdderItem {
         String signature = Banknotes.sign(dataToSign, version.getPrivateKey());
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        container.set(Banknotes.key("banknote.amount"), PersistentDataType.DOUBLE, denomination);
-        container.set(Banknotes.key("banknote.signature"), PersistentDataType.STRING, signature);
-        container.set(Banknotes.key("banknote.version"), PersistentDataType.STRING, version.toString());
+        container.set(Banknotes.key("mirae.banknote.amount"), PersistentDataType.DOUBLE, denomination);
+        container.set(Banknotes.key("mirae.banknote.signature"), PersistentDataType.STRING, signature);
+        container.set(Banknotes.key("mirae.banknote.version"), PersistentDataType.STRING, version.toString());
 
         note.setItemMeta(meta);
         return note;
@@ -83,12 +83,12 @@ public class Banknote extends ItemsAdderItem {
         if (!Objects.equals(meta.displayName(), displayName)) return false;
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        double amount = Objects.requireNonNullElse(container.get(Banknotes.key("banknote.amount"), PersistentDataType.DOUBLE), 0d);
-        String signature = Objects.requireNonNullElse(container.get(Banknotes.key("banknote.signature"), PersistentDataType.STRING), "");
+        double amount = Objects.requireNonNullElse(container.get(Banknotes.key("mirae.banknote.amount"), PersistentDataType.DOUBLE), 0d);
+        String signature = Objects.requireNonNullElse(container.get(Banknotes.key("mirae.banknote.signature"), PersistentDataType.STRING), "");
         Version version;
 
         try {
-            String versionRaw = Objects.requireNonNullElse(container.get(Banknotes.key("banknote.version"), PersistentDataType.STRING), "");
+            String versionRaw = Objects.requireNonNullElse(container.get(Banknotes.key("mirae.banknote.version"), PersistentDataType.STRING), "");
             version = Version.valueOf(versionRaw.toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;

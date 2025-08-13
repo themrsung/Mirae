@@ -21,6 +21,17 @@ public interface LootBox extends CustomItem {
     /// BOXES
 
     /**
+     * Test box.
+     */
+    @NotNull LootBox TEST_BOX = ItemsAdderLootBox.builder()
+            .instanceId("crystals:purple_crystal")
+            .displayName(Component.text("테스트 박스"))
+            .reward(LootBoxReward.fromSupplier(1, THOR_HAMMER, LootBoxReward.Rarity.LEGENDARY))
+            .reward(LootBoxReward.fromSupplier(1, STORMBREAKER, LootBoxReward.Rarity.LEGENDARY))
+            .reward(LootBoxReward.fromSupplier(1, CAPTAIN_SHIELD, LootBoxReward.Rarity.LEGENDARY))
+            .build();
+
+    /**
      * Purple loot box.
      */
     @NotNull LootBox PURPLE_BOX = ItemsAdderLootBox.builder()
@@ -60,6 +71,7 @@ public interface LootBox extends CustomItem {
             .reward(LootBoxReward.fromBanknote(2500, 250000, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromItem(3500, Material.DIAMOND, 64, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromItem(5000, Material.EMERALD, 64, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(7500, EnchantedItemSupplier.MENDING_BOOK, LootBoxReward.Rarity.DEFAULT))
             .build();
 
     /**
@@ -79,6 +91,7 @@ public interface LootBox extends CustomItem {
             .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_IRON_AXE, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_IRON_SWORD, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_BOW, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(500, EnchantedItemSupplier.MENDING_BOOK, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromBanknote(1000, 50000, LootBoxReward.Rarity.DEFAULT))
             .build();
 
@@ -93,6 +106,7 @@ public interface LootBox extends CustomItem {
                     .decoration(TextDecoration.ITALIC, false)
                     .build()))
             .reward(LootBoxReward.fromSupplier(1, ORANGE_BOX, LootBoxReward.Rarity.RARE))
+            .reward(LootBoxReward.fromSupplier(3, EnchantedItemSupplier.MENDING_BOOK, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromBanknote(25, 50000, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromItem(50, Material.DIAMOND, 32, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromItem(100, Material.EMERALD, 32, LootBoxReward.Rarity.DEFAULT))
@@ -120,6 +134,7 @@ public interface LootBox extends CustomItem {
      * The set of boxes.
      */
     @NotNull Set<LootBox> BOXES = Set.of(
+            TEST_BOX,
             PURPLE_BOX,
             RED_BOX,
             ORANGE_BOX,

@@ -1,9 +1,11 @@
 package com.themrsung.mirae.command.debug;
 
 import com.themrsung.mirae.command.MiraeCommand;
+import com.themrsung.mirae.item.CustomItem;
 import com.themrsung.mirae.item.lootbox.LootBox;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,7 +28,15 @@ public class TestCommand extends MiraeCommand {
             return false;
         }
 
+        ItemStack item = player.getInventory().getItemInMainHand();
+//        CustomEnchantment.Value.THREE_BY_THREE_MINING.setEnchantLevel(item, 1);
+//        CustomEnchantment.Value.SUPER_SHOVEL.setEnchantLevel(item, 1);
+//        player.getInventory().setItemInMainHand(item);
+
+        player.sendMessage(CustomItem.STORMBREAKER.isItem(item) ? "true" : "false");
+
         player.getInventory().addItem(
+                LootBox.TEST_BOX.getItem(),
                 LootBox.PURPLE_BOX.getItem(),
                 LootBox.RED_BOX.getItem(),
                 LootBox.ORANGE_BOX.getItem(),

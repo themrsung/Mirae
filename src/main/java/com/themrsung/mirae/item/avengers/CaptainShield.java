@@ -1,6 +1,6 @@
 package com.themrsung.mirae.item.avengers;
 
-import com.themrsung.mirae.item.ItemsAdderItem;
+import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Captain America's Shield.
  */
-public class CaptainShield extends ItemsAdderItem {
+public class CaptainShield extends ModifiableItemsAdderItem {
     /**
      * Creates a new shield.
      */
     public CaptainShield() {
-        super("stellar_heroes:hero_shield");
+        super("stellar_heroes:hero_shield", "mirae.item.captain_shield");
     }
 
     @Override

@@ -63,6 +63,13 @@ public class EnchantedItemSupplier implements ItemSupplier {
             Enchantment.INFINITY, 1
     );
 
+    /**
+     * Mending book.
+     */
+    private static final @NotNull Map<Enchantment, Integer> MENDING = Map.of(
+            Enchantment.MENDING, 1
+    );
+
     /// ITEMS
 
     /**
@@ -114,6 +121,11 @@ public class EnchantedItemSupplier implements ItemSupplier {
      * Enchanted bow.
      */
     public static final @NotNull ItemSupplier ENCHANTED_BOW = new EnchantedItemSupplier(new ItemStack(Material.BOW), BOW_ENCHANTMENTS);
+
+    /**
+     * Mending book.
+     */
+    public static final @NotNull ItemSupplier MENDING_BOOK = new EnchantedItemSupplier(new ItemStack(Material.ENCHANTED_BOOK), MENDING);
 
     /**
      * Creates a new supplier.

@@ -5,6 +5,8 @@ import com.themrsung.mirae.listener.abuse.TransferAmountListener;
 import com.themrsung.mirae.listener.banknote.BanknoteListener;
 import com.themrsung.mirae.listener.command.CommandTypoListener;
 import com.themrsung.mirae.listener.economy.EconomyEventListener;
+import com.themrsung.mirae.listener.enchant.SuperShovelListener;
+import com.themrsung.mirae.listener.enchant.ThreeByThreeMiningListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
 import com.themrsung.mirae.listener.gui.QuickMenuListener;
 import com.themrsung.mirae.listener.lootbox.LootBoxRedemptionListener;
@@ -37,6 +39,8 @@ public final class Listeners {
     public static final @NotNull TransferAmountListener TRANSFER_AMOUNT_LISTENER = new TransferAmountListener();
     public static final @NotNull LootBoxRedemptionListener LOOT_BOX_REDEMPTION_LISTENER = new LootBoxRedemptionListener();
     public static final @NotNull BanknoteListener BANKNOTE_LISTENER = new BanknoteListener();
+    public static final @NotNull ThreeByThreeMiningListener THREE_BY_THREE_MINING_LISTENER = new ThreeByThreeMiningListener();
+    public static final @NotNull SuperShovelListener SUPER_SHOVEL_LISTENER = new SuperShovelListener();
 
     /**
      * The set of all listeners.
@@ -55,7 +59,9 @@ public final class Listeners {
             CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER,
             TRANSFER_AMOUNT_LISTENER,
             LOOT_BOX_REDEMPTION_LISTENER,
-            BANKNOTE_LISTENER
+            BANKNOTE_LISTENER,
+            THREE_BY_THREE_MINING_LISTENER,
+            SUPER_SHOVEL_LISTENER
     );
 
     /**

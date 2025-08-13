@@ -1,6 +1,6 @@
 package com.themrsung.mirae.item.avengers;
 
-import com.themrsung.mirae.item.ItemsAdderItem;
+import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Thor's axe (a.k.a. Stormbreaker)
  */
-public class Stormbreaker extends ItemsAdderItem {
+public class Stormbreaker extends ModifiableItemsAdderItem {
     /**
      * Creates a new Thor's axe;
      */
     public Stormbreaker() {
-        super("stellar_heroes:storm_hammer");
+        super("stellar_heroes:storm_hammer", "mirae.item.stormbreaker");
     }
 
     @Override
