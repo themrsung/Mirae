@@ -6,6 +6,9 @@ import com.themrsung.mirae.item.avengers.Stormbreaker;
 import com.themrsung.mirae.item.avengers.ThorHammer;
 import com.themrsung.mirae.item.economy.DonorCoin;
 import com.themrsung.mirae.item.food.*;
+import com.themrsung.mirae.item.starwars.BlueLightsaber;
+import com.themrsung.mirae.item.starwars.GreenLightsaber;
+import com.themrsung.mirae.item.starwars.RedLightsaber;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,6 +50,21 @@ public interface CustomItem extends ItemSupplier {
      * Metal claws.
      */
     @NotNull CustomItem METAL_CLAWS = new MetalClaws();
+
+    /**
+     * Blue lightsaber.
+     */
+    @NotNull CustomItem BLUE_LIGHTSABER = new BlueLightsaber();
+
+    /**
+     * Red lightsaber.
+     */
+    @NotNull CustomItem RED_LIGHTSABER = new RedLightsaber();
+
+    /**
+     * Green lightsaber.
+     */
+    @NotNull CustomItem GREEN_LIGHTSABER = new GreenLightsaber();
 
     /// MATERIALS
 

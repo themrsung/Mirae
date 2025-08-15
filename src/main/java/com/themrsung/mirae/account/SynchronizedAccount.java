@@ -222,6 +222,10 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public double modifyBalance(double change, @Nullable EconomyCause cause, @Nullable String message) {
+        if (!Double.isFinite(change)) {
+            throw new IllegalArgumentException("Balance must be finite.");
+        }
+
         double balanceBefore = balance;
         balance += change;
         double balanceAfter = balance;
@@ -252,7 +256,8 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public double modifyBalance(@NotNull DoubleUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message) {
-        return modifyBalance(function.applyAsDouble(balance), cause, message);
+        double change = function.applyAsDouble(balance) - balance;
+        return modifyBalance(change, cause, message);
     }
 
     @Override
@@ -297,7 +302,8 @@ public class SynchronizedAccount implements Account {
 
     @Override
     public long modifyCoinBalance(@NotNull LongUnaryOperator function, @Nullable EconomyCause cause, @Nullable String message) {
-        return modifyCoinBalance(function.applyAsLong(coinBalance), cause, message);
+        long change = function.applyAsLong(coinBalance) - coinBalance;
+        return modifyCoinBalance(change, cause, message);
     }
 
     @Override
