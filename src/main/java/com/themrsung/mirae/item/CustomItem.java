@@ -1,9 +1,11 @@
 package com.themrsung.mirae.item;
 
 import com.themrsung.mirae.item.avengers.CaptainShield;
+import com.themrsung.mirae.item.avengers.MetalClaws;
 import com.themrsung.mirae.item.avengers.Stormbreaker;
 import com.themrsung.mirae.item.avengers.ThorHammer;
 import com.themrsung.mirae.item.economy.DonorCoin;
+import com.themrsung.mirae.item.food.*;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +43,11 @@ public interface CustomItem extends ItemSupplier {
      */
     @NotNull CustomItem CAPTAIN_SHIELD = new CaptainShield();
 
+    /**
+     * Metal claws.
+     */
+    @NotNull CustomItem METAL_CLAWS = new MetalClaws();
+
     /// MATERIALS
 
     /**
@@ -62,6 +69,38 @@ public interface CustomItem extends ItemSupplier {
      * Uranium ingot.
      */
     @NotNull CustomItem URANIUM_INGOT = new ItemsAdderItem("ultimate_armors:jade_ingot");
+
+    /// FOODS
+
+    /**
+     * Apple pie.
+     */
+    @NotNull CustomItem APPLE_PIE = new ApplePie();
+
+    /**
+     * Army stew.
+     */
+    @NotNull CustomItem ARMY_STEW = new ArmyStew();
+
+    /**
+     * Ham.
+     */
+    @NotNull CustomItem HAM = new Ham();
+
+    /**
+     * Salad
+     */
+    @NotNull CustomItem SALAD = new Salad();
+
+    /**
+     * Salt bread.
+     */
+    @NotNull CustomItem SALT_BREAD = new SaltBread();
+
+    /**
+     * Sausage.
+     */
+    @NotNull CustomItem SAUSAGE = new Sausage();
 
     /**
      * Checks if the given item instance is this custom item.

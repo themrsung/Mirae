@@ -10,8 +10,14 @@ dependencies:
       required: true
     ItemsAdder:
       required: true
+    PlayerAuctions:
+      required: false
+      load: AFTER
   server:
     Vault:
       required: true
     ItemsAdder:
       required: true
+    PlayerAuctions:
+      required: false
+      load: AFTER

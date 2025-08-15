@@ -40,7 +40,14 @@ public class TestCommand extends MiraeCommand {
                 LootBox.PURPLE_BOX.getItem(),
                 LootBox.RED_BOX.getItem(),
                 LootBox.ORANGE_BOX.getItem(),
-                LootBox.GREEN_BOX.getItem()
+                LootBox.GREEN_BOX.getItem(),
+
+                CustomItem.APPLE_PIE.getItem(),
+                CustomItem.ARMY_STEW.getItem(),
+                CustomItem.HAM.getItem(),
+                CustomItem.SALAD.getItem(),
+                CustomItem.SALT_BREAD.getItem(),
+                CustomItem.SAUSAGE.getItem()
         );
 
 //        if (args.length > 0 && args[0].equalsIgnoreCase("markets")) {
