@@ -66,19 +66,18 @@ public final class Tasks {
      * @param s The scheduler instance
      */
     public static void registerTasks(@NotNull Mirae p, @NotNull BukkitScheduler s) {
-        // plugin, task, interval, delay
-
-        s.scheduleSyncRepeatingTask(p, MUTE_EXPIRATION_TASK, 20, 200);
-        s.scheduleSyncRepeatingTask(p, TRANSIENT_VARIABLE_CLEANUP_TASK, 300, 200);
-        s.scheduleSyncRepeatingTask(p, ANTI_SPAM_BAN_TASK, 20, 200);
-        s.scheduleSyncRepeatingTask(p, UPDATE_NAME_TASK, 20 * 60 * 10, 200);
-        s.scheduleSyncRepeatingTask(p, AUTO_SAVE_TASK, 20 * 60 * 5, 20 * 60 * 5);
-        s.scheduleSyncRepeatingTask(p, SCOREBOARD_TASK, 5, 5);
-        s.scheduleSyncRepeatingTask(p, NOTIFIER_TASK, 20 * 60 * 5, 20 * 60 * 3);
-        s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
-        s.scheduleSyncRepeatingTask(p, MARKET_UPDATE_TASK, 50, 200);
-        s.scheduleSyncRepeatingTask(p, TRANSFER_AMOUNT_MONITOR_TASK, 300, 200);
-        s.scheduleSyncRepeatingTask(p, ELYTRA_DURABILITY_TASK, 3, 100);
+        // plugin, task, delay, interval
+        s.runTaskTimer(p, MUTE_EXPIRATION_TASK, 200, 20);
+        s.runTaskTimer(p, TRANSIENT_VARIABLE_CLEANUP_TASK, 200, 300);
+        s.runTaskTimer(p, ANTI_SPAM_BAN_TASK, 200, 20);
+        s.runTaskTimer(p, UPDATE_NAME_TASK, 200, 20 * 60 * 10);
+        s.runTaskTimer(p, AUTO_SAVE_TASK, 20 * 60 * 5, 20 * 60 * 5);
+        s.runTaskTimer(p, SCOREBOARD_TASK, 5, 5);
+        s.runTaskTimer(p, NOTIFIER_TASK, 20 * 60 * 3, 20 * 60 * 5);
+        s.runTaskTimer(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
+        s.runTaskTimer(p, MARKET_UPDATE_TASK, 200, 50);
+        s.runTaskTimer(p, TRANSFER_AMOUNT_MONITOR_TASK, 200, 300);
+        s.runTaskTimer(p, ELYTRA_DURABILITY_TASK, 100, 5);
     }
 
     /**
