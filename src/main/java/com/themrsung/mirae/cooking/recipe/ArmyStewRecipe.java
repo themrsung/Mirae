@@ -47,7 +47,8 @@ public class ArmyStewRecipe implements CookingRecipe {
         if (water * 16 != sausage) return null;
         if (water * 16 != wheat) return null;
 
-        if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != water + salt + ham + sausage + wheat) return null;
+        if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != water + salt + ham + sausage + wheat)
+            return null;
 
         ItemStack stew = CustomItem.ARMY_STEW.getItem();
         stew.setAmount(water * 3);

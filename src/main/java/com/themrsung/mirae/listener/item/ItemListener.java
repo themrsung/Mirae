@@ -2,7 +2,6 @@ package com.themrsung.mirae.listener.item;
 
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.item.CustomItem;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
