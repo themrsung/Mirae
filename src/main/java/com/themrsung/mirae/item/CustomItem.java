@@ -1,14 +1,8 @@
 package com.themrsung.mirae.item;
 
-import com.themrsung.mirae.item.avengers.CaptainShield;
-import com.themrsung.mirae.item.avengers.MetalClaws;
-import com.themrsung.mirae.item.avengers.Stormbreaker;
-import com.themrsung.mirae.item.avengers.ThorHammer;
+import com.themrsung.mirae.item.weapon.*;
 import com.themrsung.mirae.item.economy.DonorCoin;
 import com.themrsung.mirae.item.food.*;
-import com.themrsung.mirae.item.starwars.BlueLightsaber;
-import com.themrsung.mirae.item.starwars.GreenLightsaber;
-import com.themrsung.mirae.item.starwars.RedLightsaber;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,6 +60,11 @@ public interface CustomItem extends ItemSupplier {
      */
     @NotNull CustomItem GREEN_LIGHTSABER = new GreenLightsaber();
 
+    /**
+     * Baseball bat.
+     */
+    @NotNull CustomItem BASEBALL_BAT = new BaseballBat();
+
     /// MATERIALS
 
     /**
@@ -106,9 +105,14 @@ public interface CustomItem extends ItemSupplier {
     @NotNull CustomItem HAM = new Ham();
 
     /**
-     * Salad
+     * Salad.
      */
     @NotNull CustomItem SALAD = new Salad();
+
+    /**
+     * Salt.
+     */
+    @NotNull CustomItem SALT = new ModifiableItemsAdderItem("food:salt", "mirae.food.salt");
 
     /**
      * Salt bread.

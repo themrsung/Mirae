@@ -1,4 +1,4 @@
-package com.themrsung.mirae.item.avengers;
+package com.themrsung.mirae.item.weapon;
 
 import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;

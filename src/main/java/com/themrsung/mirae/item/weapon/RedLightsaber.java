@@ -1,4 +1,4 @@
-package com.themrsung.mirae.item.avengers;
+package com.themrsung.mirae.item.weapon;
 
 import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
@@ -9,14 +9,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Metal claws.
+ * Red lightsaber.
  */
-public class MetalClaws extends ModifiableItemsAdderItem {
+public class RedLightsaber extends ModifiableItemsAdderItem {
     /**
-     * Creates a new claw.
+     * Creates a new lightsaber.
      */
-    public MetalClaws() {
-        super("stellar_heroes:metal_claws", "mirae.item.metal_claws");
+    public RedLightsaber() {
+        super("iaspecial_swords:red_lightsaber", "mirae.item.red_lightsaber");
     }
 
     @Override
@@ -24,10 +24,12 @@ public class MetalClaws extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><gradient:gold:black><bold>관리자의 손톱<reset>")
+        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><red><bold>광선검<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build()));
+
+        meta.setUnbreakable(true);
 
         item.setItemMeta(meta);
         return item;

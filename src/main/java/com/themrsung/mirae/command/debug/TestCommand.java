@@ -47,7 +47,8 @@ public class TestCommand extends MiraeCommand {
                 CustomItem.HAM.getItem(),
                 CustomItem.SALAD.getItem(),
                 CustomItem.SALT_BREAD.getItem(),
-                CustomItem.SAUSAGE.getItem()
+                CustomItem.SAUSAGE.getItem(),
+                CustomItem.SALT.getItem()
         );
 
 //        if (args.length > 0 && args[0].equalsIgnoreCase("markets")) {

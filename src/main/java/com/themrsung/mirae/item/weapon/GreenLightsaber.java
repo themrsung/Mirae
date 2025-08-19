@@ -1,4 +1,4 @@
-package com.themrsung.mirae.item.starwars;
+package com.themrsung.mirae.item.weapon;
 
 import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Red lightsaber.
  */
-public class RedLightsaber extends ModifiableItemsAdderItem {
+public class GreenLightsaber extends ModifiableItemsAdderItem {
     /**
      * Creates a new lightsaber.
      */
-    public RedLightsaber() {
-        super("iaspecial_swords:red_lightsaber", "mirae.item.red_lightsaber");
+    public GreenLightsaber() {
+        super("iaspecial_swords:green_lightsaber", "mirae.item.green_lightsaber");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class RedLightsaber extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><red><bold>광선검<reset>")
+        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><green><bold>광선검<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build()));

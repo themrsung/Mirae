@@ -1,8 +1,9 @@
 package com.themrsung.mirae.listener.item;
 
-import com.themrsung.mirae.MX;
+import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.item.CustomItem;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -11,12 +12,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -24,33 +27,6 @@ import java.util.function.Consumer;
  * Custom items listener.
  */
 public class ItemListener implements Listener {
-    @EventHandler
-    public void onItemUse(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        ItemStack item = e.getItem();
-
-        if (item == null) return;
-
-        ItemMeta meta = item.getItemMeta();
-
-        if (!(meta instanceof Damageable damageable)) return;
-
-        int maxDamage = item.getType().getMaxDurability();
-        int damage = damageable.getDamage();
-
-        double entropy = (double) damage / maxDamage;
-        if (entropy > 0.99) {
-            e.setCancelled(true);
-
-            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-            player.sendMessage(Component.text("아이템 내구도가 1% 미만입니다.").style(MX.STYLE_ERROR));
-        } else if (entropy > 0.95) {
-            player.sendMessage(Component.text("아이템 내구도가 5% 미만입니다.").style(MX.STYLE_WARNING));
-        } else if (entropy > 0.9) {
-            player.sendMessage(Component.text("아이템 내구도가 10% 미만입니다.").style(MX.STYLE_WARNING));
-        }
-    }
-
     private static final @NotNull Map<CustomItem, Consumer<EntityDamageByEntityEvent>> callbacks = new ConcurrentHashMap<>();
 
     @EventHandler
@@ -110,5 +86,63 @@ public class ItemListener implements Listener {
         callbacks.put(CustomItem.BLUE_LIGHTSABER, lightsaberCallback);
         callbacks.put(CustomItem.RED_LIGHTSABER, lightsaberCallback);
         callbacks.put(CustomItem.GREEN_LIGHTSABER, lightsaberCallback);
+
+        callbacks.put(CustomItem.BASEBALL_BAT, e -> {
+            Entity entity = e.getEntity();
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getInstance(), () -> {
+                Vector up = new Vector(0, 2.5, 0);
+                Vector v = entity.getVelocity();
+                Vector p = v.add(up);
+
+                entity.setVelocity(p);
+            }, 1);
+        });
+    }
+
+    private final @NotNull Set<CustomItem> THOR_PROPELLANTS = Set.of(
+            CustomItem.THOR_HAMMER,
+            CustomItem.STORMBREAKER
+    );
+
+    private final @NotNull Map<UUID, LocalTime> RECENT_PROPULSION_MAP = new ConcurrentHashMap<>();
+
+    public void clearPropulsionMap() {
+        RECENT_PROPULSION_MAP.clear();
+    }
+
+    @EventHandler
+    public void onThorPropulsion(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        if (!player.isGliding()) return;
+
+        if (!e.getAction().isRightClick()) return;
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (THOR_PROPELLANTS.stream().noneMatch(p -> p.isItem(item))) return;
+
+        UUID uniqueId = player.getUniqueId();
+        LocalTime now = LocalTime.now();
+        LocalTime cutoff = now.minusSeconds(1);
+        LocalTime recent = RECENT_PROPULSION_MAP.getOrDefault(uniqueId, cutoff);
+
+        if (recent.isAfter(cutoff)) return;
+
+        e.setCancelled(true);
+
+        Vector a = player.getEyeLocation()
+                .getDirection()
+                .normalize()
+                .multiply(7.5);
+
+        Vector v = player.getVelocity();
+        Vector p = v.add(a);
+
+        player.setVelocity(p);
+        player.setGliding(true);
+
+        player.playSound(player, Sound.ENTITY_WIND_CHARGE_WIND_BURST, 1, 1);
+
+        RECENT_PROPULSION_MAP.put(uniqueId, LocalTime.now());
     }
 }

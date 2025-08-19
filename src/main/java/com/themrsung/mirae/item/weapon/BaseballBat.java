@@ -1,4 +1,4 @@
-package com.themrsung.mirae.item.avengers;
+package com.themrsung.mirae.item.weapon;
 
 import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
@@ -9,14 +9,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Captain America's Shield.
+ * Baseball bat.
  */
-public class CaptainShield extends ModifiableItemsAdderItem {
+public class BaseballBat extends ModifiableItemsAdderItem {
     /**
-     * Creates a new shield.
+     * Creates a new bat.
      */
-    public CaptainShield() {
-        super("stellar_heroes:hero_shield", "mirae.item.captain_shield");
+    public BaseballBat() {
+        super("iaspecial_swords:baseball_bat", "mirae.item.baseball_bat");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class CaptainShield extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><gradient:blue:red><bold>비브라늄 방패<reset>")
+        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><color:#754d0c><bold>야구 배트<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build()));

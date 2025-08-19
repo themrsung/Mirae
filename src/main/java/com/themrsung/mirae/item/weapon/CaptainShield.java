@@ -1,4 +1,4 @@
-package com.themrsung.mirae.item.starwars;
+package com.themrsung.mirae.item.weapon;
 
 import com.themrsung.mirae.item.ModifiableItemsAdderItem;
 import net.kyori.adventure.text.format.Style;
@@ -9,14 +9,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Red lightsaber.
+ * Captain America's Shield.
  */
-public class GreenLightsaber extends ModifiableItemsAdderItem {
+public class CaptainShield extends ModifiableItemsAdderItem {
     /**
-     * Creates a new lightsaber.
+     * Creates a new shield.
      */
-    public GreenLightsaber() {
-        super("iaspecial_swords:green_lightsaber", "mirae.item.green_lightsaber");
+    public CaptainShield() {
+        super("stellar_heroes:hero_shield", "mirae.item.captain_shield");
     }
 
     @Override
@@ -24,12 +24,10 @@ public class GreenLightsaber extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><green><bold>광선검<reset>")
+        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><gradient:blue:red><bold>비브라늄 방패<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build()));
-
-        meta.setUnbreakable(true);
 
         item.setItemMeta(meta);
         return item;

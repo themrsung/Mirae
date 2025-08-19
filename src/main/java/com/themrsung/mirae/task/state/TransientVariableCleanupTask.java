@@ -1,6 +1,7 @@
 package com.themrsung.mirae.task.state;
 
 import com.themrsung.mirae.Mirae;
+import com.themrsung.mirae.listener.Listeners;
 import com.themrsung.mirae.state.State;
 
 import java.time.LocalDateTime;
@@ -25,5 +26,7 @@ public class TransientVariableCleanupTask implements Runnable {
         state.getAccounts().forEach(a -> {
             a.clearMailList(mailListCutoff);
         });
+
+        Listeners.ITEM_LISTENER.clearPropulsionMap();
     }
 }

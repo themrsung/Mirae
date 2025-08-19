@@ -5,6 +5,7 @@ import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
 import com.themrsung.mirae.task.abuse.TransferAmountMonitorTask;
 import com.themrsung.mirae.task.economy.InterestPayoutTask;
 import com.themrsung.mirae.task.economy.MarketUpdateTask;
+import com.themrsung.mirae.task.player.ElytraDurabilityTask;
 import com.themrsung.mirae.task.player.ScoreboardTask;
 import com.themrsung.mirae.task.server.NotifierTask;
 import com.themrsung.mirae.task.state.AutoSaveTask;
@@ -30,6 +31,7 @@ public final class Tasks {
     public static final @NotNull InterestPayoutTask INTEREST_PAYOUT_TASK = new InterestPayoutTask();
     public static final @NotNull MarketUpdateTask MARKET_UPDATE_TASK = new MarketUpdateTask();
     public static final @NotNull TransferAmountMonitorTask TRANSFER_AMOUNT_MONITOR_TASK = new TransferAmountMonitorTask();
+    public static final @NotNull ElytraDurabilityTask ELYTRA_DURABILITY_TASK = new ElytraDurabilityTask();
 
     /**
      * The set of all tasks.
@@ -44,7 +46,8 @@ public final class Tasks {
             NOTIFIER_TASK,
             INTEREST_PAYOUT_TASK,
             MARKET_UPDATE_TASK,
-            TRANSFER_AMOUNT_MONITOR_TASK
+            TRANSFER_AMOUNT_MONITOR_TASK,
+            ELYTRA_DURABILITY_TASK
     );
 
     /**
@@ -66,7 +69,7 @@ public final class Tasks {
         // plugin, task, interval, delay
 
         s.scheduleSyncRepeatingTask(p, MUTE_EXPIRATION_TASK, 20, 200);
-        s.scheduleSyncRepeatingTask(p, TRANSIENT_VARIABLE_CLEANUP_TASK, 20, 200);
+        s.scheduleSyncRepeatingTask(p, TRANSIENT_VARIABLE_CLEANUP_TASK, 300, 200);
         s.scheduleSyncRepeatingTask(p, ANTI_SPAM_BAN_TASK, 20, 200);
         s.scheduleSyncRepeatingTask(p, UPDATE_NAME_TASK, 20 * 60 * 10, 200);
         s.scheduleSyncRepeatingTask(p, AUTO_SAVE_TASK, 20 * 60 * 5, 20 * 60 * 5);
@@ -75,6 +78,7 @@ public final class Tasks {
         s.scheduleSyncRepeatingTask(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
         s.scheduleSyncRepeatingTask(p, MARKET_UPDATE_TASK, 50, 200);
         s.scheduleSyncRepeatingTask(p, TRANSFER_AMOUNT_MONITOR_TASK, 300, 200);
+        s.scheduleSyncRepeatingTask(p, ELYTRA_DURABILITY_TASK, 3, 100);
     }
 
     /**

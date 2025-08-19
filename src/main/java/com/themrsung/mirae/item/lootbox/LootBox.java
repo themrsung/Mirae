@@ -33,6 +33,7 @@ public interface LootBox extends CustomItem {
             .reward(LootBoxReward.fromSupplier(1, BLUE_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromSupplier(1, RED_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromSupplier(1, GREEN_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
+            .reward(LootBoxReward.fromSupplier(1, BASEBALL_BAT, LootBoxReward.Rarity.LEGENDARY))
             .build();
 
     /**
@@ -52,6 +53,7 @@ public interface LootBox extends CustomItem {
             .reward(LootBoxReward.fromSupplier(1, BLUE_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromSupplier(1, RED_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromSupplier(1, GREEN_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
+            .reward(LootBoxReward.fromSupplier(1, BASEBALL_BAT, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromItem(30, Material.NETHERITE_BLOCK, 64, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromBanknote(100, 10000000, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromItem(150, Material.ENCHANTED_GOLDEN_APPLE, 64, LootBoxReward.Rarity.RARE))

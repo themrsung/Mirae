@@ -1,6 +1,7 @@
 package com.themrsung.mirae.cooking;
 
 import com.themrsung.mirae.cooking.debug.TestCookingRecipe;
+import com.themrsung.mirae.cooking.recipe.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -10,7 +11,13 @@ import java.util.Set;
  */
 public final class Cooking {
     private static final @NotNull Set<CookingRecipe> RECIPES = Set.of(
-            new TestCookingRecipe()
+            new TestCookingRecipe(),
+            new SaltBreadRecipe(),
+            new SausageRecipe(),
+            new HamRecipe(),
+            new ApplePieRecipe(),
+            new ArmyStewRecipe(),
+            new SaladRecipe()
     );
 
     /**

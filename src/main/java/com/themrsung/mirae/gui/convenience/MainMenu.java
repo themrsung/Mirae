@@ -165,7 +165,7 @@ public class MainMenu extends AbstractGUI {
                 .toList();
 
         int q = 2;
-        for (int i = 0; i < Math.min(extraHomeKeys.size(), 5); i++) {
+        for (int i = 0; i < Math.min(extraHomeKeys.size(), 4); i++) {
             String key = extraHomeKeys.get(i);
             Location value = account.getExtraHome(key);
 
