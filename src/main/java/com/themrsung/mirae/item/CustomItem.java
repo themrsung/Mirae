@@ -61,9 +61,19 @@ public interface CustomItem extends ItemSupplier {
     @NotNull CustomItem GREEN_LIGHTSABER = new GreenLightsaber();
 
     /**
+     * Closed lightsaber.
+     */
+    @NotNull CustomItem CLOSED_LIGHTSABER = new ClosedLightsaber();
+
+    /**
      * Baseball bat.
      */
     @NotNull CustomItem BASEBALL_BAT = new BaseballBat();
+
+    /**
+     * Magnet.
+     */
+    @NotNull CustomItem MAGNET = new ModifiableItemsAdderItem("magnet:magnet", "mirae.item.magnet");
 
     /// MATERIALS
 

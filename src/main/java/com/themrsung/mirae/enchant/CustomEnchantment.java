@@ -130,7 +130,6 @@ public interface CustomEnchantment {
      * Default implementation.
      */
     enum Value implements CustomEnchantment {
-        MONEY_MENDING("mirae.enchantment.money_mending", "유상 수리"),
         THREE_BY_THREE_MINING("mirae.enchantment.three_by_three", "3x3 채굴"),
         SUPER_SHOVEL("mirae.enchantment.super_shovel", "삽질"),
 

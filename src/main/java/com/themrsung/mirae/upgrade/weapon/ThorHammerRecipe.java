@@ -1,4 +1,4 @@
-package com.themrsung.mirae.upgrade.avengers;
+package com.themrsung.mirae.upgrade.weapon;
 
 import com.themrsung.mirae.item.CustomItem;
 import com.themrsung.mirae.upgrade.UpgradeRecipe;

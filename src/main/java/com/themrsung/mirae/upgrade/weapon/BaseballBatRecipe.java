@@ -1,4 +1,4 @@
-package com.themrsung.mirae.upgrade.avengers;
+package com.themrsung.mirae.upgrade.weapon;
 
 import com.themrsung.mirae.item.CustomItem;
 import com.themrsung.mirae.upgrade.UpgradeRecipe;
@@ -11,21 +11,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Stormbreaker recipe.
+ * Baseball bat recipe.
  */
-public class StormbreakerRecipe implements UpgradeRecipe {
+public class BaseballBatRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
         if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
 
-        ItemStack netheriteAxe = new ItemStack(Material.NETHERITE_AXE);
-        if (!netheriteAxe.isSimilar(left)) return null;
+        ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
+        if (!sword.isSimilar(left)) return null;
 
-        ItemStack vibranium = CustomItem.VIBRANIUM_INGOT.getItem();
-        if (!vibranium.isSimilar(right)) return null;
+        ItemStack uranium = CustomItem.URANIUM_RAW.getItem();
+        if (!uranium.isSimilar(right)) return null;
         if (right.getAmount() != 1) return null;
 
-        ItemStack result = CustomItem.STORMBREAKER.getItem();
+        ItemStack result = CustomItem.BASEBALL_BAT.getItem();
 
         if (CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket)) {
             ItemMeta meta = result.getItemMeta();
@@ -38,6 +38,6 @@ public class StormbreakerRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.01;
+        return 0.1;
     }
 }

@@ -87,7 +87,9 @@ public class SkillUpgradeListener implements Listener {
     private static @NotNull Component getSkillLevelChangeMessage(AccountSkillLevelModifiedEvent e, boolean up) {
         long absoluteChange = Math.abs(e.getLevelChange());
 
-        return e.getSkillType().getDisplayName()
+        return e.getAccount().getDisplayName(MX.STYLE_SPECIAL)
+                .append(Component.text("님이 ").style(MX.STYLE_NORMAL))
+                .append(e.getSkillType().getDisplayName())
                 .append(Component.text(" 스킬 ").style(MX.STYLE_NORMAL))
                 .append(Component.text(e.getLevelAfter() + "레벨").style(MX.STYLE_SPECIAL))
                 .append(Component.text("을 달성했습니다!").style(MX.STYLE_NORMAL))

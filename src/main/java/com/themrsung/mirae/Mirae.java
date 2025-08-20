@@ -12,18 +12,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Objects;
 
+/**
+ * Main class.
+ */
 public final class Mirae extends JavaPlugin {
+    /**
+     * The state instance.
+     */
     private static final @NotNull State STATE = State.empty();
+
+    /**
+     * The plugin instance.
+     */
+    private static Mirae instance;
 
     /**
      * Returns the plugin instance.
      *
      * @return The plugin instance
      */
-    public static @NotNull Mirae getInstance() {
-        return (Mirae) Objects.requireNonNull(Bukkit.getServer().getPluginManager().getPlugin("Mirae"));
+    public static @NotNull Mirae getInstance() { // This is non-null if plugin is enabled.
+        return instance;
     }
 
     /**
@@ -38,6 +48,9 @@ public final class Mirae extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("Loading Mirae plugin...");
+
+        // Reference instance.
+        instance = this;
 
         // Register listeners
         var pm = getServer().getPluginManager();
