@@ -21,7 +21,7 @@ public class BaseballBatRecipe implements UpgradeRecipe {
         ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
         if (!sword.isSimilar(left)) return null;
 
-        ItemStack uranium = CustomItem.URANIUM_RAW.getItem();
+        ItemStack uranium = CustomItem.URANIUM_INGOT.getItem();
         if (!uranium.isSimilar(right)) return null;
         if (right.getAmount() != 1) return null;
 
