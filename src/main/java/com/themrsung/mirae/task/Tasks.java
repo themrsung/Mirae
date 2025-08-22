@@ -5,6 +5,8 @@ import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
 import com.themrsung.mirae.task.abuse.TransferAmountMonitorTask;
 import com.themrsung.mirae.task.economy.InterestPayoutTask;
 import com.themrsung.mirae.task.economy.MarketUpdateTask;
+import com.themrsung.mirae.task.item.ArrowSeekerTask;
+import com.themrsung.mirae.task.item.EmpShieldTask;
 import com.themrsung.mirae.task.item.MagnetTask;
 import com.themrsung.mirae.task.player.ElytraDurabilityTask;
 import com.themrsung.mirae.task.player.ScoreboardTask;
@@ -34,6 +36,8 @@ public final class Tasks {
     public static final @NotNull TransferAmountMonitorTask TRANSFER_AMOUNT_MONITOR_TASK = new TransferAmountMonitorTask();
     public static final @NotNull ElytraDurabilityTask ELYTRA_DURABILITY_TASK = new ElytraDurabilityTask();
     public static final @NotNull MagnetTask MAGNET_TASK = new MagnetTask();
+    public static final @NotNull ArrowSeekerTask ARROW_SEEKER_TASK = new ArrowSeekerTask();
+    public static final @NotNull EmpShieldTask EMP_SHIELD_TASK = new EmpShieldTask();
 
     /**
      * The set of all tasks.
@@ -50,7 +54,9 @@ public final class Tasks {
             MARKET_UPDATE_TASK,
             TRANSFER_AMOUNT_MONITOR_TASK,
             ELYTRA_DURABILITY_TASK,
-            MAGNET_TASK
+            MAGNET_TASK,
+            ARROW_SEEKER_TASK,
+            EMP_SHIELD_TASK
     );
 
     /**
@@ -82,6 +88,8 @@ public final class Tasks {
         s.runTaskTimer(p, TRANSFER_AMOUNT_MONITOR_TASK, 200, 300);
         s.runTaskTimer(p, ELYTRA_DURABILITY_TASK, 100, 5);
         s.runTaskTimer(p, MAGNET_TASK, 200, 7);
+        s.runTaskTimer(p, ARROW_SEEKER_TASK, 200, 4);
+        s.runTaskTimer(p, EMP_SHIELD_TASK, 200, 2);
     }
 
     /**

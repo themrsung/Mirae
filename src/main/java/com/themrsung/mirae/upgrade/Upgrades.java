@@ -5,6 +5,8 @@ import com.themrsung.mirae.upgrade.composition.IronToolToDiamondRecipe;
 import com.themrsung.mirae.upgrade.composition.NetheriteToVibraniumRecipe;
 import com.themrsung.mirae.upgrade.composition.WoodenToolToNetheriteRecipe;
 import com.themrsung.mirae.upgrade.debug.TestUpgradeRecipe;
+import com.themrsung.mirae.upgrade.enchant.CustomEnchantAcquisitionRecipe;
+import com.themrsung.mirae.upgrade.enchant.CustomEnchantApplicationRecipe;
 import com.themrsung.mirae.upgrade.imprint.ImprintRemoveRecipe;
 import com.themrsung.mirae.upgrade.tool.MagnetRecipe;
 import com.themrsung.mirae.upgrade.weapon.*;
@@ -35,7 +37,10 @@ public final class Upgrades {
             new IronToolToDiamondRecipe(),
             new WoodenToolToNetheriteRecipe(),
 
-            new MagnetRecipe()
+            new MagnetRecipe(),
+
+            new CustomEnchantApplicationRecipe(),
+            new CustomEnchantAcquisitionRecipe()
     );
 
     /**

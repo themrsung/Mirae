@@ -131,7 +131,9 @@ public interface CustomEnchantment {
      */
     enum Value implements CustomEnchantment {
         THREE_BY_THREE_MINING("mirae.enchantment.three_by_three", "3x3 채굴"),
-        SUPER_SHOVEL("mirae.enchantment.super_shovel", "삽질"),
+        SUPER_SHOVEL("mirae.enchantment.super_shovel", "자갈 관통"),
+        SEEKER_BOW("mirae.enchantment.seeker_bow", "화살 유도"),
+        EMP_SHIELD("mirae.enchantment.emp_shield", "전자기파 방패")
 
         ;
 
