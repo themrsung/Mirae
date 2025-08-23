@@ -80,6 +80,7 @@ public final class Commands {
     public static final @NotNull HeightCommand HEIGHT_COMMAND = new HeightCommand();
     public static final @NotNull HelmetCommand HELMET_COMMAND = new HelmetCommand();
     public static final @NotNull UpgradeCommand UPGRADE_COMMAND = new UpgradeCommand();
+    public static final @NotNull DiscordCommand DISCORD_COMMAND = new DiscordCommand();
 
     public static final @NotNull MoneySupplyCommand MONEY_SUPPLY_COMMAND = new MoneySupplyCommand();
 
@@ -148,6 +149,7 @@ public final class Commands {
             HEIGHT_COMMAND,
             HELMET_COMMAND,
             UPGRADE_COMMAND,
+            DISCORD_COMMAND,
 
             MONEY_SUPPLY_COMMAND,
 
