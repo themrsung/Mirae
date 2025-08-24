@@ -913,6 +913,8 @@ public interface Account extends Serializable {
                 JsonArray array = object.get("ownedTitles").getAsJsonArray();
                 array.forEach(entry -> {
                     AccountTitle title = context.deserialize(entry, AccountTitle.class);
+                    if (title == null) return;
+
                     account.addTitle(title);
                 });
             }
