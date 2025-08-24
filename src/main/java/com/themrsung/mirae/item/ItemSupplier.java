@@ -9,6 +9,11 @@ import org.jetbrains.annotations.NotNull;
 @FunctionalInterface
 public interface ItemSupplier {
     /**
+     * Starter kit.
+     */
+    @NotNull StarterKit STARTER_KIT = new StarterKit();
+
+    /**
      * Returns a new item instance.
      *
      * @return The item

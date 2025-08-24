@@ -80,6 +80,12 @@ public interface CustomEnchantment {
     @NotNull Component getDisplayName();
 
     /**
+     * Returns the natural maximum level.
+     * @return The max natural level
+     */
+    int getNaturalMaxLevel();
+
+    /**
      * Returns whether the given item has this enchantment.
      *
      * @param item The item
@@ -133,7 +139,8 @@ public interface CustomEnchantment {
         THREE_BY_THREE_MINING("mirae.enchantment.three_by_three", "3x3 채굴"),
         SUPER_SHOVEL("mirae.enchantment.super_shovel", "자갈 관통"),
         SEEKER_BOW("mirae.enchantment.seeker_bow", "화살 유도"),
-        EMP_SHIELD("mirae.enchantment.emp_shield", "전자기파 방패")
+        EMP_SHIELD("mirae.enchantment.emp_shield", "전자기파 방패"),
+        BOOSTER_BOW("mirae.enchantment.booster_bow", "화살 추진", 3)
 
         ;
 
@@ -144,7 +151,7 @@ public interface CustomEnchantment {
          * @param displayName The display name
          */
         Value(@NotNull String key, @NotNull String displayName) {
-            this(key, Component.text(displayName).style(MX.STYLE_NORMAL));
+            this(key, Component.text(displayName).style(MX.STYLE_NORMAL), 1);
         }
 
         /**
@@ -152,14 +159,28 @@ public interface CustomEnchantment {
          *
          * @param key         The key
          * @param displayName The display name
+         * @param naturalMaxLevel The naturally achievable max level
          */
-        Value(@NotNull String key, @NotNull Component displayName) {
+        Value(@NotNull String key, @NotNull String displayName, int naturalMaxLevel) {
+            this(key, Component.text(displayName).style(MX.STYLE_NORMAL), naturalMaxLevel);
+        }
+
+        /**
+         * Constructor.
+         *
+         * @param key         The key
+         * @param displayName The display name
+         * @param naturalMaxLevel The naturally achievable max level
+         */
+        Value(@NotNull String key, @NotNull Component displayName, int naturalMaxLevel) {
             this.key = key;
             this.displayName = displayName;
+            this.naturalMaxLevel = naturalMaxLevel;
         }
 
         private final @NotNull String key;
         private final @NotNull Component displayName;
+        private final int naturalMaxLevel;
 
         /**
          * Returns the persistent data container key id.
@@ -173,6 +194,11 @@ public interface CustomEnchantment {
         @Override
         public @NotNull Component getDisplayName() {
             return displayName;
+        }
+
+        @Override
+        public int getNaturalMaxLevel() {
+            return naturalMaxLevel;
         }
 
         @Override

@@ -43,7 +43,8 @@ public class CustomEnchantAcquisitionRecipe implements UpgradeRecipe {
         List<CustomEnchantment> enchants = new ArrayList<>(possibleEnchantments);
         Collections.shuffle(enchants);
 
-        enchants.getFirst().setEnchantLevel(result, 1); // Only level 1 for now
+        CustomEnchantment enchant = enchants.getFirst();
+        enchant.setEnchantLevel(result, 1);
         return result;
     }
 

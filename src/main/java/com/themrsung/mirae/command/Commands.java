@@ -50,6 +50,7 @@ public final class Commands {
     public static final @NotNull MuteCommand MUTE_COMMAND = new MuteCommand();
     public static final @NotNull ItemNameCommand ITEM_NAME_COMMAND = new ItemNameCommand();
     public static final @NotNull EnchantCommand ENCHANT_COMMAND = new EnchantCommand();
+    public static final @NotNull SetStarterKitReceivedCommand SET_STARTER_KIT_RECEIVED_COMMAND = new SetStarterKitReceivedCommand();
 
     public static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     public static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
@@ -119,6 +120,7 @@ public final class Commands {
             MUTE_COMMAND,
             ITEM_NAME_COMMAND,
             ENCHANT_COMMAND,
+            SET_STARTER_KIT_RECEIVED_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,

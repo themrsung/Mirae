@@ -720,6 +720,18 @@ public interface Account extends Serializable {
      */
     void setHideScoreboard(boolean hideScoreboard);
 
+    /**
+     * Returns whether player has received the starter kit.
+     * @return {@code true} if player did receive
+     */
+    boolean hasReceivedStarterKit();
+
+    /**
+     * Sets whether player has received the starter kit.
+     * @param received {@code true} if player has received
+     */
+    void setReceivedStarterKit(boolean received);
+
     ///
     /// Utilities
     ///
@@ -856,6 +868,7 @@ public interface Account extends Serializable {
             // Misc.
 
             object.add("hideScoreboard", new JsonPrimitive(account.hideScoreboard()));
+            object.add("hasReceivedStarterKit", new JsonPrimitive(account.hasReceivedStarterKit()));
 
             return object;
         }
@@ -1021,6 +1034,10 @@ public interface Account extends Serializable {
 
             if (object.has("hideScoreboard") && object.get("hideScoreboard").isJsonPrimitive()) {
                 account.setHideScoreboard(object.get("hideScoreboard").getAsBoolean());
+            }
+
+            if (object.has("hasReceivedStarterKit") && object.get("hasReceivedStarterKit").isJsonPrimitive()) {
+                account.setReceivedStarterKit(object.get("hasReceivedStarterKit").getAsBoolean());
             }
 
             return account;

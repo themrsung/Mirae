@@ -57,6 +57,7 @@ public class SynchronizedAccount implements Account {
         this.ignoredAccountIds = Collections.synchronizedSet(new HashSet<>());
 
         this.hideScoreboard = false;
+        this.receivedStarterKit = false;
     }
 
     /**
@@ -89,6 +90,7 @@ public class SynchronizedAccount implements Account {
         this.ignoredAccountIds = Collections.synchronizedSet(new HashSet<>());
 
         this.hideScoreboard = false;
+        this.receivedStarterKit = false;
     }
 
     /// Identification
@@ -675,6 +677,7 @@ public class SynchronizedAccount implements Account {
     /// Misc.
 
     private boolean hideScoreboard;
+    private boolean receivedStarterKit;
 
     @Override
     public boolean hideScoreboard() {
@@ -684,5 +687,15 @@ public class SynchronizedAccount implements Account {
     @Override
     public void setHideScoreboard(boolean hideScoreboard) {
         this.hideScoreboard = hideScoreboard;
+    }
+
+    @Override
+    public boolean hasReceivedStarterKit() {
+        return receivedStarterKit;
+    }
+
+    @Override
+    public void setReceivedStarterKit(boolean received) {
+        this.receivedStarterKit = received;
     }
 }

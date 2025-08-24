@@ -6,6 +6,7 @@ import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.account.AccountTitle;
 import com.themrsung.mirae.economy.EconomyCause;
+import com.themrsung.mirae.item.ItemSupplier;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -62,8 +63,6 @@ public class PlayerListener implements Listener {
 
             account.modifyBalance(STARTING_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting balance");
             account.modifyCoinBalance(STARTING_COIN_BALANCE, EconomyCause.NATIVE_DEPOSIT, "Starting coin balance");
-
-            giveStartingItems(player);
         } else {
             // Rejoin
             account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
@@ -85,6 +84,11 @@ public class PlayerListener implements Listener {
                 .append(Component.text("+").style(MX.STYLE_GOOD))
                 .append(Component.text("] ").style(MX.STYLE_NORMAL))
                 .append(account.getDisplayName(MX.STYLE_SPECIAL)));
+
+        if (!account.hasReceivedStarterKit()) {
+            int remainder = MX.giveItems(player.getInventory(), ItemSupplier.STARTER_KIT.getItem());
+            if (remainder <= 0) account.setReceivedStarterKit(true);
+        }
     }
 
     @EventHandler
@@ -222,18 +226,5 @@ public class PlayerListener implements Listener {
                 .append(Component.text("-").style(MX.STYLE_ERROR))
                 .append(Component.text("] ").style(MX.STYLE_NORMAL))
                 .append(account.getDisplayName(MX.STYLE_SPECIAL)));
-    }
-
-    private static void giveStartingItems(@NotNull Player player) {
-        ItemStack axe = new ItemStack(Material.IRON_AXE);
-        ItemMeta axeMeta = axe.getItemMeta();
-
-        axeMeta.addEnchant(Enchantment.UNBREAKING, 3, true);
-        axe.setItemMeta(axeMeta);
-
-        MX.giveItems(player.getInventory(), axe);
-
-        ItemStack steak = new ItemStack(Material.COOKED_BEEF, 64);
-        MX.giveItems(player.getInventory(), steak);
     }
 }

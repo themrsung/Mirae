@@ -66,7 +66,8 @@ public class ArrowSeekerTask implements Runnable {
 
                     if (possiblyTarget == null) return;
 
-                    Vector directionToTarget = possiblyTarget.clone().subtract(arrowPos).multiply(SEEKER_SEEK_VELOCITY);
+                    int boosterLevel = CustomEnchantment.Value.BOOSTER_BOW.getEnchantLevel(possiblyBow);
+                    Vector directionToTarget = possiblyTarget.clone().subtract(arrowPos).multiply(SEEKER_SEEK_VELOCITY * (boosterLevel + 1));
 
                     Vector velocityBefore = arrow.getVelocity();
                     Vector sum = velocityBefore.clone().add(directionToTarget);

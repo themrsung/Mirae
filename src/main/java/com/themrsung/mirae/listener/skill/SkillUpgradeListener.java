@@ -74,22 +74,26 @@ public class SkillUpgradeListener implements Listener {
                         .append(message));
             } else {
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                player.sendMessage(message);
+                player.sendMessage(getSkillLevelChangeMessageForSelf(e, true));
             }
         } else {
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-            player.sendMessage(message);
+            player.sendMessage(getSkillLevelChangeMessageForSelf(e, false));
         }
 
         Bukkit.getConsoleSender().sendMessage(message);
     }
 
     private static @NotNull Component getSkillLevelChangeMessage(AccountSkillLevelModifiedEvent e, boolean up) {
-        long absoluteChange = Math.abs(e.getLevelChange());
-
         return e.getAccount().getDisplayName(MX.STYLE_SPECIAL)
                 .append(Component.text("님이 ").style(MX.STYLE_NORMAL))
-                .append(e.getSkillType().getDisplayName())
+                .append(getSkillLevelChangeMessageForSelf(e, up));
+    }
+
+    private static @NotNull Component getSkillLevelChangeMessageForSelf(AccountSkillLevelModifiedEvent e, boolean up) {
+        long absoluteChange = Math.abs(e.getLevelChange());
+
+        return e.getSkillType().getDisplayName()
                 .append(Component.text(" 스킬 ").style(MX.STYLE_NORMAL))
                 .append(Component.text(e.getLevelAfter() + "레벨").style(MX.STYLE_SPECIAL))
                 .append(Component.text("을 달성했습니다!").style(MX.STYLE_NORMAL))
@@ -101,7 +105,7 @@ public class SkillUpgradeListener implements Listener {
 
     @EventHandler
     public void onBalanceModified(AccountBalanceModifiedEvent e) {
-        if (e.getAbsoluteChange() < 100000) return;
+        if (e.getAbsoluteChange() < 9900) return;
 
         Account account = e.getAccount();
 
@@ -135,25 +139,25 @@ public class SkillUpgradeListener implements Listener {
     static {
         Map<Material, Double> map = new HashMap<>();
 
-        map.put(Material.STONE, 1d / 50000);
-        map.put(Material.DEEPSLATE, 1d / 35000);
-        map.put(Material.COAL_ORE, 1d / 3500);
-        map.put(Material.DEEPSLATE_COAL_ORE, 1d / 3000);
-        map.put(Material.IRON_ORE, 1d / 1500);
-        map.put(Material.DEEPSLATE_IRON_ORE, 1d / 1000);
-        map.put(Material.COPPER_ORE, 1d / 750);
-        map.put(Material.DEEPSLATE_COPPER_ORE, 1d / 500);
-        map.put(Material.GOLD_ORE, 1d / 750);
-        map.put(Material.DEEPSLATE_GOLD_ORE, 1d / 500);
-        map.put(Material.LAPIS_ORE, 1d / 500);
-        map.put(Material.DEEPSLATE_LAPIS_ORE, 1d / 250);
-        map.put(Material.REDSTONE_ORE, 1d / 500);
-        map.put(Material.DEEPSLATE_REDSTONE_ORE, 1d / 250);
-        map.put(Material.NETHER_QUARTZ_ORE, 1d / 250);
-        map.put(Material.EMERALD_ORE, 1d / 200);
-        map.put(Material.DEEPSLATE_EMERALD_ORE, 1d / 100);
-        map.put(Material.DIAMOND_ORE, 1d / 100);
-        map.put(Material.DEEPSLATE_DIAMOND_ORE, 1d / 75);
+        map.put(Material.STONE, 1d / 5000);
+        map.put(Material.DEEPSLATE, 1d / 3500);
+        map.put(Material.COAL_ORE, 1d / 350);
+        map.put(Material.DEEPSLATE_COAL_ORE, 1d / 300);
+        map.put(Material.IRON_ORE, 1d / 150);
+        map.put(Material.DEEPSLATE_IRON_ORE, 1d / 100);
+        map.put(Material.COPPER_ORE, 1d / 75);
+        map.put(Material.DEEPSLATE_COPPER_ORE, 1d / 50);
+        map.put(Material.GOLD_ORE, 1d / 75);
+        map.put(Material.DEEPSLATE_GOLD_ORE, 1d / 50);
+        map.put(Material.LAPIS_ORE, 1d / 60);
+        map.put(Material.DEEPSLATE_LAPIS_ORE, 1d / 30);
+        map.put(Material.REDSTONE_ORE, 1d / 60);
+        map.put(Material.DEEPSLATE_REDSTONE_ORE, 1d / 30);
+        map.put(Material.NETHER_QUARTZ_ORE, 1d / 30);
+        map.put(Material.EMERALD_ORE, 1d / 30);
+        map.put(Material.DEEPSLATE_EMERALD_ORE, 1d / 15);
+        map.put(Material.DIAMOND_ORE, 1d / 15);
+        map.put(Material.DEEPSLATE_DIAMOND_ORE, 1d / 10);
 
         ORE_CHANCE_MAP = Map.copyOf(map);
     }
@@ -202,15 +206,15 @@ public class SkillUpgradeListener implements Listener {
     }
 
     private static final @NotNull Map<Material, Double> WOOD_CHANCE_MAP = Map.of(
-            Material.OAK_LOG, 1d / 500,
-            Material.BIRCH_LOG, 1d / 500,
-            Material.SPRUCE_LOG, 1d / 500,
-            Material.JUNGLE_LOG, 1d / 500,
-            Material.ACACIA_LOG, 1d / 500,
-            Material.DARK_OAK_LOG, 1d / 500,
-            Material.PALE_OAK_LOG, 1d / 500,
-            Material.CHERRY_LOG, 1d / 500,
-            Material.MANGROVE_LOG, 1d / 500
+            Material.OAK_LOG, 1d / 50,
+            Material.BIRCH_LOG, 1d / 50,
+            Material.SPRUCE_LOG, 1d / 50,
+            Material.JUNGLE_LOG, 1d / 50,
+            Material.ACACIA_LOG, 1d / 50,
+            Material.DARK_OAK_LOG, 1d / 50,
+            Material.PALE_OAK_LOG, 1d / 50,
+            Material.CHERRY_LOG, 1d / 50,
+            Material.MANGROVE_LOG, 1d / 50
     );
 
     @EventHandler
@@ -237,13 +241,13 @@ public class SkillUpgradeListener implements Listener {
     }
 
     private static final @NotNull Map<Material, Double> CROP_CHANCE_MAP = Map.of(
-            Material.WHEAT, 1d / 500,
-            Material.POTATO, 1d / 500,
-            Material.BEETROOT, 1d / 500,
-            Material.CARROT, 1d / 500,
-            Material.MELON, 1d / 500,
-            Material.PUMPKIN, 1d / 500,
-            Material.SWEET_BERRY_BUSH, 1d / 500
+            Material.WHEAT, 1d / 150,
+            Material.POTATO, 1d / 150,
+            Material.BEETROOT, 1d / 150,
+            Material.CARROT, 1d / 150,
+            Material.MELON, 1d / 150,
+            Material.PUMPKIN, 1d / 150,
+            Material.SWEET_BERRY_BUSH, 1d / 150
     );
 
     @EventHandler
