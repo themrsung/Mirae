@@ -722,12 +722,14 @@ public interface Account extends Serializable {
 
     /**
      * Returns whether player has received the starter kit.
+     *
      * @return {@code true} if player did receive
      */
     boolean hasReceivedStarterKit();
 
     /**
      * Sets whether player has received the starter kit.
+     *
      * @param received {@code true} if player has received
      */
     void setReceivedStarterKit(boolean received);

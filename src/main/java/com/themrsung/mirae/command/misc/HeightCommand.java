@@ -36,6 +36,11 @@ public class HeightCommand extends MiraeCommand {
             return false;
         }
 
+        if (args.length < 1) {
+            sender.sendMessage(Component.text("/키 <숫자>").style(MX.STYLE_WARNING));
+            return false;
+        }
+
         int height;
 
         try {

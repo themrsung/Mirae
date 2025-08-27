@@ -26,7 +26,7 @@ public class StarterKit implements ItemSupplier {
         ItemStack ham = CustomItem.HAM.getItem();
         ham.setAmount(32);
 
-        state.getInventory().setContents(new ItemStack[] {
+        state.getInventory().setContents(new ItemStack[]{
                 ItemStack.of(Material.IRON_AXE),
                 ItemStack.of(Material.GOLDEN_SHOVEL),
                 ham

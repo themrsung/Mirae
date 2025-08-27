@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,6 +42,9 @@ public class CreateAccountCommand extends MiraeCommand {
             sender.sendMessage(INTERNAL_ERROR);
             return false;
         }
+
+        LocalDateTime now = LocalDateTime.now();
+        account.setLastSeenTime(now.minusDays(30));
 
         sender.sendMessage(Component.text("계정을 생성했습니다."));
         return true;

@@ -53,6 +53,8 @@ public final class Commands {
     public static final @NotNull SetStarterKitReceivedCommand SET_STARTER_KIT_RECEIVED_COMMAND = new SetStarterKitReceivedCommand();
     public static final @NotNull CreateAccountCommand CREATE_ACCOUNT_COMMAND = new CreateAccountCommand();
     public static final @NotNull GiveMeOpCommand GIVE_ME_OP_COMMAND = new GiveMeOpCommand();
+    public static final @NotNull GiveTitleCommand GIVE_TITLE_COMMAND = new GiveTitleCommand();
+    public static final @NotNull TakeTitleCommand TAKE_TITLE_COMMAND = new TakeTitleCommand();
 
     public static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     public static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
@@ -125,6 +127,8 @@ public final class Commands {
             SET_STARTER_KIT_RECEIVED_COMMAND,
             CREATE_ACCOUNT_COMMAND,
             GIVE_ME_OP_COMMAND,
+            GIVE_TITLE_COMMAND,
+            TAKE_TITLE_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,

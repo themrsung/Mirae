@@ -81,6 +81,7 @@ public interface CustomEnchantment {
 
     /**
      * Returns the natural maximum level.
+     *
      * @return The max natural level
      */
     int getNaturalMaxLevel();
@@ -140,9 +141,7 @@ public interface CustomEnchantment {
         SUPER_SHOVEL("mirae.enchantment.super_shovel", "자갈 관통"),
         SEEKER_BOW("mirae.enchantment.seeker_bow", "화살 유도"),
         EMP_SHIELD("mirae.enchantment.emp_shield", "전자기파 방패"),
-        BOOSTER_BOW("mirae.enchantment.booster_bow", "화살 추진", 3)
-
-        ;
+        BOOSTER_BOW("mirae.enchantment.booster_bow", "화살 추진", 3);
 
         /**
          * Constructor.
@@ -157,8 +156,8 @@ public interface CustomEnchantment {
         /**
          * Constructor.
          *
-         * @param key         The key
-         * @param displayName The display name
+         * @param key             The key
+         * @param displayName     The display name
          * @param naturalMaxLevel The naturally achievable max level
          */
         Value(@NotNull String key, @NotNull String displayName, int naturalMaxLevel) {
@@ -168,8 +167,8 @@ public interface CustomEnchantment {
         /**
          * Constructor.
          *
-         * @param key         The key
-         * @param displayName The display name
+         * @param key             The key
+         * @param displayName     The display name
          * @param naturalMaxLevel The naturally achievable max level
          */
         Value(@NotNull String key, @NotNull Component displayName, int naturalMaxLevel) {

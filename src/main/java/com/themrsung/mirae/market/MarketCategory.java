@@ -78,6 +78,11 @@ public enum MarketCategory {
      */
     SPECULATIVE_GOODS(Component.text("투기재").style(MX.STYLE_NORMAL)),
 
+    /**
+     * Music discs.
+     */
+    MUSIC_DISCS(Component.text("음반").style(MX.STYLE_NORMAL)),
+
     ;
 
     MarketCategory(@NotNull Component displayName) {

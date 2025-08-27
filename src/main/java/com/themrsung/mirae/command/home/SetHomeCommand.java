@@ -22,6 +22,7 @@ public class SetHomeCommand extends MiraeCommand {
     public SetHomeCommand() {
         super("sethome");
         setAliases(List.of(
+                "셋홈",
                 "집설정",
                 "홈설정"
         ));

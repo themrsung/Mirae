@@ -50,8 +50,8 @@ public class CustomEnchantApplicationRecipe implements UpgradeRecipe {
                     if ((e == CustomEnchantment.Value.SUPER_SHOVEL || e == CustomEnchantment.Value.THREE_BY_THREE_MINING) &&
                             !PICKAXES.contains(left.getType())) return;
 
-                    // Cannot apply seeker bow to non-launcher
-                    if (e == CustomEnchantment.Value.SEEKER_BOW &&
+                    // Cannot apply bow enchants to non-launcher
+                    if ((e == CustomEnchantment.Value.SEEKER_BOW || e == CustomEnchantment.Value.BOOSTER_BOW) &&
                             !LAUNCHERS.contains(left.getType())) return;
 
                     // Cannot apply EMP to non-shield
