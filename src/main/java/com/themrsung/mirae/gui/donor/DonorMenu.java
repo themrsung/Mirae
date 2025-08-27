@@ -146,7 +146,7 @@ public class DonorMenu extends AbstractGUI {
         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta headMeta = (SkullMeta) playerHead.getItemMeta();
 
-        headMeta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("935084d8-c05e-46ab-b8a1-b04d4f049584")));
+        headMeta.setOwningPlayer(player);
         headMeta.displayName(Component.text("랜덤 머리").style(MX.STYLE_GOOD));
         headMeta.lore(List.of(
                 Component.text("최근 " + RANDOM_PLAYER_RECENT_DAYS + "일간 접속한 플레이어 중 랜덤으로 머리를 획득합니다.").style(MX.STYLE_NORMAL),
