@@ -85,6 +85,8 @@ public class PlayerListener implements Listener {
             int remainder = MX.giveItems(player.getInventory(), ItemSupplier.STARTER_KIT.getItem());
             if (remainder <= 0) account.setReceivedStarterKit(true);
         }
+
+        account.updateName();
     }
 
     @EventHandler
