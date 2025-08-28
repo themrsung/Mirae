@@ -1,5 +1,6 @@
 package com.themrsung.mirae;
 
+import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.Commands;
 import com.themrsung.mirae.economy.VaultEconomyAdapter;
 import com.themrsung.mirae.listener.Listeners;
@@ -73,6 +74,9 @@ public final class Mirae extends JavaPlugin {
         } catch (IOException e) {
             getLogger().severe("Failed to load data from disk: " + e.getMessage());
         }
+
+        // Update names
+        getState().getAccounts().forEach(Account::updateName);
 
         getLogger().info("Mirae plugin loaded!");
     }

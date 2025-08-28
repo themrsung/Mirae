@@ -14,13 +14,12 @@ public enum EquityToken {
             .color(TextColor.fromHexString("#ffffff"))
             .decoration(TextDecoration.ITALIC, false)
             .decorate(TextDecoration.BOLD)
-            .build()));
-
-    ;
+            .build()));;
 
     /**
      * Creates a new equity token.
-     * @param symbol The symbol
+     *
+     * @param symbol      The symbol
      * @param displayName The display name
      */
     EquityToken(@NotNull String symbol, @NotNull Component displayName) {
@@ -33,6 +32,7 @@ public enum EquityToken {
 
     /**
      * Returns the symbol.
+     *
      * @return The symbol
      */
     public @NotNull String getSymbol() {
@@ -41,6 +41,7 @@ public enum EquityToken {
 
     /**
      * Returns the display name.
+     *
      * @return The display name
      */
     public @NotNull Component getDisplayName() {

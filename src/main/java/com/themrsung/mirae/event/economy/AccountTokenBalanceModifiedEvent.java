@@ -101,6 +101,7 @@ public class AccountTokenBalanceModifiedEvent extends AccountEconomyEvent {
 
         /**
          * Sets the token.
+         *
          * @param token The token
          * @return The builder instance
          */
@@ -166,11 +167,11 @@ public class AccountTokenBalanceModifiedEvent extends AccountEconomyEvent {
     /**
      * Protected constructor.
      *
-     * @param uniqueId          The unique identifier
-     * @param time              The time
-     * @param account           The account
-     * @param cause             The cause
-     * @param message           The message
+     * @param uniqueId           The unique identifier
+     * @param time               The time
+     * @param account            The account
+     * @param cause              The cause
+     * @param message            The message
      * @param tokenBalanceChange The coin balance change
      * @param tokenBalanceBefore The coin balance before
      * @param tokenBalanceAfter  The coin balance after
@@ -201,6 +202,7 @@ public class AccountTokenBalanceModifiedEvent extends AccountEconomyEvent {
 
     /**
      * Returns the token which was changed.
+     *
      * @return The token
      */
     public @NotNull EquityToken getToken() {

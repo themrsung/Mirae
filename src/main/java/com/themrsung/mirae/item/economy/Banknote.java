@@ -215,12 +215,17 @@ public class Banknote extends ItemsAdderItem {
         /**
          * Block 0. Since @ v0.3.6
          */
-        BLOCK_0("15fc7778-a3b0-443c-9c2c-d6b41d952d54", "#8df551", "#8df554", true);
+        BLOCK_0("15fc7778-a3b0-443c-9c2c-d6b41d952d54", "#8df551", "#8df554", false),
+
+        /**
+         * Block 1. Since v1.0
+         */
+        BLOCK_1("First to the key, first to the egg!", "#8df552", "#8df556", true);
 
         /**
          * The current version.
          */
-        private static @NotNull Version CURRENT = BLOCK_0;
+        private static final @NotNull Version CURRENT = BLOCK_1;
 
         /**
          * Creates a new banknote version.
