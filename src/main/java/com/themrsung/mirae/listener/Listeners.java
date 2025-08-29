@@ -5,7 +5,6 @@ import com.themrsung.mirae.listener.abuse.TransferAmountListener;
 import com.themrsung.mirae.listener.banknote.BanknoteListener;
 import com.themrsung.mirae.listener.command.CommandTypoListener;
 import com.themrsung.mirae.listener.economy.EconomyEventListener;
-import com.themrsung.mirae.listener.economy.FarmableMobSpawnListener;
 import com.themrsung.mirae.listener.enchant.SuperShovelListener;
 import com.themrsung.mirae.listener.enchant.ThreeByThreeMiningListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
@@ -46,7 +45,6 @@ public final class Listeners {
     public static final @NotNull SuperShovelListener SUPER_SHOVEL_LISTENER = new SuperShovelListener();
     public static final @NotNull FoodListener FOOD_LISTENER = new FoodListener();
     public static final @NotNull ItemListener ITEM_LISTENER = new ItemListener();
-    public static final @NotNull FarmableMobSpawnListener FARMABLE_MOB_SPAWN_LISTENER = new FarmableMobSpawnListener();
 
     /**
      * The set of all listeners.
@@ -69,8 +67,7 @@ public final class Listeners {
             THREE_BY_THREE_MINING_LISTENER,
             SUPER_SHOVEL_LISTENER,
             FOOD_LISTENER,
-            ITEM_LISTENER,
-            FARMABLE_MOB_SPAWN_LISTENER
+            ITEM_LISTENER
     );
 
     /**

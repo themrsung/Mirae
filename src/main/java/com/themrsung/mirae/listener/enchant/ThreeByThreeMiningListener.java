@@ -26,6 +26,7 @@ public class ThreeByThreeMiningListener implements Listener {
         blacklist.add(Material.BARRIER);
         blacklist.add(Material.VAULT);
         blacklist.add(Material.REINFORCED_DEEPSLATE);
+        blacklist.add(Material.NOTE_BLOCK); // Used by ItemsAdder
 
         THREE_BY_THREE_BLACKLIST = EnumSet.copyOf(blacklist);
     }
