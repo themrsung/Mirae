@@ -222,12 +222,7 @@ public abstract class AbstractCookingMenu extends AbstractGUI {
             ItemStack item = inventory.getItem(slot);
             if (item == null) return;
 
-            int remaining = MX.giveItems(player.getInventory(), item);
-            if (remaining > 0) {
-                ItemStack itemsToDrop = item.clone();
-                itemsToDrop.setAmount(remaining);
-                player.getWorld().dropItem(player.getLocation(), itemsToDrop);
-            }
+            MX.giveItems(player, item);
         });
     }
 }

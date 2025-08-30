@@ -7,6 +7,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -226,7 +227,7 @@ public final class MX {
     }
 
     /**
-     * Gives items to the given inventory.
+     * Gives items to the given inventory. Use {@link #giveItems(Player, ItemStack)} to give to players.
      *
      * @param inventory The inventory to give to
      * @param items     The item stack to give
@@ -235,9 +236,45 @@ public final class MX {
     public static int giveItems(@NotNull Inventory inventory, @NotNull ItemStack items) {
         int availableSpace = getRemainingSpaceFor(inventory, items);
 
-        inventory.addItem(items);
+        ItemStack itemsToGive = items.clone();
+        itemsToGive.setAmount(availableSpace);
+
+        inventory.addItem(itemsToGive);
 
         return items.getAmount() - availableSpace;
+    }
+
+    /**
+     * Gives items to the given player.
+     *
+     * @param player The player to give to
+     * @param items  The item(s) to give
+     */
+    public static void giveItems(@NotNull Player player, @NotNull ItemStack items) {
+        giveItems(player, items, false);
+    }
+
+    /**
+     * Gives items to the given player.
+     *
+     * @param player                 The player to give to
+     * @param items                  The item(s) to give
+     * @param mustDeliverToInventory {@code true} if items MUST be delivered to the inventory
+     * @return The remaining number of items which could not fit
+     */
+    public static int giveItems(@NotNull Player player, @NotNull ItemStack items, boolean mustDeliverToInventory) {
+        PlayerInventory inventory = player.getInventory();
+        int remainder = giveItems(inventory, items);
+
+        if (mustDeliverToInventory) {
+            return remainder;
+        }
+
+        ItemStack remaining = items.clone();
+        remaining.setAmount(remainder);
+
+        player.getWorld().dropItem(player.getLocation(), remaining);
+        return 0;
     }
 
     /**

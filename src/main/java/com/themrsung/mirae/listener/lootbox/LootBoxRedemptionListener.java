@@ -46,10 +46,7 @@ public class LootBoxRedemptionListener implements Listener {
                     return;
                 }
 
-                int remainingGive = MX.giveItems(player.getInventory(), rewardItem);
-                if (remainingGive > 0) {
-                    player.getWorld().dropItem(player.getLocation(), rewardItem);
-                }
+                MX.giveItems(player, rewardItem);
 
                 if (reward.getRarity().shouldBroadcast()) {
                     Bukkit.getOnlinePlayers().forEach(p -> {

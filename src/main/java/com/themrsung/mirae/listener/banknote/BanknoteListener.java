@@ -43,11 +43,8 @@ public class BanknoteListener implements Listener {
 
         if (!er.isSuccess()) {
             item.setAmount(1);
-            int failed = MX.giveItems(player.getInventory(), item);
 
-            if (failed > 0) {
-                player.getWorld().dropItem(player.getLocation(), item);
-            }
+            MX.giveItems(player, item);
 
             return;
         }

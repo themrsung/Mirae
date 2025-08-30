@@ -74,13 +74,7 @@ public class CoinCommand extends MiraeCommand {
             return false;
         }
 
-        int remaining = MX.giveItems(player.getInventory(), coins);
-        if (remaining > 0) {
-            ItemStack remainingCoins = getCoinItem();
-            remainingCoins.setAmount(remaining);
-
-            player.getWorld().dropItem(player.getLocation(), remainingCoins);
-        }
+        MX.giveItems(player, coins);
 
         long coinsAfter = account.getCoinBalance();
         sender.sendMessage(Component.text(MX.formatCoinBalance(amount)).style(MX.STYLE_SPECIAL)

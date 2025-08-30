@@ -73,13 +73,7 @@ public class WithdrawCommand extends MiraeCommand {
             return false;
         }
 
-        int remaining = MX.giveItems(player.getInventory(), item);
-        if (remaining > 0) {
-            ItemStack remainingNote = banknote.getItem();
-            remainingNote.setAmount(remaining);
-
-            player.getWorld().dropItem(player.getLocation(), remainingNote);
-        }
+        MX.giveItems(player, item);
 
         double balanceAfter = account.getBalance();
         sender.sendMessage(Component.text("[출금] ").style(MX.STYLE_ERROR)

@@ -86,9 +86,7 @@ public enum MarketCategory {
     /**
      * Furniture.
      */
-    FURNITURE(Component.text("가구").style(MX.STYLE_NORMAL))
-
-    ;
+    FURNITURE(Component.text("가구").style(MX.STYLE_NORMAL));
 
     MarketCategory(@NotNull Component displayName) {
         this.displayName = displayName;
