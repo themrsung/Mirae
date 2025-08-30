@@ -391,18 +391,10 @@ public class MarketMenu extends AbstractGUI {
     }
 
     private void logTransaction(@NotNull ItemStack item, int quantity, boolean buy) {
-        Component name = Component.text(item.getType().toString()).style(MX.STYLE_SPECIAL);
+        String name = item.getType().toString();
+        String message = player.getName() + " : " + name + " " + quantity + "개 " + (buy ? "구매" : "판매");
 
-        Component message = Component.text(player.getName())
-                .append(Component.text(" : "))
-                .append(name)
-                .appendSpace()
-                .append(Component.text(quantity + "개").style(MX.STYLE_SPECIAL))
-                .append(Component.text("를 ").style(MX.STYLE_NORMAL))
-                .append(buy ? Component.text("구매").style(MX.STYLE_BUY) : Component.text("판매").style(MX.STYLE_SELL))
-                .append(Component.text("했습니다.").style(MX.STYLE_NORMAL));
-
-        Bukkit.getConsoleSender().sendMessage(message);
+        Mirae.getInstance().getLogger().info(message);
     }
 
     private void updateMarketData() {
