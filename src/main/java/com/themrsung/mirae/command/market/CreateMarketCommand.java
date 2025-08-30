@@ -143,6 +143,8 @@ public class CreateMarketCommand extends MiraeCommand {
                             .map(String::toLowerCase)
                             .filter(s -> s.startsWith(args[4].toLowerCase()))
                             .toList();
+                } else if (args[0].equalsIgnoreCase("fixed")) {
+                    yield List.of("매입가를 입력하세요...");
                 } else {
                     yield List.of();
                 }
