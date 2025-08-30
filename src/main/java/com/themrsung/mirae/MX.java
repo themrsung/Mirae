@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
 /**
@@ -154,6 +156,34 @@ public final class MX {
     ///
     /// Inventory
     ///
+
+    /**
+     * Returns a resized stack.
+     *
+     * @param stack    The stack
+     * @param quantity The quantity
+     * @return The resized stack
+     */
+    @Contract(pure = true)
+    public static @NotNull ItemStack resizedStack(@NotNull ItemStack stack, int quantity) {
+        ItemStack cloned = stack.clone();
+        cloned.setAmount(quantity);
+        return cloned;
+    }
+
+    /**
+     * Returns a resized stack.
+     *
+     * @param stack    The stack
+     * @param function The quantity modifier function
+     * @return The resized stack
+     */
+    @Contract(pure = true)
+    public static @NotNull ItemStack resizedStack(@NotNull ItemStack stack, @NotNull IntUnaryOperator function) {
+        ItemStack cloned = stack.clone();
+        cloned.setAmount(function.applyAsInt(stack.getAmount()));
+        return cloned;
+    }
 
     /**
      * Counts the number of items in the given inventory.
