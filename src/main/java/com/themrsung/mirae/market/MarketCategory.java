@@ -83,6 +83,11 @@ public enum MarketCategory {
      */
     MUSIC_DISCS(Component.text("음반").style(MX.STYLE_NORMAL)),
 
+    /**
+     * Furniture.
+     */
+    FURNITURE(Component.text("가구").style(MX.STYLE_NORMAL))
+
     ;
 
     MarketCategory(@NotNull Component displayName) {
