@@ -101,7 +101,13 @@ public class CreateMarketCommand extends MiraeCommand {
             market = new FixedPriceMarket(name, item, category);
             var fpm = (FixedPriceMarket) market;
             fpm.setBuyPrice(initialPrice);
-            fpm.setSellPrice(initialPrice);
+
+            try {
+                double sellPrice = MX.parseDouble(args[4]);
+                fpm.setSellPrice(sellPrice);
+            } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+                fpm.setSellPrice(initialPrice);
+            }
         } else {
             sender.sendMessage(Component.text("유효하지 않은 상점 유형입니다.").style(MX.STYLE_WARNING));
             return false;
