@@ -58,7 +58,10 @@ public class Banknote extends ItemsAdderItem {
         ItemStack note = super.getItem();
         ItemMeta meta = note.getItemMeta();
 
-        meta.displayName(Banknotes.displayName(denomination, version));
+        Component name = Banknotes.displayName(denomination, version);
+
+        meta.itemName(name);
+        meta.displayName(name);
 
         String dataToSign = denomination + "|" + version + "|mirae";
         String signature = Banknotes.sign(dataToSign, version.getPrivateKey());

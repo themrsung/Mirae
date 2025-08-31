@@ -1,6 +1,7 @@
 package com.themrsung.mirae.item.weapon;
 
 import com.themrsung.mirae.item.ModifiableItemsAdderItem;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -24,10 +25,13 @@ public class RedLightsaber extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(MiniMessage.miniMessage().deserialize("<reset><red><bold>광선검<reset>")
+        Component name = MiniMessage.miniMessage().deserialize("<reset><red><bold>광선검<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
-                        .build()));
+                        .build());
+
+        meta.itemName(name);
+        meta.displayName(name);
 
         meta.setUnbreakable(true);
 

@@ -228,7 +228,7 @@ public class DonorMenu extends AbstractGUI {
 
             LootBox emojiBox = LootBox.TITLE_BOX;
             ItemStack boxItem = emojiBox.getItem();
-            
+
             MX.giveItems(player, boxItem);
 
             player.sendMessage(Component.text("랜덤 칭호 박스를 획득했습니다!").style(MX.STYLE_GOOD));
