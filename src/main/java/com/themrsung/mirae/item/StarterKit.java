@@ -19,7 +19,7 @@ import java.util.List;
 public class StarterKit implements ItemSupplier {
     @Override
     public @NotNull ItemStack getItem() {
-        ItemStack box = ItemStack.of(Material.BLACK_SHULKER_BOX);
+        ItemStack box = ItemStack.of(Material.BLACK_SHULKER_BOX, 1);
         BlockStateMeta bsm = (BlockStateMeta) box.getItemMeta();
         ShulkerBox state = (ShulkerBox) bsm.getBlockState();
 

@@ -60,6 +60,17 @@ public class SkillLevelCommand extends MiraeCommand {
         return true;
     }
 
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) throws IllegalArgumentException {
+        return switch (args.length) {
+            case 1 -> Mirae.getState().getAccounts().stream()
+                    .map(Account::getName)
+                    .filter(n -> n.toLowerCase().startsWith(args[0].toLowerCase()))
+                    .toList();
+            default -> List.of();
+        };
+    }
+
     private static void sendSkillInfo(@NotNull CommandSender sender, @NotNull Account account) {
         boolean self = sender instanceof Player player && Objects.equals(player.getUniqueId(), account.getUniqueId());
 

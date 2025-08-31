@@ -266,10 +266,7 @@ public final class MX {
     public static int giveItems(@NotNull Inventory inventory, @NotNull ItemStack items) {
         int availableSpace = getRemainingSpaceFor(inventory, items);
 
-        ItemStack itemsToGive = items.clone();
-        itemsToGive.setAmount(availableSpace);
-
-        inventory.addItem(itemsToGive);
+        inventory.addItem(items);
 
         return items.getAmount() - availableSpace;
     }
@@ -296,12 +293,11 @@ public final class MX {
         PlayerInventory inventory = player.getInventory();
         int remainder = giveItems(inventory, items);
 
-        if (mustDeliverToInventory) {
+        if (mustDeliverToInventory || remainder <= 0) {
             return remainder;
         }
 
-        ItemStack remaining = items.clone();
-        remaining.setAmount(remainder);
+        ItemStack remaining = resizedStack(items, remainder);
 
         player.getWorld().dropItem(player.getLocation(), remaining);
         return 0;
