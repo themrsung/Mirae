@@ -1,6 +1,9 @@
 package com.themrsung.mirae.command.admin;
 
 import com.themrsung.mirae.MX;
+import com.themrsung.mirae.Mirae;
+import com.themrsung.mirae.account.Account;
+import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.command.MiraeCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
@@ -37,7 +40,9 @@ public class ItemNameCommand extends MiraeCommand {
             return false;
         }
 
-        if (!sender.isOp()) {
+        Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
+
+        if (!account.getTier().isAtLeast(AccountTier.GOLD)) {
             sender.sendMessage(INSUFFICIENT_PERMISSIONS);
             return false;
         }
