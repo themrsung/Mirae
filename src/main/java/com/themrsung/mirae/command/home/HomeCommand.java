@@ -69,7 +69,7 @@ public class HomeCommand extends MiraeCommand {
                 if (!(sender instanceof Player player)) yield List.of();
                 Account account = MX.requireAccountNonNull(Mirae.getState().getAccount(player));
                 yield List.copyOf(account.getExtraHomeMap().keySet().stream()
-                        .filter(key -> key.toLowerCase().startsWith(args[0]))
+                        .filter(key -> key.toLowerCase().startsWith(args[0].toLowerCase()))
                         .toList());
             }
             default -> List.of();
