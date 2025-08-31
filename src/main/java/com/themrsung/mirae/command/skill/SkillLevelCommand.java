@@ -78,7 +78,7 @@ public class SkillLevelCommand extends MiraeCommand {
                 .append(Component.text("의 스킬 정보").style(MX.STYLE_NORMAL)));
 
         Arrays.stream(SkillType.values()).forEach(type ->
-                sender.sendMessage(Component.text("  -").style(MX.STYLE_NORMAL)
+                sender.sendMessage(Component.text("  - ").style(MX.STYLE_NORMAL)
                         .append(type.getDisplayName())
                         .append(Component.text(": ").style(MX.STYLE_NORMAL))
                         .append(Component.text(account.getSkillLevel(type) + "레벨")).style(MX.STYLE_SPECIAL)));
