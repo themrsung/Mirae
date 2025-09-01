@@ -54,12 +54,16 @@ public interface LootBox extends CustomItem {
             .reward(LootBoxReward.fromSupplier(1, RED_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromSupplier(1, GREEN_LIGHTSABER, LootBoxReward.Rarity.LEGENDARY))
             .reward(LootBoxReward.fromSupplier(1, BASEBALL_BAT, LootBoxReward.Rarity.LEGENDARY))
+            .reward(LootBoxReward.fromItem(15, Material.NETHER_STAR, 2, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromItem(30, Material.NETHERITE_BLOCK, 64, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromBanknote(100, 10000000, LootBoxReward.Rarity.RARE))
-            .reward(LootBoxReward.fromItem(150, Material.ENCHANTED_GOLDEN_APPLE, 64, LootBoxReward.Rarity.RARE))
+            .reward(LootBoxReward.fromItem(250, Material.ENCHANTED_GOLDEN_APPLE, 64, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromBanknote(1000, 4500000, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromBanknote(2500, 3000000, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromItem(5000, Material.DIAMOND_BLOCK, 64, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromItem(3500, Material.NETHERITE_BLOCK, 32, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromItem(6000, Material.EMERALD_BLOCK, 64, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromItem(7500, Material.DIAMOND_BLOCK, 64, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromBanknote(9000, 1250000, LootBoxReward.Rarity.DEFAULT))
             .build();
 
     /**
@@ -77,11 +81,11 @@ public interface LootBox extends CustomItem {
             .reward(LootBoxReward.fromSupplier(75, EnchantedItemSupplier.ENCHANTED_DIAMOND_PICKAXE, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromSupplier(75, EnchantedItemSupplier.ENCHANTED_DIAMOND_AXE, LootBoxReward.Rarity.RARE))
             .reward(LootBoxReward.fromSupplier(75, EnchantedItemSupplier.ENCHANTED_DIAMOND_SWORD, LootBoxReward.Rarity.RARE))
-            .reward(LootBoxReward.fromBanknote(500, 750000, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromBanknote(2500, 250000, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromBanknote(1000, 750000, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromItem(3500, Material.DIAMOND, 64, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromItem(5000, Material.EMERALD, 64, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromSupplier(7500, EnchantedItemSupplier.MENDING_BOOK, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromBanknote(10000, 250000, LootBoxReward.Rarity.DEFAULT))
             .build();
 
     /**
@@ -95,13 +99,14 @@ public interface LootBox extends CustomItem {
                     .decoration(TextDecoration.ITALIC, false)
                     .build()))
             .reward(LootBoxReward.fromSupplier(1, RED_BOX, LootBoxReward.Rarity.RARE))
-            .reward(LootBoxReward.fromItem(50, Material.DIAMOND, 64, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromItem(50, Material.EMERALD, 64, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_IRON_PICKAXE, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_IRON_AXE, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_IRON_SWORD, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromSupplier(300, EnchantedItemSupplier.ENCHANTED_BOW, LootBoxReward.Rarity.DEFAULT))
-            .reward(LootBoxReward.fromSupplier(500, EnchantedItemSupplier.MENDING_BOOK, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(50, EnchantedItemSupplier.ENCHANTED_IRON_PICKAXE, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(50, EnchantedItemSupplier.ENCHANTED_IRON_AXE, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(50, EnchantedItemSupplier.ENCHANTED_IRON_SWORD, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(50, EnchantedItemSupplier.ENCHANTED_BOW, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromSupplier(150, EnchantedItemSupplier.MENDING_BOOK, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromItem(500, Material.DIAMOND, 64, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromItem(500, Material.EMERALD, 64, LootBoxReward.Rarity.DEFAULT))
+            .reward(LootBoxReward.fromItem(500, Material.EXPERIENCE_BOTTLE, 32, LootBoxReward.Rarity.DEFAULT))
             .reward(LootBoxReward.fromBanknote(1000, 50000, LootBoxReward.Rarity.DEFAULT))
             .build();
 
