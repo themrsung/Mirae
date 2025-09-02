@@ -299,9 +299,12 @@ public final class ActivePriceMarket extends AbstractMarket {
 
         boolean marketBuying = existingSell >= existingBuy;
 
-        double average = orderChain.getWeightedAveragePrice();
+        double averageRaw = orderChain.getWeightedAveragePrice();
+        boolean hasAverage = Double.isFinite(averageRaw);
+        double average = hasAverage ? averageRaw : defaultPrice;
+
         double tickSize = Markets.getTickSizeAt(average);
-        double basePrice = Markets.snapToNearestTick(Double.isFinite(average) ? average : defaultPrice + (marketBuying ? tickSize : 0));
+        double basePrice = Markets.snapToNearestTick(hasAverage ? average : defaultPrice + (marketBuying ? tickSize : 0));
 
         orderChain.clearServerOrders();
 
