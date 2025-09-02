@@ -88,6 +88,7 @@ public final class Commands {
     public static final @NotNull DiscordCommand DISCORD_COMMAND = new DiscordCommand();
     public static final @NotNull SilenceCommand SILENCE_COMMAND = new SilenceCommand();
     public static final @NotNull MinelistCommand MINELIST_COMMAND = new MinelistCommand();
+    public static final @NotNull MendingBookRecallCommand MENDING_BOOK_RECALL_COMMAND = new MendingBookRecallCommand();
 
     public static final @NotNull MoneySupplyCommand MONEY_SUPPLY_COMMAND = new MoneySupplyCommand();
 
@@ -164,6 +165,7 @@ public final class Commands {
             DISCORD_COMMAND,
             SILENCE_COMMAND,
             MINELIST_COMMAND,
+            MENDING_BOOK_RECALL_COMMAND,
 
             MONEY_SUPPLY_COMMAND,
 

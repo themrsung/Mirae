@@ -3,6 +3,7 @@ package com.themrsung.mirae.item;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,7 +126,20 @@ public class EnchantedItemSupplier implements ItemSupplier {
     /**
      * Mending book.
      */
-    public static final @NotNull ItemSupplier MENDING_BOOK = new EnchantedItemSupplier(new ItemStack(Material.ENCHANTED_BOOK), MENDING);
+    public static final @NotNull ItemSupplier MENDING_BOOK = () -> {
+        ItemStack mendingBook = ItemStack.of(Material.ENCHANTED_BOOK);
+
+        EnchantmentStorageMeta meta = (EnchantmentStorageMeta) mendingBook.getItemMeta();
+        meta.addStoredEnchant(Enchantment.MENDING, 1, false); // Level 1, no restriction on higher levels
+        mendingBook.setItemMeta(meta);
+
+        return mendingBook;
+    };
+
+    /**
+     * Legacy mending book.
+     */
+    public static final @NotNull ItemSupplier MENDING_BOOK_LEGACY = new EnchantedItemSupplier(new ItemStack(Material.ENCHANTED_BOOK), MENDING);
 
     /**
      * Creates a new supplier.
