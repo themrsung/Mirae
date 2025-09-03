@@ -4,6 +4,8 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.MiraeCommand;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Set home command.
@@ -57,6 +60,17 @@ public class SetHomeCommand extends MiraeCommand {
         }
 
         Location here = player.getLocation();
+
+        if (!sender.isOp()) {
+            Claim claim = MX.getGriefPrevention().dataStore.getClaimAt(here, false, null);
+            Supplier<String> result = claim.checkPermission(player, ClaimPermission.Access, null);
+
+            if (result != null) {
+                sender.sendMessage(INSUFFICIENT_PERMISSIONS);
+                return false;
+            }
+        }
+
         account.setExtraHome(key, here);
         sender.sendMessage(HOME_SET_TO_HERE);
         return true;
