@@ -1,5 +1,5 @@
 name: Mirae
-version: '1.0.5'
+version: '1.0.6'
 main: com.themrsung.mirae.Mirae
 author: themrsung
 description: Official plugin for Mirae Server
@@ -13,6 +13,8 @@ dependencies:
     PlayerAuctions:
       required: false
       load: AFTER
+    GriefPrevention:
+      required: true
   server:
     Vault:
       required: true
@@ -21,3 +23,5 @@ dependencies:
     PlayerAuctions:
       required: false
       load: AFTER
+    GriefPrevention:
+      required: true

@@ -1,6 +1,9 @@
 package com.themrsung.mirae.listener.enchant;
 
 import com.themrsung.mirae.enchant.CustomEnchantment;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -44,6 +47,17 @@ public class SuperShovelListener implements Listener {
         if (block == null) return;
 
         if (!TARGET_BLOCKS.contains(block.getType())) return;
+
+        GriefPrevention gp = GriefPrevention.instance;
+        Claim claim = gp.dataStore.getClaimAt(block.getLocation(), false, null);
+
+        if (claim != null) {
+            String trustResult = claim.checkPermission(e.getPlayer(), ClaimPermission.Build, e).get();
+            if (trustResult != null) {
+                e.setCancelled(true);
+                return;
+            }
+        }
 
         player.breakBlock(block);
         e.setCancelled(true);

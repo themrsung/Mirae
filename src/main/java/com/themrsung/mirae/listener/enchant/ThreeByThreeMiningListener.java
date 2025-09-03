@@ -1,6 +1,9 @@
 package com.themrsung.mirae.listener.enchant;
 
 import com.themrsung.mirae.enchant.CustomEnchantment;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -81,9 +84,20 @@ public class ThreeByThreeMiningListener implements Listener {
             }
         }
 
+
+        GriefPrevention gp = GriefPrevention.instance;
+
         locationsToBreak.forEach(loc -> {
             Block block = loc.getBlock();
             if (THREE_BY_THREE_BLACKLIST.contains(block.getType())) return;
+            Claim claim = gp.dataStore.getClaimAt(e.getBlock().getLocation(), false, null);
+
+            if (claim != null) {
+                String trustResult = claim.checkPermission(e.getPlayer(), ClaimPermission.Build, e).get();
+                if (trustResult != null) {
+                    return;
+                }
+            }
 
             block.breakNaturally(player.getInventory().getItemInMainHand(), true);
         });
