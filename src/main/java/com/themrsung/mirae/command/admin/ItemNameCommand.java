@@ -8,7 +8,6 @@ import com.themrsung.mirae.banknote.BanknoteQueryResult;
 import com.themrsung.mirae.banknote.Banknotes;
 import com.themrsung.mirae.command.MiraeCommand;
 import com.themrsung.mirae.item.CustomItem;
-import com.themrsung.mirae.item.economy.DonorCoin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;

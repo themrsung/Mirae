@@ -1,16 +1,19 @@
 package com.themrsung.mirae;
 
 import com.themrsung.mirae.account.Account;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -91,6 +94,24 @@ public final class MX {
             .decoration(TextDecoration.STRIKETHROUGH, false)
             .decoration(TextDecoration.OBFUSCATED, false)
             .build();
+
+    ///
+    /// GriefPrevention
+    ///
+
+    /**
+     * Returns the GriefPrevention instance.
+     *
+     * @return The instance
+     */
+    public static @NotNull GriefPrevention getGriefPrevention() {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("GriefPrevention");
+        if (!(plugin instanceof GriefPrevention gp)) {
+            throw new RuntimeException("GriefPrevention instance error.");
+        }
+
+        return gp;
+    }
 
     ///
     /// Accounts

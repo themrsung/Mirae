@@ -1,9 +1,11 @@
 package com.themrsung.mirae.listener.enchant;
 
+import com.themrsung.mirae.MX;
 import com.themrsung.mirae.enchant.CustomEnchantment;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class ThreeByThreeMiningListener implements Listener {
     private static final @NotNull EnumSet<Material> THREE_BY_THREE_BLACKLIST;
@@ -84,17 +87,17 @@ public class ThreeByThreeMiningListener implements Listener {
             }
         }
 
-
-        GriefPrevention gp = GriefPrevention.instance;
+        GriefPrevention gp = MX.getGriefPrevention();
 
         locationsToBreak.forEach(loc -> {
             Block block = loc.getBlock();
             if (THREE_BY_THREE_BLACKLIST.contains(block.getType())) return;
-            Claim claim = gp.dataStore.getClaimAt(e.getBlock().getLocation(), false, null);
 
+            Claim claim = gp.dataStore.getClaimAt(block.getLocation(), false, null);
             if (claim != null) {
-                String trustResult = claim.checkPermission(e.getPlayer(), ClaimPermission.Build, e).get();
-                if (trustResult != null) {
+                Supplier<String> result = claim.checkPermission(e.getPlayer(), ClaimPermission.Build, e);
+                if (result != null) {
+                    player.sendMessage(Component.text(result.get()).style(MX.STYLE_ERROR));
                     return;
                 }
             }
