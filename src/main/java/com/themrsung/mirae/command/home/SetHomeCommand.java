@@ -61,12 +61,11 @@ public class SetHomeCommand extends MiraeCommand {
 
         Location here = player.getLocation();
 
-        if (!sender.isOp()) {
-            Claim claim = MX.getGriefPrevention().dataStore.getClaimAt(here, false, null);
+        Claim claim = MX.getGriefPrevention().dataStore.getClaimAt(here, false, null);
+        if (claim != null) {
             Supplier<String> result = claim.checkPermission(player, ClaimPermission.Access, null);
-
             if (result != null) {
-                sender.sendMessage(INSUFFICIENT_PERMISSIONS);
+                sender.sendMessage(Component.text(result.get()).style(MX.STYLE_ERROR));
                 return false;
             }
         }
