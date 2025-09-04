@@ -28,13 +28,12 @@ public class CocaineRecipe implements CookingRecipe {
             return null;
         }
 
-        if (paste * 3 != salt) return null;
+        if (paste != salt * 3) return null;
 
         if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != paste + salt) return null;
 
-        int cocaineCount = paste / 3;
         ItemStack cocaine = CustomItem.COCAINE.getItem();
-        cocaine.setAmount(cocaineCount);
+        cocaine.setAmount(salt);
 
         return cocaine;
     }

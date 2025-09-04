@@ -20,13 +20,13 @@ public class OpiumRecipe implements CookingRecipe {
                 .mapToInt(ItemStack::getAmount)
                 .sum();
 
-        if (poppies < 3 || poppies % 3 != 0) {
+        if (poppies <= 0 || poppies % 16 != 0) {
             return null;
         }
 
         if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != poppies) return null;
 
-        int opiumCount = poppies / 3;
+        int opiumCount = poppies / 16;
         ItemStack opium = CustomItem.OPIUM.getItem();
         opium.setAmount(opiumCount);
 

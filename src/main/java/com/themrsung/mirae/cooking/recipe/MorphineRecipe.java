@@ -29,13 +29,12 @@ public class MorphineRecipe implements CookingRecipe {
             return null;
         }
 
-        if (opium * 3 != bottle) return null;
+        if (opium != bottle * 3) return null;
 
         if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != opium + bottle) return null;
 
-        int morphineCount = opium / 3;
         ItemStack morphine = CustomItem.MORPHINE.getItem();
-        morphine.setAmount(morphineCount);
+        morphine.setAmount(bottle);
 
         return morphine;
     }

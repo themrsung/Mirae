@@ -20,13 +20,13 @@ public class CocaPasteRecipe implements CookingRecipe {
                 .mapToInt(ItemStack::getAmount)
                 .sum();
 
-        if (leaves < 3 || leaves % 3 != 0) {
+        if (leaves <= 0 || leaves % 16 != 0) {
             return null;
         }
 
         if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != leaves) return null;
 
-        int pasteCount = leaves / 3;
+        int pasteCount = leaves / 16;
         ItemStack paste = CustomItem.COCA_PASTE.getItem();
         paste.setAmount(pasteCount);
 

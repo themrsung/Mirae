@@ -9,12 +9,14 @@ import com.themrsung.mirae.listener.enchant.SuperShovelListener;
 import com.themrsung.mirae.listener.enchant.ThreeByThreeMiningListener;
 import com.themrsung.mirae.listener.gui.GUIActionListener;
 import com.themrsung.mirae.listener.gui.QuickMenuListener;
+import com.themrsung.mirae.listener.item.DrugsListener;
 import com.themrsung.mirae.listener.item.FoodListener;
 import com.themrsung.mirae.listener.item.ItemListener;
 import com.themrsung.mirae.listener.lootbox.LootBoxRedemptionListener;
 import com.themrsung.mirae.listener.mining.CustomBlockSilkTouchListener;
 import com.themrsung.mirae.listener.player.PlayerListener;
 import com.themrsung.mirae.listener.player.ShulkerBoxListener;
+import com.themrsung.mirae.listener.skill.SkillBoostListener;
 import com.themrsung.mirae.listener.skill.SkillRestrictionListener;
 import com.themrsung.mirae.listener.skill.SkillUpgradeListener;
 import com.themrsung.mirae.listener.social.SocialSpyListener;
@@ -36,6 +38,7 @@ public final class Listeners {
     public static final @NotNull AntiSpamListener ANTI_SPAM_LISTENER = new AntiSpamListener();
     public static final @NotNull SkillUpgradeListener SKILL_UPGRADE_LISTENER = new SkillUpgradeListener();
     public static final @NotNull SkillRestrictionListener SKILL_RESTRICTION_LISTENER = new SkillRestrictionListener();
+    public static final @NotNull SkillBoostListener SKILL_BOOST_LISTENER = new SkillBoostListener();
     public static final @NotNull QuickMenuListener QUICK_MENU_LISTENER = new QuickMenuListener();
     public static final @NotNull CustomBlockSilkTouchListener CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER = new CustomBlockSilkTouchListener();
     public static final @NotNull TransferAmountListener TRANSFER_AMOUNT_LISTENER = new TransferAmountListener();
@@ -45,6 +48,7 @@ public final class Listeners {
     public static final @NotNull SuperShovelListener SUPER_SHOVEL_LISTENER = new SuperShovelListener();
     public static final @NotNull FoodListener FOOD_LISTENER = new FoodListener();
     public static final @NotNull ItemListener ITEM_LISTENER = new ItemListener();
+    public static final @NotNull DrugsListener DRUGS_LISTENER = new DrugsListener();
 
     /**
      * The set of all listeners.
@@ -59,6 +63,7 @@ public final class Listeners {
             ANTI_SPAM_LISTENER,
             SKILL_UPGRADE_LISTENER,
             SKILL_RESTRICTION_LISTENER,
+            SKILL_BOOST_LISTENER,
             QUICK_MENU_LISTENER,
             CUSTOM_ORE_SILK_TOUCH_MINING_LISTENER,
             TRANSFER_AMOUNT_LISTENER,
@@ -67,7 +72,8 @@ public final class Listeners {
             THREE_BY_THREE_MINING_LISTENER,
             SUPER_SHOVEL_LISTENER,
             FOOD_LISTENER,
-            ITEM_LISTENER
+            ITEM_LISTENER,
+            DRUGS_LISTENER
     );
 
     /**
