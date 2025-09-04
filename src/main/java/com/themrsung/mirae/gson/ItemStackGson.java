@@ -1,6 +1,7 @@
 package com.themrsung.mirae.gson;
 
 import com.google.gson.*;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -54,7 +55,9 @@ public final class ItemStackGson {
                 String itemAsString = Base64.getEncoder().encodeToString(outputStream.toByteArray());
                 return new JsonPrimitive(itemAsString);
             } catch (IOException e) {
-                throw new JsonParseException("Error serializing ItemStack.", e);
+                return JsonNull.INSTANCE;
+                // Added resilience (2025/09/04)
+                // throw new JsonParseException("Error serializing ItemStack.", e);
             }
         }
     }
@@ -66,6 +69,11 @@ public final class ItemStackGson {
         @Override
         @SuppressWarnings("deprecation")
         public ItemStack deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
+            // Added resilience (2025/09/04)
+            if (jsonElement.isJsonNull()) {
+                return ItemStack.of(Material.AIR);
+            }
+
             try {
                 String itemAsString = jsonElement.getAsString();
                 byte[] data = Base64.getDecoder().decode(itemAsString);
