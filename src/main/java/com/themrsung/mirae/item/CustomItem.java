@@ -134,6 +134,38 @@ public interface CustomItem extends ItemSupplier {
      */
     @NotNull CustomItem SAUSAGE = new Sausage();
 
+    /// DRUGS
+
+    /**
+     * Coca paste.
+     */
+    @NotNull CustomItem COCA_PASTE = new ItemsAdderItem("drugs:coca_paste");
+
+    /**
+     * Cocaine.
+     */
+    @NotNull CustomItem COCAINE = new ItemsAdderItem("drugs:cocaine");
+
+    /**
+     * Crack Cocaine.
+     */
+    @NotNull CustomItem CRACK_COCAINE = new ItemsAdderItem("drugs:crack_cocaine");
+
+    /**
+     * Heroin.
+     */
+    @NotNull CustomItem HEROIN = new ItemsAdderItem("drugs:heroin");
+
+    /**
+     * Morphine.
+     */
+    @NotNull CustomItem MORPHINE = new ItemsAdderItem("drugs:morphine");
+
+    /**
+     * Opium.
+     */
+    @NotNull CustomItem OPIUM = new ItemsAdderItem("drugs:opium");
+
     /**
      * Checks if the given item instance is this custom item.
      *
