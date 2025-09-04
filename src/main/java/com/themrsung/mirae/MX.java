@@ -105,12 +105,7 @@ public final class MX {
      * @return The instance
      */
     public static @NotNull GriefPrevention getGriefPrevention() {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("GriefPrevention");
-        if (!(plugin instanceof GriefPrevention gp)) {
-            throw new RuntimeException("GriefPrevention instance error.");
-        }
-
-        return gp;
+        return GriefPrevention.instance;
     }
 
     ///
