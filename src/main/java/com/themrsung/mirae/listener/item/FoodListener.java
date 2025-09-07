@@ -119,9 +119,15 @@ public class FoodListener implements Listener {
     private static final @NotNull EnumSet<EntityType> SALT_DROPPERS = EnumSet.of(
             EntityType.SKELETON,
             EntityType.ZOMBIE,
+            EntityType.HUSK,
+            EntityType.DROWNED,
             EntityType.SKELETON_HORSE,
             EntityType.ZOMBIE_HORSE,
             EntityType.WITHER_SKELETON,
+            EntityType.ZOMBIFIED_PIGLIN,
+            EntityType.VILLAGER,
+            EntityType.ZOMBIE_VILLAGER,
+            EntityType.WITCH,
             EntityType.LLAMA,
             EntityType.TRADER_LLAMA
     );
