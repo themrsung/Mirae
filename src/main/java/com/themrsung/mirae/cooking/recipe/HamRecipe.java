@@ -13,10 +13,12 @@ import java.util.List;
  * Ham recipe.
  */
 public class HamRecipe implements CookingRecipe {
+    private static final @NotNull ItemStack COOKED_PORK = ItemStack.of(Material.COOKED_PORKCHOP);
+
     @Override
     public @Nullable ItemStack cook(@NotNull List<ItemStack> ingredients) {
         int pork = ingredients.stream()
-                .filter(i -> i.getType() == Material.COOKED_PORKCHOP)
+                .filter(COOKED_PORK::isSimilar)
                 .mapToInt(ItemStack::getAmount)
                 .sum();
 

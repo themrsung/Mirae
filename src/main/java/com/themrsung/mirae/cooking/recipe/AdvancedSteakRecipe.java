@@ -10,15 +10,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Salt bread recipe.
+ * Ham recipe.
  */
-public class SaltBreadRecipe implements CookingRecipe {
-    private static final @NotNull ItemStack BREAD = ItemStack.of(Material.BREAD);
+public class AdvancedSteakRecipe implements CookingRecipe {
+    private static final @NotNull ItemStack COOKED_BEEF = ItemStack.of(Material.COOKED_BEEF);
 
     @Override
     public @Nullable ItemStack cook(@NotNull List<ItemStack> ingredients) {
-        int bread = ingredients.stream()
-                .filter(BREAD::isSimilar)
+        int steak = ingredients.stream()
+                .filter(COOKED_BEEF::isSimilar)
                 .mapToInt(ItemStack::getAmount)
                 .sum();
 
@@ -27,14 +27,14 @@ public class SaltBreadRecipe implements CookingRecipe {
                 .mapToInt(ItemStack::getAmount)
                 .sum();
 
-        if (salt <= 0 || bread <= 0) return null;
-        if (bread != salt) return null;
+        if (salt <= 0 || steak <= 0) return null;
+        if (steak * 3 != salt) return null;
 
-        if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != bread + salt) return null;
+        if (ingredients.stream().mapToInt(ItemStack::getAmount).sum() != steak + salt) return null;
 
-        ItemStack saltBread = CustomItem.SALT_BREAD.getItem();
-        saltBread.setAmount(bread);
+        ItemStack ham = CustomItem.ADVANCED_STEAK.getItem();
+        ham.setAmount(steak);
 
-        return saltBread;
+        return ham;
     }
 }

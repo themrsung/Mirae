@@ -27,7 +27,9 @@ public class SuperShovelListener implements Listener {
             Material.RED_SAND,
             Material.SUSPICIOUS_SAND,
             Material.GRAVEL,
-            Material.SUSPICIOUS_GRAVEL
+            Material.SUSPICIOUS_GRAVEL,
+            Material.PODZOL,
+            Material.MYCELIUM
     );
 
     @EventHandler

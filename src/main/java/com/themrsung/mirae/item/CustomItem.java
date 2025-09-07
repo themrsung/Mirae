@@ -100,6 +100,11 @@ public interface CustomItem extends ItemSupplier {
     /// FOODS
 
     /**
+     * Advanced steak.
+     */
+    @NotNull CustomItem ADVANCED_STEAK = new AdvancedSteak();
+
+    /**
      * Apple pie.
      */
     @NotNull CustomItem APPLE_PIE = new ApplePie();

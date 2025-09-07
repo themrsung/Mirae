@@ -69,6 +69,7 @@ public class FoodListener implements Listener {
             addCallback(CustomItem.SALAD, Effects::onSaladConsumed);
             addCallback(CustomItem.SALT_BREAD, Effects::onSaltBreadConsumed);
             addCallback(CustomItem.SAUSAGE, Effects::onSausageConsumed);
+            addCallback(CustomItem.ADVANCED_STEAK, Effects::onAdvancedSteakConsumed);
         }
 
         private static void onApplePieConsumed(@NotNull PlayerItemConsumeEvent e) {
@@ -106,6 +107,12 @@ public class FoodListener implements Listener {
             Player player = e.getPlayer();
             player.heal(2, EntityRegainHealthEvent.RegainReason.EATING);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 20 * 30, 1));
+        }
+
+        private static void onAdvancedSteakConsumed(@NotNull PlayerItemConsumeEvent e) {
+            Player player = e.getPlayer();
+            player.heal(2, EntityRegainHealthEvent.RegainReason.EATING);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 20 * 60, 1));
         }
     }
 
