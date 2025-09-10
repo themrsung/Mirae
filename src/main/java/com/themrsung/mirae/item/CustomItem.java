@@ -135,6 +135,11 @@ public interface CustomItem extends ItemSupplier {
     @NotNull CustomItem SALT_BREAD = new SaltBread();
 
     /**
+     * Scrambled egg.
+     */
+    @NotNull CustomItem SCRAMBLED_EGG = new ScrambledEgg();
+
+    /**
      * Sausage.
      */
     @NotNull CustomItem SAUSAGE = new Sausage();
