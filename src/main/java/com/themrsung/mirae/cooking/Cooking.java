@@ -22,7 +22,8 @@ public final class Cooking {
             new MorphineRecipe(),
             new CocaPasteRecipe(),
             new CocaineRecipe(),
-            new AdvancedSteakRecipe()
+            new AdvancedSteakRecipe(),
+            new ScrambledEggRecipe()
     );
 
     /**
