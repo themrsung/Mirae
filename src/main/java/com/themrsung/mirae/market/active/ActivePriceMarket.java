@@ -309,7 +309,7 @@ public final class ActivePriceMarket extends AbstractMarket {
         orderChain.clearServerOrders();
 
         int numSteps = volatilityLevel.getNumSteps();
-        long quantityPerStep = volatilityLevel.getQuantityPerStep();
+        long quantityPerStep = Math.max(Math.round(volatilityLevel.getStacksPerStep() * getItem().getType().getMaxStackSize()), 1); // At least one
 
         // Place buy orders
         double buyPrice = basePrice - Markets.getTickSizeAt(basePrice);

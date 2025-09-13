@@ -6,6 +6,7 @@ import com.themrsung.mirae.economy.VaultEconomyAdapter;
 import com.themrsung.mirae.listener.Listeners;
 import com.themrsung.mirae.state.State;
 import com.themrsung.mirae.task.Tasks;
+import com.themrsung.mirae.webhook.Webhook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -22,6 +23,11 @@ public final class Mirae extends JavaPlugin {
      * The state instance.
      */
     private static final @NotNull State STATE = State.empty();
+
+    /**
+     * The webhook.
+     */
+    private static final @NotNull Webhook WEBHOOK = new Webhook();
 
     /**
      * The plugin instance.
@@ -44,6 +50,14 @@ public final class Mirae extends JavaPlugin {
      */
     public static @NotNull State getState() {
         return STATE;
+    }
+
+    /**
+     * Returns the webhook.
+     * @return The webhook
+     */
+    public static @NotNull Webhook getWebhook() {
+        return WEBHOOK;
     }
 
     @Override
