@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
-import com.themrsung.mirae.economy.EconomyCause;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -36,8 +35,6 @@ public class Webhook {
         this.server = initializeHttpServer();
 
         server.createContext("/donation", exchange -> {
-            Bukkit.broadcast(Component.text("RECEIVED"));
-
             if (!"POST".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1);
                 return;
@@ -45,10 +42,6 @@ public class Webhook {
 
             InputStream is = exchange.getRequestBody();
             String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
-            // TESTING
-            Bukkit.getServer().broadcast(Component.text(body));
-
 
             try {
                 JsonObject json = JsonParser.parseString(body).getAsJsonObject();
@@ -95,7 +88,8 @@ public class Webhook {
                 return;
             }
 
-            account.modifyCoinBalance(amount, EconomyCause.NATIVE_DEPOSIT, "Automated coin delivery via Imweb.");
+            Bukkit.getLogger().info("Webhook triggered.");
+//            account.modifyCoinBalance(amount, EconomyCause.NATIVE_DEPOSIT, "Automated coin delivery via Imweb.");
 
         }, this::notifyFailureToAdmins);
     }
