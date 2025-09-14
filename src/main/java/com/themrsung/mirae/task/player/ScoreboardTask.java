@@ -10,6 +10,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.*;
 
+import java.text.NumberFormat;
+
 /**
  * Scoreboard task.
  */
@@ -37,7 +39,10 @@ public class ScoreboardTask implements Runnable {
 
             Component balance = Component.text(MX.formatBalance(account.getBalance())).style(MX.STYLE_GOOD);
             Component coinBalance = Component.text(MX.formatCoinBalance(account.getCoinBalance())).style(MX.STYLE_GOOD);
-            Component moneySupply = Component.text(MX.formatBalance(Mirae.getState().getMoneySupply())).style(MX.STYLE_SPECIAL);
+
+            double totalMoneySupply = Mirae.getState().getMoneySupply();
+            double ten_thousands = Math.round(totalMoneySupply / 10000);
+            Component moneySupply = Component.text(NumberFormat.getInstance().format(ten_thousands) + "만원").style(MX.STYLE_SPECIAL);
 
             Objective obj = board.registerNewObjective("test", Criteria.DUMMY, MiniMessage.miniMessage().deserialize("<gradient:#2e2727:#ff2e01><bold>MIRAE SERVER<reset>"));
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
