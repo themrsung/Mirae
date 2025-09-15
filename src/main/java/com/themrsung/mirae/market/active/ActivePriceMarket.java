@@ -20,7 +20,7 @@ public final class ActivePriceMarket extends AbstractMarket {
     /**
      * Server order update threshold.
      */
-    public static final double SERVER_ORDER_UPDATE_THRESHOLD = 0.7;
+    public static final double SERVER_ORDER_UPDATE_THRESHOLD = 0.8;
 
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();

@@ -70,7 +70,7 @@ public enum VolatilityLevel {
     }
 
     /**
-     * Returns the nmumber of stacks per step.
+     * Returns the number of stacks per step.
      * @return The number of stacks per step
      */
     public double getStacksPerStep() {
