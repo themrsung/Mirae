@@ -292,9 +292,11 @@ public final class ActivePriceMarket extends AbstractMarket {
                 .mapToLong(Order::getQuantityRemaining)
                 .sum();
 
+        int stackSize = getItem().getType().getMaxStackSize();
+
         long existingOrders = existingBuy + existingSell;
-        double remainingOrderRatio = (double) existingOrders / (double) volatilityLevel.getTotalOrderCount();
-        if (remainingOrderRatio > SERVER_ORDER_UPDATE_THRESHOLD || existingOrders > volatilityLevel.getTotalOrderCount())
+        double remainingOrderRatio = (double) existingOrders / (double) volatilityLevel.getTotalOrderCount(stackSize);
+        if (remainingOrderRatio > SERVER_ORDER_UPDATE_THRESHOLD || existingOrders > volatilityLevel.getTotalOrderCount(stackSize))
             return;
 
         boolean marketBuying = existingSell >= existingBuy;

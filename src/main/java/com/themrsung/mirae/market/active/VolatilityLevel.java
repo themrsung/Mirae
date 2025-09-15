@@ -82,7 +82,17 @@ public enum VolatilityLevel {
      *
      * @return The total order volume
      */
+    @Deprecated
     public long getTotalOrderCount() {
         return numSteps * quantityPerStep * 2;
+    }
+
+    /**
+     * Returns the total order volume.
+     * @param stackSize The stack size
+     * @return The total order volume
+     */
+    public long getTotalOrderCount(int stackSize) {
+        return Math.max((long) (numSteps * stacksPerStep * stackSize * 2), 1);
     }
 }
