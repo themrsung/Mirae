@@ -16,7 +16,7 @@ public final class OrderChain implements Serializable {
     /**
      * The recent fulfillment cutoff.
      */
-    public static final int RECENT_FULFILLMENT_CUTOFF = 1000;
+    public static final int RECENT_FULFILLMENT_CUTOFF = 128;
 
     private static final @NotNull Serializer SERIALIZER = new Serializer();
     private static final @NotNull Deserializer DESERIALIZER = new Deserializer();

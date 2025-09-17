@@ -19,7 +19,7 @@ public class InterestPayoutTask implements Runnable {
     /**
      * The maximum allowed daily interest.
      */
-    public static final double MAX_DAILY_INTEREST = 65912;
+    public static final double MAX_DAILY_INTEREST = 6591203;
 
     /**
      * Calculates daily interest.
