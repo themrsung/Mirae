@@ -163,8 +163,9 @@ public abstract class AbstractGUI implements GUI {
 
         player.openInventory(inventory);
 
-        listener.registerClickCallback(player.getUniqueId(), this::onClick);
-        listener.registerCloseCallback(player.getUniqueId(), this::onClose);
+        listener.registerOpenMenu(uniqueId, this);
+        listener.registerClickCallback(uniqueId, this::onClick);
+        listener.registerCloseCallback(uniqueId, this::onClose);
     }
 
     /**
