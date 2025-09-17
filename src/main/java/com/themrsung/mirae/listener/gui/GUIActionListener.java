@@ -1,5 +1,8 @@
 package com.themrsung.mirae.listener.gui;
 
+import com.themrsung.mirae.gui.GUI;
+import com.themrsung.mirae.gui.cooking.AbstractCookingMenu;
+import com.themrsung.mirae.gui.upgrade.AbstractUpgradeMenu;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,10 +30,12 @@ public class GUIActionListener implements Listener {
 
         this.onCloseCallbacks = new ConcurrentHashMap<>();
         this.onClickCallbacks = new ConcurrentHashMap<>();
+        this.openMenus = new ConcurrentHashMap<>();
     }
 
     private final @NotNull Map<UUID, Consumer<InventoryCloseEvent>> onCloseCallbacks;
     private final @NotNull Map<UUID, Consumer<InventoryClickEvent>> onClickCallbacks;
+    private final @NotNull Map<UUID, GUI> openMenus;
 
     /**
      * Returns whether there is a callback with the given key.
@@ -57,6 +62,19 @@ public class GUIActionListener implements Listener {
 
         onCloseCallbacks.put(uniqueId, callback);
         return true;
+    }
+
+    /**
+     * Registers an open menu.
+     *
+     * @param uniqueId The unique identifier of the player
+     * @param menu     The menu instance
+     */
+    public void registerOpenMenu(@NotNull UUID uniqueId, @NotNull GUI menu) {
+        Objects.requireNonNull(uniqueId);
+        Objects.requireNonNull(menu);
+
+        openMenus.put(uniqueId, menu);
     }
 
     /**
@@ -113,19 +131,23 @@ public class GUIActionListener implements Listener {
      * @return The callback which was removed, or {@code null}
      */
     public @Nullable Consumer<InventoryClickEvent> removeClickCallbacks(@Nullable UUID uniqueId) {
+        openMenus.remove(uniqueId);
         return onClickCallbacks.remove(uniqueId);
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        Consumer<InventoryCloseEvent> callback = onCloseCallbacks.remove(e.getPlayer().getUniqueId());
+        UUID uniqueId = e.getPlayer().getUniqueId();
+        Consumer<InventoryCloseEvent> callback = onCloseCallbacks.remove(uniqueId);
         if (callback == null) return;
 
         try {
             callback.accept(e);
-            onClickCallbacks.remove(e.getPlayer().getUniqueId());
         } catch (Exception ex) {
-            throw new RuntimeException("Error executing inventory close callback for " + e.getPlayer().getUniqueId(), ex);
+            throw new RuntimeException("Error executing inventory close callback for " + uniqueId, ex);
+        } finally {
+            onClickCallbacks.remove(uniqueId);
+            openMenus.remove(uniqueId);
         }
     }
 
@@ -163,6 +185,31 @@ public class GUIActionListener implements Listener {
         if (view.getType() == InventoryType.ENDER_CHEST || view.getType() == InventoryType.WORKBENCH) return;
 
         Inventory clickedInventory = e.getClickedInventory();
+        GUI openMenu = openMenus.get(uniqueId);
+
+        if (openMenu instanceof AbstractCookingMenu || openMenu instanceof AbstractUpgradeMenu) {
+            if (clickedInventory == null) return;
+
+            if (clickedInventory.getType() == InventoryType.PLAYER) {
+                return;
+            }
+
+            if (Objects.equals(clickedInventory, view.getTopInventory())) {
+                int slot = e.getSlot();
+
+                boolean isUserSlot = openMenu instanceof AbstractCookingMenu
+                        ? AbstractCookingMenu.USER_SLOTS.contains(slot)
+                        : AbstractUpgradeMenu.USER_SLOTS.contains(slot);
+
+                if (isUserSlot) {
+                    return;
+                }
+
+                e.setCancelled(true);
+                return;
+            }
+        }
+
         if (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER) return;
 
         e.setCancelled(true);
