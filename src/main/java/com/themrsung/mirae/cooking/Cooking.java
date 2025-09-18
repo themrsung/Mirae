@@ -17,6 +17,7 @@ public final class Cooking {
             new HamRecipe(),
             new ApplePieRecipe(),
             new ArmyStewRecipe(),
+            new GamjaTangRecipe(),
             new SaladRecipe(),
             new OpiumRecipe(),
             new MorphineRecipe(),

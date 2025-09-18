@@ -65,6 +65,7 @@ public class FoodListener implements Listener {
         private static void registerEffects() {
             addCallback(CustomItem.APPLE_PIE, Effects::onApplePieConsumed);
             addCallback(CustomItem.ARMY_STEW, Effects::onArmyStewConsumed);
+            addCallback(CustomItem.GAMJA_TANG, Effects::onGamjaTangConsumed);
             addCallback(CustomItem.HAM, Effects::onHamConsumed);
             addCallback(CustomItem.SALAD, Effects::onSaladConsumed);
             addCallback(CustomItem.SALT_BREAD, Effects::onSaltBreadConsumed);
@@ -84,6 +85,13 @@ public class FoodListener implements Listener {
 
             player.setSaturation(player.getSaturation() + 8);
             player.setSaturatedRegenRate(player.getSaturatedRegenRate() + 2);
+        }
+
+        private static void onGamjaTangConsumed(@NotNull PlayerItemConsumeEvent e) {
+            Player player = e.getPlayer();
+            player.heal(2, EntityRegainHealthEvent.RegainReason.EATING);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 20 * 60, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 120, 1));
         }
 
         private static void onHamConsumed(@NotNull PlayerItemConsumeEvent e) {
