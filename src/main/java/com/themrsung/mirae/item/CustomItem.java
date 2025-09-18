@@ -115,6 +115,11 @@ public interface CustomItem extends ItemSupplier {
     @NotNull CustomItem ARMY_STEW = new ArmyStew();
 
     /**
+     * Gamja tang.
+     */
+    @NotNull CustomItem GAMJA_TANG = new GamjaTang();
+
+    /**
      * Ham.
      */
     @NotNull CustomItem HAM = new Ham();
