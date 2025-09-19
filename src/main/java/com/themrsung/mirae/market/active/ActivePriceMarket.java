@@ -256,6 +256,17 @@ public final class ActivePriceMarket extends AbstractMarket {
             return new OrderResult(this, account, pqr.quantity(), 0, pqr.price(), 0);
         }
 
+        double estimatedVolume = Math.abs(pqr.volume());
+        double estimatedFees = estimatedVolume * Markets.getActiveFeeRateFor(account);
+        double estimatedAmountToDeposit = Math.floor(pqr.volume() - estimatedFees);
+
+        if (estimatedAmountToDeposit < 0) {
+            double requiredAmount = -estimatedAmountToDeposit;
+            if (account.getBalance() < requiredAmount) {
+                return new OrderResult(this, account, pqr.quantity(), 0, pqr.price(), 0);
+            }
+        }
+
         Order order = Order.player(account, OrderType.SELL_MARKET, pqr.quantity());
         orderChain.placeOrder(order);
         orderChain.processOrders();
