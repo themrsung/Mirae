@@ -7,18 +7,22 @@ import com.themrsung.mirae.listener.Listeners;
 import com.themrsung.mirae.state.State;
 import com.themrsung.mirae.task.Tasks;
 import com.themrsung.mirae.webhook.Webhook;
+import me.sjun.exponential.AbstractExpoModule;
+import me.sjun.exponential.ExpoBase;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Main class.
  */
-public final class Mirae extends JavaPlugin {
+public final class Mirae extends AbstractExpoModule {
     /**
      * The state instance.
      */
@@ -40,7 +44,16 @@ public final class Mirae extends JavaPlugin {
      * @return The plugin instance
      */
     public static @NotNull Mirae getInstance() { // This is non-null if plugin is enabled.
-        return instance;
+        return Optional.ofNullable(instance).orElseThrow(IllegalStateException::new);
+    }
+
+    /**
+     * Returns the plugin instance.
+     *
+     * @return The Expo plugin instance
+     */
+    public static @NotNull ExpoBase getPlugin() {
+        return getInstance().getExpo();
     }
 
     /**
@@ -61,50 +74,85 @@ public final class Mirae extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
-        getLogger().info("Loading Mirae plugin...");
-
-        // Reference instance.
+    protected void onRegistration() {
         instance = this;
 
+        ExpoBase plugin = getExpo();
+        Logger logger = plugin.getLogger();
+
+        logger.info("Loading Mirae plugin...");
+
         // Register listeners
-        var pm = getServer().getPluginManager();
-        Listeners.getListeners().forEach(listener -> pm.registerEvents(listener, this));
+        var pm = plugin.getServer().getPluginManager();
+        Listeners.getListeners().forEach(listener -> pm.registerEvents(listener, plugin));
 
         // Register commands
-        var cm = getServer().getCommandMap();
+        var cm = plugin.getServer().getCommandMap();
         Commands.getCommands().forEach(cmd -> cm.register("mirae", cmd));
 
         // Register tasks
-        Tasks.registerTasks(this, Bukkit.getScheduler());
+        Tasks.registerTasks(plugin, Bukkit.getScheduler());
 
         // Register economy to Vault
-        var sm = getServer().getServicesManager();
-        sm.register(Economy.class, VaultEconomyAdapter.createAdapter(STATE), this, ServicePriority.Normal);
+        var sm = plugin.getServer().getServicesManager();
+        sm.register(Economy.class, VaultEconomyAdapter.createAdapter(STATE), plugin, ServicePriority.Normal);
 
         // Load data
         try {
             STATE.load();
         } catch (IOException e) {
-            getLogger().severe("Failed to load data from disk: " + e.getMessage());
+            logger.severe("Failed to load data from disk: " + e.getMessage());
         }
 
         // Update names
         getState().getAccounts().forEach(Account::updateName);
 
-        getLogger().info("Mirae plugin loaded!");
+        logger.info("Mirae plugin loaded!");
     }
 
     @Override
-    public void onDisable() {
-        getLogger().info("Shutting down Mirae plugin...");
+    protected void onUnregistration() {
+        ExpoBase plugin = getExpo();
+        Logger logger = plugin.getLogger();
+
+        logger.info("Shutting down Mirae plugin...");
 
         try {
             STATE.save();
         } catch (IOException e) {
-            getLogger().severe("Failed to save data to disk: " + e.getMessage());
+            logger.severe("Failed to save data to disk: " + e.getMessage());
         }
 
-        getLogger().info("Mirae plugin disabled!");
+        logger.info("Mirae plugin disabled!");
+
+        instance = null;
+        expo = null;
+    }
+
+    /**
+     * Returns the plugin logger.
+     *
+     * @return The logger
+     */
+    public @NotNull Logger getLogger() {
+        return getExpo().getLogger();
+    }
+
+    /**
+     * Returns the server instance.
+     *
+     * @return The server
+     */
+    public @NotNull Server getServer() {
+        return getExpo().getServer();
+    }
+
+    /**
+     * Returns whether the plugin is enabled.
+     *
+     * @return {@code true} if the plugin is enabled, {@code false} otherwise
+     */
+    public boolean isEnabled() {
+        return getExpo().isEnabled();
     }
 }

@@ -1,6 +1,6 @@
 name: Mirae
 version: '1.1.5'
-main: com.themrsung.mirae.Mirae
+main: me.sjun.exponential.ExpoBase
 author: themrsung
 description: Official plugin for Mirae Server
 api-version: '1.21'

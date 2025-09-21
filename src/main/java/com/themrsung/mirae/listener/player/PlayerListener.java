@@ -65,7 +65,7 @@ public class PlayerListener implements Listener {
             List<Component> mailList = account.getMailList();
 
             if (!mailList.isEmpty()) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getInstance(), () -> {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getPlugin(), () -> {
                     mailList.forEach(player::sendMessage);
                     player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 }, 100);

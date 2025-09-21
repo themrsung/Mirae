@@ -70,7 +70,7 @@ public final class Banknotes {
      * @return The key
      */
     public static @NotNull NamespacedKey key(@NotNull String key) {
-        return new NamespacedKey(Mirae.getInstance(), key);
+        return new NamespacedKey(Mirae.getPlugin(), key);
     }
 
     /**

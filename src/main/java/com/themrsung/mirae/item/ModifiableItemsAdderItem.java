@@ -33,7 +33,7 @@ public class ModifiableItemsAdderItem extends ItemsAdderItem implements Modifiab
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
 
-        data.set(new NamespacedKey(Mirae.getInstance(), uniqueKey), PersistentDataType.BOOLEAN, true);
+        data.set(new NamespacedKey(Mirae.getPlugin(), uniqueKey), PersistentDataType.BOOLEAN, true);
 
         item.setItemMeta(meta);
         return item;
@@ -52,7 +52,7 @@ public class ModifiableItemsAdderItem extends ItemsAdderItem implements Modifiab
         if (meta == null) return false;
 
         PersistentDataContainer data = meta.getPersistentDataContainer();
-        Boolean tag = data.get(new NamespacedKey(Mirae.getInstance(), uniqueKey), PersistentDataType.BOOLEAN);
+        Boolean tag = data.get(new NamespacedKey(Mirae.getPlugin(), uniqueKey), PersistentDataType.BOOLEAN);
 
         return tag != null && tag;
     }

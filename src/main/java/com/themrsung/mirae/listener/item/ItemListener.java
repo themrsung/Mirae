@@ -83,7 +83,7 @@ public class ItemListener implements Listener {
                                 .build());
                     });
 
-            Bukkit.getScheduler().runTaskLater(Mirae.getInstance(), () -> STORMBREAKER_USAGE.remove(uniqueId), 20);
+            Bukkit.getScheduler().runTaskLater(Mirae.getPlugin(), () -> STORMBREAKER_USAGE.remove(uniqueId), 20);
         });
 
         callbacks.put(CustomItem.THOR_HAMMER, e -> {
@@ -121,7 +121,7 @@ public class ItemListener implements Listener {
         callbacks.put(CustomItem.BASEBALL_BAT, e -> {
             Entity entity = e.getEntity();
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getInstance(), () -> {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getPlugin(), () -> {
                 Vector up = new Vector(0, 2.5, 0);
                 Vector v = entity.getVelocity();
                 Vector p = v.add(up);

@@ -47,7 +47,7 @@ public class SkillBoostListener implements Listener {
         ItemStack itemsToDrop = ItemStack.of(Material.NETHERITE_SCRAP, finalDrops);
 
         e.setDropItems(false);
-        Bukkit.getScheduler().runTaskLater(Mirae.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Mirae.getPlugin(), () -> {
             block.getWorld().dropItem(block.getLocation(), itemsToDrop);
         }, 1);
     }
@@ -78,7 +78,7 @@ public class SkillBoostListener implements Listener {
         ItemStack wheatToDrop = ItemStack.of(Material.WHEAT, finalDrops);
 
         e.setDropItems(false);
-        Bukkit.getScheduler().runTaskLater(Mirae.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Mirae.getPlugin(), () -> {
             for (ItemStack drop : drops) {
                 if (drop.getType() != Material.WHEAT) {
                     block.getWorld().dropItem(block.getLocation(), drop);

@@ -151,7 +151,7 @@ public abstract class AbstractCookingMenu extends AbstractGUI {
         }
 
         renderBackground();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getInstance(), this::renderConfirmButton, 1);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getPlugin(), this::renderConfirmButton, 1);
     }
 
     /**

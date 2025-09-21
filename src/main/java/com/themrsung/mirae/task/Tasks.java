@@ -1,6 +1,5 @@
 package com.themrsung.mirae.task;
 
-import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.task.abuse.AntiSpamBanTask;
 import com.themrsung.mirae.task.abuse.TransferAmountMonitorTask;
 import com.themrsung.mirae.task.economy.InterestPayoutTask;
@@ -17,6 +16,7 @@ import com.themrsung.mirae.task.state.MuteExpirationTask;
 import com.themrsung.mirae.task.state.TransientVariableCleanupTask;
 import com.themrsung.mirae.task.state.UpdateNameTask;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -77,7 +77,7 @@ public final class Tasks {
      * @param p The plugin instance
      * @param s The scheduler instance
      */
-    public static void registerTasks(@NotNull Mirae p, @NotNull BukkitScheduler s) {
+    public static void registerTasks(@NotNull Plugin p, @NotNull BukkitScheduler s) {
         // plugin, task, delay, interval
         s.runTaskTimer(p, MUTE_EXPIRATION_TASK, 200, 20);
         s.runTaskTimer(p, TRANSIENT_VARIABLE_CLEANUP_TASK, 200, 300);

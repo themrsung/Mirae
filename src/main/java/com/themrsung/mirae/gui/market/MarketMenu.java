@@ -132,7 +132,7 @@ public class MarketMenu extends AbstractGUI {
     private final Map<Integer, Consumer<? super InventoryClickEvent>> callbacks;
 
     private void initialize() {
-        updateTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Mirae.getInstance(), this::updateMarketData, 10, 1);
+        updateTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Mirae.getPlugin(), this::updateMarketData, 10, 1);
 
         renderNavigation();
         updateMarketData();

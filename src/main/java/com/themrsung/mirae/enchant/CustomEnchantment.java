@@ -219,7 +219,7 @@ public interface CustomEnchantment {
 
             PersistentDataContainer container = meta.getPersistentDataContainer();
 
-            Integer result = container.get(new NamespacedKey(Mirae.getInstance(), key), PersistentDataType.INTEGER);
+            Integer result = container.get(new NamespacedKey(Mirae.getPlugin(), key), PersistentDataType.INTEGER);
             if (result == null) return 0;
 
             return result;
@@ -230,7 +230,7 @@ public interface CustomEnchantment {
             ItemMeta meta = item.getItemMeta();
             PersistentDataContainer container = meta.getPersistentDataContainer();
 
-            NamespacedKey nKey = new NamespacedKey(Mirae.getInstance(), key);
+            NamespacedKey nKey = new NamespacedKey(Mirae.getPlugin(), key);
             container.remove(nKey);
 
             if (level > 0) {

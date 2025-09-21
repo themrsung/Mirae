@@ -123,7 +123,7 @@ public abstract class AbstractUpgradeMenu extends AbstractGUI {
         }
 
         renderBackground();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getInstance(), this::renderConfirmButton, 1);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Mirae.getPlugin(), this::renderConfirmButton, 1);
     }
 
     protected void renderBackground() {
