@@ -45,6 +45,7 @@ public class SynchronizedState implements State {
         this.warpMap = new ConcurrentHashMap<>();
         this.accountMap = new ConcurrentHashMap<>();
         this.marketMap = new ConcurrentHashMap<>();
+        this.trackedBanknoteIssuance = 0;
 
         // Transient
         this.directMessages = Collections.synchronizedList(new ArrayList<>());
@@ -178,6 +179,8 @@ public class SynchronizedState implements State {
     /// Markets
 
     private final @NotNull Map<UUID, Market> marketMap;
+
+    private double trackedBanknoteIssuance;
 
     @Override
     public @NotNull Map<UUID, Market> getMarketMap() {
@@ -485,15 +488,33 @@ public class SynchronizedState implements State {
     /// Statistics
 
     @Override
+    public synchronized double getTrackedBanknoteIssuance() {
+        return trackedBanknoteIssuance;
+    }
+
+    @Override
+    public synchronized void adjustTrackedBanknoteIssuance(double amount) {
+        double next = trackedBanknoteIssuance + amount;
+        trackedBanknoteIssuance = Math.max(0, next);
+    }
+
+    @Override
+    public synchronized void setTrackedBanknoteIssuance(double amount) {
+        trackedBanknoteIssuance = Math.max(0, amount);
+    }
+
+    @Override
     public double getMoneySupply() {
         Set<UUID> operatorIds = Bukkit.getOperators().stream()
                 .map(OfflinePlayer::getUniqueId)
                 .collect(Collectors.toUnmodifiableSet());
 
-        return getAccounts().stream()
+        double accountSupply = getAccounts().stream()
                 .filter(a -> !operatorIds.contains(a.getUniqueId()))
                 .mapToDouble(Account::getBalance)
                 .sum();
+
+        return accountSupply + getTrackedBanknoteIssuance();
     }
 
     @Override
@@ -552,6 +573,7 @@ public class SynchronizedState implements State {
         clearWarps();
         clearAccounts();
         clearMarkets();
+        setTrackedBanknoteIssuance(0);
     }
 
     @Override
@@ -696,6 +718,8 @@ public class SynchronizedState implements State {
                     } catch (IllegalArgumentException ignored) {
                     }
                 });
+
+                setTrackedBanknoteIssuance(data.getTrackedBanknoteIssuance());
 
             } catch (IOException e) {
                 throw new IOException("Error loading data.", e);

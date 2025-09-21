@@ -4,7 +4,9 @@ import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.item.lootbox.LootBox;
+import com.themrsung.mirae.item.economy.Banknote;
 import com.themrsung.mirae.item.lootbox.LootBoxReward;
+import com.themrsung.mirae.item.lootbox.LootBoxReward.BanknoteBased;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -47,6 +49,13 @@ public class LootBoxRedemptionListener implements Listener {
                 }
 
                 MX.giveItems(player, rewardItem);
+
+                if (reward instanceof BanknoteBased banknoteReward) {
+                    Banknote.Version version = banknoteReward.getVersion();
+                    if (version.tracksIssuance()) {
+                        Mirae.getState().adjustTrackedBanknoteIssuance(banknoteReward.getDenomination());
+                    }
+                }
 
                 if (reward.getRarity().shouldBroadcast()) {
                     Bukkit.getOnlinePlayers().forEach(p -> {

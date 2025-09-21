@@ -48,6 +48,7 @@ public final class StateData implements Serializable {
         state.getWarpMap().forEach((k, v) -> warps.put(k, new Coordinate(v)));
 
         this.warpMap = Map.copyOf(warps);
+        this.trackedBanknoteIssuance = state.getTrackedBanknoteIssuance();
     }
 
     /**
@@ -56,10 +57,12 @@ public final class StateData implements Serializable {
     private StateData() {
         this.spawnPoint = null;
         this.warpMap = new HashMap<>();
+        this.trackedBanknoteIssuance = 0;
     }
 
     private @Nullable Coordinate spawnPoint;
     private final @NotNull Map<String, Coordinate> warpMap;
+    private double trackedBanknoteIssuance;
 
     /**
      * Returns the spawn point.
@@ -80,6 +83,15 @@ public final class StateData implements Serializable {
     }
 
     /**
+     * Returns the tracked banknote issuance.
+     *
+     * @return The tracked banknote issuance
+     */
+    public double getTrackedBanknoteIssuance() {
+        return trackedBanknoteIssuance;
+    }
+
+    /**
      * Serializer class.
      */
     private static final class Serializer implements JsonSerializer<StateData> {
@@ -95,6 +107,8 @@ public final class StateData implements Serializable {
                 warps.add(context.serialize(pair));
             });
             object.add("warps", warps);
+
+            object.addProperty("trackedBanknoteIssuance", data.trackedBanknoteIssuance);
 
             return object;
         }
@@ -121,6 +135,10 @@ public final class StateData implements Serializable {
                     StringCoordinatePair pair = context.deserialize(warp, StringCoordinatePair.class);
                     data.warpMap.put(pair.getKey(), pair.getValue());
                 });
+            }
+
+            if (object.has("trackedBanknoteIssuance") && object.get("trackedBanknoteIssuance").isJsonPrimitive()) {
+                data.trackedBanknoteIssuance = object.get("trackedBanknoteIssuance").getAsDouble();
             }
 
             return data;
