@@ -218,17 +218,22 @@ public class Banknote extends ItemsAdderItem {
         /**
          * Block 0. Since @ v0.3.6
          */
-        BLOCK_0("15fc7778-a3b0-443c-9c2c-d6b41d952d54", "#8df551", "#8df554", false),
+        BLOCK_0("15fc7778-a3b0-443c-9c2c-d6b41d952d54", "#8df551", "#8df554", false, false),
 
         /**
          * Block 1. Since v1.0
          */
-        BLOCK_1("First to the key, first to the egg!", "#8df552", "#8df556", true);
+        BLOCK_1("First to the key, first to the egg!", "#8df552", "#8df556", true, false),
+
+        /**
+         * Block 2.
+         */
+        BLOCK_2("Second verse, same as the first (but richer).", "#8df558", "#8df55c", true, true);
 
         /**
          * The current version.
          */
-        private static final @NotNull Version CURRENT = BLOCK_1;
+        private static final @NotNull Version CURRENT = BLOCK_2;
 
         /**
          * Creates a new banknote version.
@@ -238,17 +243,19 @@ public class Banknote extends ItemsAdderItem {
          * @param colorEnd   The ending color
          * @param valid      Whether this version is valid
          */
-        Version(@NotNull String privateKey, @NotNull String colorStart, @NotNull String colorEnd, boolean valid) {
+        Version(@NotNull String privateKey, @NotNull String colorStart, @NotNull String colorEnd, boolean valid, boolean tracksIssuance) {
             this.privateKey = privateKey;
             this.colorStart = colorStart;
             this.colorEnd = colorEnd;
             this.valid = valid;
+            this.tracksIssuance = tracksIssuance;
         }
 
         private final @NotNull String privateKey;
         private final @NotNull String colorStart;
         private final @NotNull String colorEnd;
         private final boolean valid;
+        private final boolean tracksIssuance;
 
         /**
          * Returns the private key.
@@ -284,6 +291,15 @@ public class Banknote extends ItemsAdderItem {
          */
         public boolean isValid() {
             return valid;
+        }
+
+        /**
+         * Returns whether issuance of this version should be tracked.
+         *
+         * @return {@code true} if issuance should be tracked
+         */
+        public boolean tracksIssuance() {
+            return tracksIssuance;
         }
     }
 }

@@ -6,7 +6,6 @@ import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.command.MiraeCommand;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
-import com.themrsung.mirae.item.CustomItem;
 import com.themrsung.mirae.item.economy.Banknote;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
@@ -65,7 +64,7 @@ public class WithdrawCommand extends MiraeCommand {
         }
 
 
-        CustomItem banknote = new Banknote(amount);
+        Banknote banknote = new Banknote(amount);
         ItemStack item = banknote.getItem();
 
         if (MX.getRemainingSpaceFor(player.getInventory(), item) < 1) {
@@ -74,6 +73,10 @@ public class WithdrawCommand extends MiraeCommand {
         }
 
         MX.giveItems(player, item);
+
+        if (banknote.getVersion().tracksIssuance()) {
+            Mirae.getState().adjustTrackedBanknoteIssuance(amount);
+        }
 
         double balanceAfter = account.getBalance();
         sender.sendMessage(Component.text("[출금] ").style(MX.STYLE_ERROR)

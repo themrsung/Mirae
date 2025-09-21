@@ -5,6 +5,7 @@ import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.banknote.BanknoteQueryResult;
 import com.themrsung.mirae.banknote.Banknotes;
+import com.themrsung.mirae.item.economy.Banknote;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
 import net.kyori.adventure.text.Component;
@@ -47,6 +48,11 @@ public class BanknoteListener implements Listener {
             MX.giveItems(player, item);
 
             return;
+        }
+
+        Banknote.Version version = query.version();
+        if (version != null && version.tracksIssuance()) {
+            Mirae.getState().adjustTrackedBanknoteIssuance(-amount);
         }
 
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);

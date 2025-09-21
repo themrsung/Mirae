@@ -611,6 +611,27 @@ public interface State {
     ///
 
     /**
+     * Returns the total issuance of tracked banknotes.
+     *
+     * @return The tracked banknote issuance
+     */
+    double getTrackedBanknoteIssuance();
+
+    /**
+     * Adjusts the tracked banknote issuance by the specified amount.
+     *
+     * @param amount The amount to adjust by
+     */
+    void adjustTrackedBanknoteIssuance(double amount);
+
+    /**
+     * Sets the tracked banknote issuance amount.
+     *
+     * @param amount The new tracked banknote issuance
+     */
+    void setTrackedBanknoteIssuance(double amount);
+
+    /**
      * Returns the total money supply.
      *
      * @return The total money supply
