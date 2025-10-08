@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Base64;
+import java.util.Map;
 
 /**
  * {@link ItemStack} Gson serialization.
@@ -43,13 +44,17 @@ public final class ItemStackGson {
      */
     private static final class Serializer implements JsonSerializer<ItemStack> {
         @Override
-        @SuppressWarnings("deprecation")
-        public JsonElement serialize(ItemStack itemStack, Type type, JsonSerializationContext context) {
+        public JsonElement serialize(ItemStack item, Type type, JsonSerializationContext context) {
+            return context.serialize(item.serialize());
+        }
+
+        @Deprecated(forRemoval = true)
+        private JsonElement legacySerialize(ItemStack item) {
             try {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
 
-                dataOutput.writeObject(itemStack);
+                dataOutput.writeObject(item);
                 dataOutput.close();
 
                 String itemAsString = Base64.getEncoder().encodeToString(outputStream.toByteArray());
@@ -67,15 +72,28 @@ public final class ItemStackGson {
      */
     private static final class Deserializer implements JsonDeserializer<ItemStack> {
         @Override
-        @SuppressWarnings("deprecation")
-        public ItemStack deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
+        public ItemStack deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                Map<String, Object> map = context.deserialize(element, Map.class);
+                return ItemStack.deserialize(map);
+            } catch (RuntimeException e) {
+                try {
+                    return legacyDeserialize(element);
+                } catch (JsonParseException e2) {
+                    throw new JsonParseException(e2);
+                }
+            }
+        }
+
+        @Deprecated
+        private ItemStack legacyDeserialize(JsonElement element) throws JsonParseException {
             // Added resilience (2025/09/04)
-            if (jsonElement.isJsonNull()) {
+            if (element.isJsonNull()) {
                 return ItemStack.of(Material.AIR);
             }
 
             try {
-                String itemAsString = jsonElement.getAsString();
+                String itemAsString = element.getAsString();
                 byte[] data = Base64.getDecoder().decode(itemAsString);
 
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
