@@ -41,8 +41,8 @@ public class ScoreboardTask implements Runnable {
             Component coinBalance = Component.text(MX.formatCoinBalance(account.getCoinBalance())).style(MX.STYLE_GOOD);
 
             double totalMoneySupply = Mirae.getState().getMoneySupply();
-            double ten_thousands = Math.round(totalMoneySupply / 10000);
-            Component moneySupply = Component.text(NumberFormat.getInstance().format(ten_thousands) + "만원").style(MX.STYLE_SPECIAL);
+            double ten_thousands = Math.round(totalMoneySupply / 1000000);
+            Component moneySupply = Component.text(NumberFormat.getInstance().format(ten_thousands) + "백만원").style(MX.STYLE_SPECIAL);
 
             Objective obj = board.registerNewObjective("test", Criteria.DUMMY, MiniMessage.miniMessage().deserialize("<gradient:#2e2727:#ff2e01><bold>MIRAE SERVER<reset>"));
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -57,17 +57,17 @@ public class ScoreboardTask implements Runnable {
             score2.customName(Component.text("채팅: ").style(MX.STYLE_NORMAL).append(localChat));
             score2.setScore(i--);
 
-            Score score3 = obj.getScore("Empty1");
-            score3.customName(Component.empty());
-            score3.setScore(i--);
+//            Score score3 = obj.getScore("Empty1");
+//            score3.customName(Component.empty());
+//            score3.setScore(i--);
 
             Score score4 = obj.getScore("Balance");
             score4.customName(Component.text("잔액: ").style(MX.STYLE_NORMAL).append(balance));
             score4.setScore(i--);
 
-            Score score5 = obj.getScore("Coin Balance");
-            score5.customName(Component.text("코인: ").style(MX.STYLE_NORMAL).append(coinBalance));
-            score5.setScore(i--);
+//            Score score5 = obj.getScore("Coin Balance");
+//            score5.customName(Component.text("코인: ").style(MX.STYLE_NORMAL).append(coinBalance));
+//            score5.setScore(i--);
 
             Score score6 = obj.getScore("Empty2");
             score6.customName(Component.empty());
