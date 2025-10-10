@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * MX main utility class.
@@ -109,6 +110,15 @@ public final class MX {
     ///
     /// Accounts
     ///
+
+    /**
+     * Returns a stream of all online accounts.
+     * @return A stream of online accounts
+     */
+    public static @NotNull Stream<Account> getOnlineAccounts() {
+        return Mirae.getState().getAccounts().stream()
+                .filter(account -> account.getOfflinePlayer().isOnline());
+    }
 
     /**
      * Requires non-null for account.
