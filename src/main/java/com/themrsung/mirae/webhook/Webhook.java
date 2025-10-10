@@ -1,13 +1,8 @@
 package com.themrsung.mirae.webhook;
 
-import com.sun.net.httpserver.HttpServer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import java.io.InputStream;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
+import com.sun.net.httpserver.HttpServer;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
@@ -18,6 +13,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -76,8 +75,9 @@ public class Webhook {
 
     /**
      * Gives coins to user.
+     *
      * @param username The username
-     * @param amount The amount
+     * @param amount   The amount
      */
     protected void giveCoins(@Nullable String username, long amount) {
         Optional.ofNullable(username).ifPresentOrElse(name -> {

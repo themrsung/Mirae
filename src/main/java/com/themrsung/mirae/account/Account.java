@@ -107,18 +107,21 @@ public interface Account extends Serializable {
 
     /**
      * Returns whether this account has a prefix.
+     *
      * @return {@code true} if prefix is present
      */
     boolean hasPrefix();
 
     /**
      * Returns the prefix.
+     *
      * @return The prefix
      */
     @Nullable Component getPrefix();
 
     /**
      * Sets the prefix.
+     *
      * @param prefix The prefix
      */
     void setPrefix(@Nullable Component prefix);

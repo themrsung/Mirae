@@ -54,6 +54,7 @@ public final class Mirae extends JavaPlugin {
 
     /**
      * Returns the webhook.
+     *
      * @return The webhook
      */
     public static @NotNull Webhook getWebhook() {

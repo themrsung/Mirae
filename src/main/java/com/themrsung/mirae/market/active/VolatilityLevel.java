@@ -37,7 +37,7 @@ public enum VolatilityLevel {
     /**
      * Creates a new volatility level.
      *
-     * @param numSteps        The number of steps
+     * @param numSteps      The number of steps
      * @param stacksPerStep The stacks per step
      */
     VolatilityLevel(int numSteps, double stacksPerStep) {
@@ -71,6 +71,7 @@ public enum VolatilityLevel {
 
     /**
      * Returns the number of stacks per step.
+     *
      * @return The number of stacks per step
      */
     public double getStacksPerStep() {
@@ -89,6 +90,7 @@ public enum VolatilityLevel {
 
     /**
      * Returns the total order volume.
+     *
      * @param stackSize The stack size
      * @return The total order volume
      */

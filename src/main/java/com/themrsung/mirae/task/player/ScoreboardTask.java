@@ -3,7 +3,6 @@ package com.themrsung.mirae.task.player;
 import com.themrsung.mirae.MX;
 import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.account.Account;
-import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -11,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.*;
 
 import java.text.NumberFormat;
+import java.util.Optional;
 
 /**
  * Scoreboard task.
@@ -29,11 +29,7 @@ public class ScoreboardTask implements Runnable {
                 return;
             }
 
-            Component displayName = account.getDisplayName(MX.STYLE_SPECIAL);
-            Component tier = account.getTier().getDisplayName();
-
-            Component fullName = tier.append(Component.text(account.getTier() != AccountTier.DEFAULT ? " " : ""))
-                    .append(displayName);
+            Component fullName = Optional.ofNullable(account.getPrefix()).map(Component::appendSpace).orElse(Component.empty()).append(account.getDisplayName(MX.STYLE_NORMAL));
 
             Component localChat = account.inLocalChat() ? Component.text("지역채팅").style(MX.STYLE_WARNING) : Component.text("전체채팅").style(MX.STYLE_GOOD);
 
@@ -44,7 +40,7 @@ public class ScoreboardTask implements Runnable {
             double ten_thousands = Math.round(totalMoneySupply / 1000000);
             Component moneySupply = Component.text(NumberFormat.getInstance().format(ten_thousands) + "백만원").style(MX.STYLE_SPECIAL);
 
-            Objective obj = board.registerNewObjective("test", Criteria.DUMMY, MiniMessage.miniMessage().deserialize("<gradient:#2e2727:#ff2e01><bold>MIRAE SERVER<reset>"));
+            Objective obj = board.registerNewObjective("test", Criteria.DUMMY, MiniMessage.miniMessage().deserialize("<gradient:#2e2727:#ff2e01>MIRAE ONLINE<reset>"));
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
             int i = 100;

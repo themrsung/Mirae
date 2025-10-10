@@ -27,6 +27,7 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Player related event listener.
@@ -136,6 +137,26 @@ public class PlayerListener implements Listener {
     }
 
     private @NotNull Component renderChat(Account sender, String message) {
+        boolean local = sender.inLocalChat();
+
+        return Component.empty()
+                .append(local ? Component.text("[").style(MX.STYLE_NORMAL)
+                        .append(Component.text("지역").style(MX.STYLE_WARNING)
+                                .hoverEvent(HoverEvent.showText(Component.text(NumberFormat.getInstance().format(LOCAL_CHAT_DISTANCE) + "블럭 내 플레이어에게만 보여집니다.").style(MX.STYLE_NORMAL)))
+                                .clickEvent(ClickEvent.runCommand("/localchat"))
+                        )
+                        .append(Component.text("] ").style(MX.STYLE_NORMAL)) :
+                        Component.empty())
+                .append(Optional.ofNullable(sender.getPrefix()).map(Component::appendSpace).orElse(Component.empty()))
+                .append(sender.getDisplayName(MX.STYLE_NORMAL))
+                .append(Component.text(" : ").style(MX.STYLE_NORMAL))
+                .append(Component.text(message).applyFallbackStyle(MX.STYLE_NORMAL)
+                        .hoverEvent(HoverEvent.showText(Component.text("클릭하여 복사합니다...").style(MX.STYLE_NORMAL)))
+                        .clickEvent(ClickEvent.copyToClipboard(message)));
+    }
+
+    @Deprecated
+    private @NotNull Component legacyRenderChat(Account sender, String message) {
         boolean local = sender.inLocalChat();
 
         boolean hasTier = sender.getTier() != AccountTier.DEFAULT;

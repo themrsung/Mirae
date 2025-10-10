@@ -91,9 +91,7 @@ public enum MarketCategory {
     /**
      * Enchanted books.
      */
-    ENCHANTED_BOOKS(Component.text("인챈트 북").style(MX.STYLE_NORMAL))
-
-    ;
+    ENCHANTED_BOOKS(Component.text("인챈트 북").style(MX.STYLE_NORMAL));
 
     MarketCategory(@NotNull Component displayName) {
         this.displayName = displayName;
