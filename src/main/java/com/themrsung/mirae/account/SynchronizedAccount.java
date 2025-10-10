@@ -98,6 +98,7 @@ public class SynchronizedAccount implements Account {
     private final @NotNull UUID uniqueId;
     private @NotNull String name;
     private @Nullable Component displayName;
+    private @Nullable Component prefix;
 
     @Override
     public @NotNull UUID getUniqueId() {
@@ -143,6 +144,21 @@ public class SynchronizedAccount implements Account {
     @Override
     public synchronized void setDisplayName(@Nullable Component displayName) {
         this.displayName = displayName;
+    }
+
+    @Override
+    public boolean hasPrefix() {
+        return prefix != null;
+    }
+
+    @Override
+    public @Nullable Component getPrefix() {
+        return prefix;
+    }
+
+    @Override
+    public void setPrefix(@Nullable Component prefix) {
+        this.prefix = prefix;
     }
 
     /// Tier & Title

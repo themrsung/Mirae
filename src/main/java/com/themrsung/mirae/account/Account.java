@@ -105,6 +105,24 @@ public interface Account extends Serializable {
      */
     void setDisplayName(@Nullable Component displayName);
 
+    /**
+     * Returns whether this account has a prefix.
+     * @return {@code true} if prefix is present
+     */
+    boolean hasPrefix();
+
+    /**
+     * Returns the prefix.
+     * @return The prefix
+     */
+    @Nullable Component getPrefix();
+
+    /**
+     * Sets the prefix.
+     * @param prefix The prefix
+     */
+    void setPrefix(@Nullable Component prefix);
+
     ///
     /// Tier & Title
     ///
@@ -114,6 +132,7 @@ public interface Account extends Serializable {
      *
      * @return The account tier
      */
+    @Deprecated
     @NotNull AccountTier getTier();
 
     /**
@@ -121,6 +140,7 @@ public interface Account extends Serializable {
      *
      * @param tier The account tier
      */
+    @Deprecated
     void setTier(@NotNull AccountTier tier);
 
     /**
@@ -128,6 +148,7 @@ public interface Account extends Serializable {
      *
      * @return The set of titles
      */
+    @Deprecated
     @NotNull EnumSet<AccountTitle> getTitleSet();
 
     /**
@@ -136,6 +157,7 @@ public interface Account extends Serializable {
      * @param title The title
      * @return {@code true} if the account has the title
      */
+    @Deprecated
     boolean hasTitle(@Nullable AccountTitle title);
 
     /**
@@ -143,6 +165,7 @@ public interface Account extends Serializable {
      *
      * @param title The title to add
      */
+    @Deprecated
     void addTitle(@NotNull AccountTitle title);
 
     /**
@@ -150,11 +173,13 @@ public interface Account extends Serializable {
      *
      * @param title The title to remove
      */
+    @Deprecated
     void removeTitle(@NotNull AccountTitle title);
 
     /**
      * Clears the set of titles.
      */
+    @Deprecated
     void clearTitleSet();
 
     /**
@@ -162,6 +187,7 @@ public interface Account extends Serializable {
      *
      * @return The account title
      */
+    @Deprecated
     @NotNull AccountTitle getCurrentTitle();
 
     /**
@@ -169,6 +195,7 @@ public interface Account extends Serializable {
      *
      * @param title The account title
      */
+    @Deprecated
     void setCurrentTitle(@NotNull AccountTitle title);
 
     /// Economy
@@ -803,6 +830,8 @@ public interface Account extends Serializable {
             object.add("name", context.serialize(account.getName()));
             object.add("displayName", account.hasDisplayName() ? GsonComponentSerializer.gson()
                     .serializeToTree(Objects.requireNonNullElse(account.getRawDisplayName(), Component.empty())) : JsonNull.INSTANCE);
+            object.add("prefix", account.hasPrefix() ? GsonComponentSerializer.gson()
+                    .serializeToTree(Objects.requireNonNullElse(account.getPrefix(), Component.empty())) : JsonNull.INSTANCE);
 
             // Tier & Title
 
@@ -912,6 +941,10 @@ public interface Account extends Serializable {
 
             if (object.has("displayName") && !object.get("displayName").isJsonNull()) {
                 account.setDisplayName(GsonComponentSerializer.gson().deserializeFromTree(object.get("displayName")));
+            }
+
+            if (object.has("prefix") && !object.get("prefix").isJsonNull()) {
+                account.setPrefix(GsonComponentSerializer.gson().deserializeFromTree(object.get("prefix")));
             }
 
             // Tier & title

@@ -13,18 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Set display name command.
+ * Set prefix command.
  */
-public class SetDisplayNameCommand extends MiraeCommand {
+public class SetPrefixCommand extends MiraeCommand {
     /**
      * Creates a new command.
      */
-    public SetDisplayNameCommand() {
-        super("setdisplayname");
-        setAliases(List.of(
-                "setdpname",
-                "setnick"
-        ));
+    public SetPrefixCommand() {
+        super("setprefix");
     }
 
     @Override
@@ -35,7 +31,7 @@ public class SetDisplayNameCommand extends MiraeCommand {
         }
 
         if (args.length < 1) {
-            sender.sendMessage(Component.text("/setnick 대상 닉네임").style(MX.STYLE_WARNING));
+            sender.sendMessage(Component.text("/setprefix 대상 칭호").style(MX.STYLE_WARNING));
             return false;
         }
 
@@ -57,10 +53,10 @@ public class SetDisplayNameCommand extends MiraeCommand {
 
         Component nickname = parts.length > 0 ? MiniMessage.miniMessage().deserialize(String.join(" ", parts)) : null;
 
-        account.setDisplayName(nickname);
+        account.setPrefix(nickname);
 
         sender.sendMessage(Component.text(account.getName())
-                .append(Component.text("님의 별명을 ").style(MX.STYLE_NORMAL))
+                .append(Component.text("님의 칭호를 ").style(MX.STYLE_NORMAL))
                 .append(nickname != null ? nickname : Component.text("없음").style(MX.STYLE_SPECIAL))
                 .append(Component.text("으로 설정했습니다.")).style(MX.STYLE_NORMAL));
 
