@@ -103,7 +103,7 @@ public class TeleportAskCommand extends MiraeCommand {
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) throws IllegalArgumentException {
         return switch (args.length) {
-            case 1 -> Mirae.getState().getAccounts().stream()
+            case 1 -> MX.getOnlineAccounts()
                     .map(Account::getName)
                     .filter(name -> name.toLowerCase().startsWith(args[0].toLowerCase()))
                     .toList();
