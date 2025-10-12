@@ -89,7 +89,7 @@ public final class Tasks {
         s.runTaskTimer(p, INTEREST_PAYOUT_TASK, 20 * 60 * 10, 20 * 60 * 10);
         s.runTaskTimer(p, MARKET_UPDATE_TASK, 200, 50);
         s.runTaskTimer(p, TRANSFER_AMOUNT_MONITOR_TASK, 200, 300);
-        s.runTaskTimer(p, ELYTRA_DURABILITY_TASK, 100, 5);
+        s.runTaskTimer(p, ELYTRA_DURABILITY_TASK, 100, 10);
         s.runTaskTimer(p, MAGNET_TASK, 200, 7);
         s.runTaskTimer(p, ARROW_SEEKER_TASK, 200, 4);
         s.runTaskTimer(p, EMP_SHIELD_TASK, 200, 2);
