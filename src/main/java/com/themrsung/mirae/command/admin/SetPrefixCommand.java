@@ -9,6 +9,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +52,21 @@ public class SetPrefixCommand extends MiraeCommand {
         String[] parts = new String[args.length - 1];
         System.arraycopy(args, 1, parts, 0, parts.length);
 
-        Component nickname = parts.length > 0 ? MiniMessage.miniMessage().deserialize(String.join(" ", parts)) : null;
+        Component nickname;
+
+        if (Arrays.stream(parts).anyMatch(p -> p.equalsIgnoreCase("--raw"))) {
+            StringBuilder nickBuilder = new StringBuilder();
+            for (int i = 0; i < parts.length; i++) {
+                String part = parts[i];
+                if (part.equalsIgnoreCase("--raw")) continue;
+
+                nickBuilder.append(part);
+            }
+
+            nickname = Component.text(nickBuilder.toString());
+        } else {
+            nickname = parts.length > 0 ? MiniMessage.miniMessage().deserialize(String.join(" ", parts)) : null;
+        }
 
         account.setPrefix(nickname);
 

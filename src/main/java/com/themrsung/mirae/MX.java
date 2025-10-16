@@ -113,6 +113,7 @@ public final class MX {
 
     /**
      * Returns a stream of all online accounts.
+     *
      * @return A stream of online accounts
      */
     public static @NotNull Stream<Account> getOnlineAccounts() {
