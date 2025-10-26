@@ -125,7 +125,15 @@ public final class ItemStorageMenu extends AbstractGUI {
             return;
         }
 
-        long removed = storage.removeItem(key, amount);
+        long toWithdraw = Math.min(amount, available);
+        if (!hasInventorySpace(key, toWithdraw)) {
+            Player player = getPlayer();
+            player.sendMessage(Component.text("인벤토리에 공간이 부족합니다.").style(MX.STYLE_ERROR));
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1F, 1F);
+            return;
+        }
+
+        long removed = storage.removeItem(key, toWithdraw);
         if (removed <= 0) {
             return;
         }
@@ -134,20 +142,37 @@ public final class ItemStorageMenu extends AbstractGUI {
         renderPage();
     }
 
+    private boolean hasInventorySpace(@NotNull ItemStack key, long quantity) {
+        int space = MX.getRemainingSpaceFor(getPlayer().getInventory(), key);
+        return quantity <= (long) space;
+    }
+
     private void giveItemsToPlayer(@NotNull ItemStack key, long quantity) {
         Player player = getPlayer();
         long remaining = quantity;
+        boolean deliveredAny = false;
+
         while (remaining > 0) {
             int stackSize = (int) Math.min(remaining, key.getMaxStackSize());
             ItemStack toGive = key.clone();
             toGive.setAmount(stackSize);
             Map<Integer, ItemStack> leftover = player.getInventory().addItem(toGive);
             if (!leftover.isEmpty()) {
-                leftover.values().forEach(item -> player.getWorld().dropItem(player.getLocation(), item));
+                leftover.values().forEach(item -> storage.addItem(item, item.getAmount()));
+                if (!deliveredAny) {
+                    player.sendMessage(Component.text("인벤토리에 공간이 부족합니다.").style(MX.STYLE_ERROR));
+                    player.playSound(player, Sound.UI_BUTTON_CLICK, 1F, 1F);
+                }
+                break;
             }
+
             remaining -= stackSize;
+            deliveredAny = true;
         }
-        player.playSound(player, Sound.ENTITY_ITEM_PICKUP, 0.6F, 1.2F);
+
+        if (deliveredAny) {
+            player.playSound(player, Sound.ENTITY_ITEM_PICKUP, 0.6F, 1.2F);
+        }
     }
 
     private void depositItem(@NotNull ItemStack item) {
