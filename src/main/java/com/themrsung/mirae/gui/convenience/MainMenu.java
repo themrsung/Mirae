@@ -6,7 +6,6 @@ import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.gui.AbstractGUI;
 import com.themrsung.mirae.gui.cooking.CookingMenu;
-import com.themrsung.mirae.gui.donor.DonorMenu;
 import com.themrsung.mirae.gui.storage.ItemStorageMenu;
 import com.themrsung.mirae.gui.upgrade.UpgradeMenu;
 import net.kyori.adventure.text.Component;
@@ -206,8 +205,8 @@ public class MainMenu extends AbstractGUI {
         ));
 
         storageMenu.setItemMeta(storageMeta);
-        inventory.setItem(14, storageMenu);
-        callbacks.put(14, () -> {
+        inventory.setItem(15, storageMenu);
+        callbacks.put(15, () -> {
             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
             ItemStorageMenu menu = new ItemStorageMenu(player, account);
             menu.openGUI();
@@ -224,8 +223,8 @@ public class MainMenu extends AbstractGUI {
         ));
 
         cookingMenu.setItemMeta(cookingMenuMeta);
-        inventory.setItem(15, cookingMenu);
-        callbacks.put(15, () -> {
+        inventory.setItem(16, cookingMenu);
+        callbacks.put(16, () -> {
             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
             CookingMenu menu = new CookingMenu(player);
             menu.openGUI();
@@ -242,28 +241,10 @@ public class MainMenu extends AbstractGUI {
         ));
 
         upgradeMenu.setItemMeta(upgradeMenuMeta);
-        inventory.setItem(16, upgradeMenu);
-        callbacks.put(16, () -> {
-            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-            UpgradeMenu menu = new UpgradeMenu(player);
-            menu.openGUI();
-            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
-        });
-
-        /// DONOR SHOP
-        ItemStack donorShop = new ItemStack(Material.NETHER_STAR);
-        ItemMeta donorShopMeta = donorShop.getItemMeta();
-
-        donorShopMeta.displayName(Component.text("후원 상점").style(MX.STYLE_SELL));
-        donorShopMeta.lore(List.of(
-                Component.text("후원 코인을 사용할 수 있습니다.").style(MX.STYLE_NORMAL)
-        ));
-
-        donorShop.setItemMeta(donorShopMeta);
-        inventory.setItem(17, donorShop);
+        inventory.setItem(17, upgradeMenu);
         callbacks.put(17, () -> {
             player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-            DonorMenu menu = new DonorMenu(player);
+            UpgradeMenu menu = new UpgradeMenu(player);
             menu.openGUI();
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
         });
