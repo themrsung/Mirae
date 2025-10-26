@@ -91,6 +91,7 @@ public final class Commands {
     public static final @NotNull MinelistCommand MINELIST_COMMAND = new MinelistCommand();
     public static final @NotNull MendingBookRecallCommand MENDING_BOOK_RECALL_COMMAND = new MendingBookRecallCommand();
     public static final @NotNull ToggleChopTreeCommand TOGGLE_CHOP_TREE_COMMAND = new ToggleChopTreeCommand();
+    public static final @NotNull ItemStorageCommand ITEM_STORAGE_COMMAND = new ItemStorageCommand();
 
     public static final @NotNull MoneySupplyCommand MONEY_SUPPLY_COMMAND = new MoneySupplyCommand();
 
@@ -170,6 +171,7 @@ public final class Commands {
             MINELIST_COMMAND,
             MENDING_BOOK_RECALL_COMMAND,
             TOGGLE_CHOP_TREE_COMMAND,
+            ITEM_STORAGE_COMMAND,
 
             MONEY_SUPPLY_COMMAND,
 

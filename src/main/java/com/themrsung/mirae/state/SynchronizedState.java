@@ -6,6 +6,7 @@ import com.themrsung.mirae.account.Account;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.economy.EconomyResult;
 import com.themrsung.mirae.gson.*;
+import com.themrsung.mirae.item.storage.ItemStorage;
 import com.themrsung.mirae.market.Market;
 import com.themrsung.mirae.market.active.Fulfillment;
 import com.themrsung.mirae.market.active.OrderChain;
@@ -538,9 +539,11 @@ public class SynchronizedState implements State {
             .registerTypeAdapter(OrderChain.class, OrderChain.serializer())
             .registerTypeAdapter(Coordinate.class, Coordinate.serializer())
             .registerTypeHierarchyAdapter(ItemStack.class, ItemStackGson.serializer())
+            .registerTypeAdapter(ItemStackLongPair.class, ItemStackLongPair.serializer())
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.serializer())
             .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.serializer())
             .registerTypeAdapter(StateData.class, StateData.serializer())
+            .registerTypeAdapter(ItemStorage.class, ItemStorage.serializer())
             .registerTypeAdapter(LocalDateTime.class, LocalDateTimeGson.serializer())
             .setPrettyPrinting()
             .create();
@@ -552,9 +555,11 @@ public class SynchronizedState implements State {
             .registerTypeAdapter(OrderChain.class, OrderChain.deserializer())
             .registerTypeAdapter(Coordinate.class, Coordinate.deserializer())
             .registerTypeHierarchyAdapter(ItemStack.class, ItemStackGson.deserializer())
+            .registerTypeAdapter(ItemStackLongPair.class, ItemStackLongPair.deserializer())
             .registerTypeAdapter(SkillTypeLongPair.class, SkillTypeLongPair.deserializer())
             .registerTypeAdapter(StringCoordinatePair.class, StringCoordinatePair.deserializer())
             .registerTypeAdapter(StateData.class, StateData.deserializer())
+            .registerTypeAdapter(ItemStorage.class, ItemStorage.deserializer())
             .registerTypeAdapter(LocalDateTime.class, LocalDateTimeGson.deserializer())
             .create();
 
