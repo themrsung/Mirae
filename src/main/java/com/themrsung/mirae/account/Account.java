@@ -5,6 +5,7 @@ import com.themrsung.mirae.Mirae;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.gson.SkillTypeLongPair;
 import com.themrsung.mirae.gson.StringCoordinatePair;
+import com.themrsung.mirae.item.storage.ItemStorage;
 import com.themrsung.mirae.skill.SkillType;
 import com.themrsung.mirae.util.Coordinate;
 import net.kyori.adventure.text.Component;
@@ -338,6 +339,24 @@ public interface Account extends Serializable {
      * @param frozen {@code true} if frozen
      */
     void setWalletFrozen(boolean frozen);
+
+    ///
+    /// Storage
+    ///
+
+    /**
+     * Returns the personal item storage assigned to this account.
+     *
+     * @return The item storage
+     */
+    @NotNull ItemStorage getItemStorage();
+
+    /**
+     * Replaces the contents of the personal item storage.
+     *
+     * @param storage The storage data to copy
+     */
+    void setItemStorage(@NotNull ItemStorage storage);
 
     ///
     /// Trading
@@ -903,6 +922,7 @@ public interface Account extends Serializable {
 
             object.add("hideScoreboard", new JsonPrimitive(account.hideScoreboard()));
             object.add("hasReceivedStarterKit", new JsonPrimitive(account.hasReceivedStarterKit()));
+            object.add("itemStorage", context.serialize(account.getItemStorage()));
 
             return object;
         }
@@ -1076,6 +1096,13 @@ public interface Account extends Serializable {
 
             if (object.has("hasReceivedStarterKit") && object.get("hasReceivedStarterKit").isJsonPrimitive()) {
                 account.setReceivedStarterKit(object.get("hasReceivedStarterKit").getAsBoolean());
+            }
+
+            if (object.has("itemStorage") && !object.get("itemStorage").isJsonNull()) {
+                ItemStorage storage = context.deserialize(object.get("itemStorage"), ItemStorage.class);
+                if (storage != null) {
+                    account.setItemStorage(storage);
+                }
             }
 
             return account;

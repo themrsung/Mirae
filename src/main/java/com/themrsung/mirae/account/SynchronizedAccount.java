@@ -5,6 +5,7 @@ import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.event.economy.AccountBalanceModifiedEvent;
 import com.themrsung.mirae.event.economy.AccountCoinBalanceModifiedEvent;
 import com.themrsung.mirae.event.skill.AccountSkillLevelModifiedEvent;
+import com.themrsung.mirae.item.storage.ItemStorage;
 import com.themrsung.mirae.skill.SkillType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -58,6 +59,8 @@ public class SynchronizedAccount implements Account {
 
         this.hideScoreboard = false;
         this.receivedStarterKit = false;
+
+        this.itemStorage = new ItemStorage();
     }
 
     /**
@@ -91,6 +94,8 @@ public class SynchronizedAccount implements Account {
 
         this.hideScoreboard = false;
         this.receivedStarterKit = false;
+
+        this.itemStorage = new ItemStorage();
     }
 
     /// Identification
@@ -210,6 +215,20 @@ public class SynchronizedAccount implements Account {
     @Override
     public synchronized void setCurrentTitle(@NotNull AccountTitle title) {
         this.title = title;
+    }
+
+    /// Storage
+
+    private final @NotNull ItemStorage itemStorage;
+
+    @Override
+    public @NotNull ItemStorage getItemStorage() {
+        return itemStorage;
+    }
+
+    @Override
+    public synchronized void setItemStorage(@NotNull ItemStorage storage) {
+        itemStorage.copyFrom(Objects.requireNonNull(storage, "storage"));
     }
 
     /// Economy

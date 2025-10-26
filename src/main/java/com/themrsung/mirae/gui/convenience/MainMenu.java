@@ -7,6 +7,7 @@ import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.gui.AbstractGUI;
 import com.themrsung.mirae.gui.cooking.CookingMenu;
 import com.themrsung.mirae.gui.donor.DonorMenu;
+import com.themrsung.mirae.gui.storage.ItemStorageMenu;
 import com.themrsung.mirae.gui.upgrade.UpgradeMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -194,6 +195,25 @@ public class MainMenu extends AbstractGUI {
     }
 
     private void initializeLinks() {
+        /// STORAGE
+        ItemStack storageMenu = new ItemStack(Material.CHEST);
+        ItemMeta storageMeta = storageMenu.getItemMeta();
+
+        storageMeta.displayName(Component.text("개인 창고").style(MX.STYLE_SPECIAL));
+        storageMeta.lore(List.of(
+                Component.text("보관소를 엽니다.").style(MX.STYLE_NORMAL),
+                Component.text("Shift 클릭으로 빠르게 보관").style(MX.STYLE_NORMAL)
+        ));
+
+        storageMenu.setItemMeta(storageMeta);
+        inventory.setItem(14, storageMenu);
+        callbacks.put(14, () -> {
+            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+            ItemStorageMenu menu = new ItemStorageMenu(player, account);
+            menu.openGUI();
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 1, 1);
+        });
+
         /// COOKING
         ItemStack cookingMenu = new ItemStack(Material.CAKE);
         ItemMeta cookingMenuMeta = cookingMenu.getItemMeta();
