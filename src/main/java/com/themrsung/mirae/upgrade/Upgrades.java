@@ -9,6 +9,7 @@ import com.themrsung.mirae.upgrade.enchant.CustomEnchantAcquisitionRecipe;
 import com.themrsung.mirae.upgrade.enchant.CustomEnchantApplicationRecipe;
 import com.themrsung.mirae.upgrade.imprint.ImprintRemoveRecipe;
 import com.themrsung.mirae.upgrade.tool.MagnetRecipe;
+import com.themrsung.mirae.upgrade.tool.ToolCombinationRecipe;
 import com.themrsung.mirae.upgrade.weapon.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +39,7 @@ public final class Upgrades {
             new WoodenToolToNetheriteRecipe(),
 
             new MagnetRecipe(),
+            new ToolCombinationRecipe(),
 
             new CustomEnchantApplicationRecipe(),
             new CustomEnchantAcquisitionRecipe()
