@@ -163,7 +163,7 @@ public final class DailyQuestTask implements Runnable {
         }
     }
 
-    private void broadcastQuest(@NotNull Location location) {
+    static void broadcastQuest(@NotNull Location location) {
         int x = location.getBlockX();
         int z = location.getBlockZ();
 
