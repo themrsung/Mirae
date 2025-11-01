@@ -91,6 +91,7 @@ public final class DailyQuestTask implements Runnable {
 
         Location previous = state.getDailyQuestLocation();
         if (previous != null) {
+            forceChunk(previous);
             Material previousType = previous.getBlock().getType();
             if (previousType == Material.CHEST || previousType == Material.TRAPPED_CHEST) {
                 previous.getBlock().setType(Material.AIR, false);
@@ -104,6 +105,8 @@ public final class DailyQuestTask implements Runnable {
             state.setDailyQuestDate(null);
             return false;
         }
+
+        forceChunk(questLocation);
 
         Block chestBlock = questLocation.getBlock();
         chestBlock.setType(Material.CHEST, false);
@@ -147,6 +150,15 @@ public final class DailyQuestTask implements Runnable {
         }
 
         return null;
+    }
+
+    private void forceChunk(@NotNull Location location) {
+        World world = location.getWorld();
+        if (world == null) {
+            return;
+        }
+
+        world.getChunkAt(location).load(true);
     }
 
     private void populateChest(@NotNull Inventory inventory) {
