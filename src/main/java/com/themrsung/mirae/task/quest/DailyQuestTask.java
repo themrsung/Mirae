@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +104,8 @@ public final class DailyQuestTask implements Runnable {
             Mirae.getInstance().getLogger().warning("Failed to generate a location for today's daily quest chest.");
             state.setDailyQuestLocation(null);
             state.setDailyQuestDate(null);
+            state.setDailyQuestGeneratedAt(null);
+            state.setDailyQuestRewardGenerated(false);
             return false;
         }
 
@@ -112,11 +115,12 @@ public final class DailyQuestTask implements Runnable {
         chestBlock.setType(Material.CHEST, false);
 
         Chest chest = (Chest) chestBlock.getState();
-        populateChest(chest.getInventory());
         chest.update(true);
 
         state.setDailyQuestLocation(chestBlock.getLocation());
         state.setDailyQuestDate(today);
+        state.setDailyQuestGeneratedAt(LocalDateTime.now(QUEST_ZONE));
+        state.setDailyQuestRewardGenerated(false);
 
         broadcastQuest(chestBlock.getLocation());
         return true;
@@ -161,7 +165,7 @@ public final class DailyQuestTask implements Runnable {
         world.getChunkAt(location).load(true);
     }
 
-    private void populateChest(@NotNull Inventory inventory) {
+    public static void populateChest(@NotNull Inventory inventory) {
         inventory.clear();
 
         List<ItemSupplier> pool = new ArrayList<>(VALUABLE_ITEMS);
@@ -181,9 +185,9 @@ public final class DailyQuestTask implements Runnable {
         }
     }
 
-    private @Nullable ItemStack safeGetItem(@NotNull ItemSupplier supplier,
-                                            @Nullable Supplier<ItemStack> fallbackSupplier,
-                                            @NotNull String description) {
+    private static @Nullable ItemStack safeGetItem(@NotNull ItemSupplier supplier,
+                                                   @Nullable Supplier<ItemStack> fallbackSupplier,
+                                                   @NotNull String description) {
         try {
             ItemStack item = supplier.getItem();
             if (item.getType() == Material.AIR && fallbackSupplier != null) {
@@ -203,7 +207,7 @@ public final class DailyQuestTask implements Runnable {
         }
     }
 
-    private @NotNull String describeSupplier(@NotNull ItemSupplier supplier) {
+    private static @NotNull String describeSupplier(@NotNull ItemSupplier supplier) {
         if (supplier instanceof LootBox box) {
             return box.getDisplayName().toString();
         }

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +53,8 @@ public final class StateData implements Serializable {
         this.warpMap = Map.copyOf(warps);
         this.trackedBanknoteIssuance = state.getTrackedBanknoteIssuance();
         this.dailyQuestDate = state.getDailyQuestDate() != null ? state.getDailyQuestDate().toString() : null;
+        this.dailyQuestGeneratedAt = state.getDailyQuestGeneratedAt() != null ? state.getDailyQuestGeneratedAt().toString() : null;
+        this.dailyQuestRewardGenerated = state.isDailyQuestRewardGenerated();
         this.dailyQuestLocation = state.getDailyQuestLocation() != null ? new Coordinate(state.getDailyQuestLocation()) : null;
     }
 
@@ -64,6 +67,8 @@ public final class StateData implements Serializable {
         this.trackedBanknoteIssuance = 0;
         this.dailyQuestDate = null;
         this.dailyQuestLocation = null;
+        this.dailyQuestGeneratedAt = null;
+        this.dailyQuestRewardGenerated = false;
     }
 
     private @Nullable Coordinate spawnPoint;
@@ -71,6 +76,8 @@ public final class StateData implements Serializable {
     private double trackedBanknoteIssuance;
     private @Nullable String dailyQuestDate;
     private @Nullable Coordinate dailyQuestLocation;
+    private @Nullable String dailyQuestGeneratedAt;
+    private boolean dailyQuestRewardGenerated;
 
     /**
      * Returns the spawn point.
@@ -126,6 +133,32 @@ public final class StateData implements Serializable {
     }
 
     /**
+     * Returns the time when the daily quest chest was generated.
+     *
+     * @return The quest generation time
+     */
+    public @Nullable LocalDateTime getDailyQuestGeneratedAt() {
+        if (dailyQuestGeneratedAt == null || dailyQuestGeneratedAt.isBlank()) {
+            return null;
+        }
+
+        try {
+            return LocalDateTime.parse(dailyQuestGeneratedAt);
+        } catch (DateTimeParseException ignored) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns whether the daily quest reward has been generated.
+     *
+     * @return {@code true} if the reward has been generated
+     */
+    public boolean isDailyQuestRewardGenerated() {
+        return dailyQuestRewardGenerated;
+    }
+
+    /**
      * Serializer class.
      */
     private static final class Serializer implements JsonSerializer<StateData> {
@@ -145,6 +178,8 @@ public final class StateData implements Serializable {
             object.addProperty("trackedBanknoteIssuance", data.trackedBanknoteIssuance);
             object.add("dailyQuestDate", data.dailyQuestDate != null ? new JsonPrimitive(data.dailyQuestDate) : JsonNull.INSTANCE);
             object.add("dailyQuestLocation", context.serialize(data.dailyQuestLocation));
+            object.add("dailyQuestGeneratedAt", data.dailyQuestGeneratedAt != null ? new JsonPrimitive(data.dailyQuestGeneratedAt) : JsonNull.INSTANCE);
+            object.addProperty("dailyQuestRewardGenerated", data.dailyQuestRewardGenerated);
 
             return object;
         }
@@ -183,6 +218,14 @@ public final class StateData implements Serializable {
 
             if (object.has("dailyQuestLocation") && !object.get("dailyQuestLocation").isJsonNull()) {
                 data.dailyQuestLocation = context.deserialize(object.get("dailyQuestLocation"), Coordinate.class);
+            }
+
+            if (object.has("dailyQuestGeneratedAt") && !object.get("dailyQuestGeneratedAt").isJsonNull()) {
+                data.dailyQuestGeneratedAt = object.get("dailyQuestGeneratedAt").getAsString();
+            }
+
+            if (object.has("dailyQuestRewardGenerated") && object.get("dailyQuestRewardGenerated").isJsonPrimitive()) {
+                data.dailyQuestRewardGenerated = object.get("dailyQuestRewardGenerated").getAsBoolean();
             }
 
             return data;
