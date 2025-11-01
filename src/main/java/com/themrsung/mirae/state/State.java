@@ -218,6 +218,34 @@ public interface State {
      */
     void setDailyQuestLocation(@Nullable Location location);
 
+    /**
+     * Returns the time when the current daily quest chest was generated.
+     *
+     * @return The quest generation time
+     */
+    @Nullable LocalDateTime getDailyQuestGeneratedAt();
+
+    /**
+     * Sets the time when the current daily quest chest was generated.
+     *
+     * @param generatedAt The quest generation time
+     */
+    void setDailyQuestGeneratedAt(@Nullable LocalDateTime generatedAt);
+
+    /**
+     * Returns whether the reward for the current daily quest chest has already been generated.
+     *
+     * @return {@code true} if the reward has been generated
+     */
+    boolean isDailyQuestRewardGenerated();
+
+    /**
+     * Sets whether the reward for the current daily quest chest has already been generated.
+     *
+     * @param generated {@code true} if the reward has been generated
+     */
+    void setDailyQuestRewardGenerated(boolean generated);
+
     ///
     /// Markets
     ///

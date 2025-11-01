@@ -50,6 +50,8 @@ public class SynchronizedState implements State {
         this.trackedBanknoteIssuance = 0;
         this.dailyQuestDate = null;
         this.dailyQuestLocation = null;
+        this.dailyQuestGeneratedAt = null;
+        this.dailyQuestRewardGenerated = false;
 
         // Transient
         this.directMessages = Collections.synchronizedList(new ArrayList<>());
@@ -187,6 +189,8 @@ public class SynchronizedState implements State {
     private double trackedBanknoteIssuance;
     private @Nullable LocalDate dailyQuestDate;
     private @Nullable Location dailyQuestLocation;
+    private @Nullable LocalDateTime dailyQuestGeneratedAt;
+    private boolean dailyQuestRewardGenerated;
 
     @Override
     public @NotNull Map<UUID, Market> getMarketMap() {
@@ -546,6 +550,26 @@ public class SynchronizedState implements State {
     }
 
     @Override
+    public synchronized @Nullable LocalDateTime getDailyQuestGeneratedAt() {
+        return dailyQuestGeneratedAt;
+    }
+
+    @Override
+    public synchronized void setDailyQuestGeneratedAt(@Nullable LocalDateTime generatedAt) {
+        this.dailyQuestGeneratedAt = generatedAt;
+    }
+
+    @Override
+    public synchronized boolean isDailyQuestRewardGenerated() {
+        return dailyQuestRewardGenerated;
+    }
+
+    @Override
+    public synchronized void setDailyQuestRewardGenerated(boolean generated) {
+        this.dailyQuestRewardGenerated = generated;
+    }
+
+    @Override
     public long getCoinSupply() {
         Set<UUID> operatorIds = Bukkit.getOperators().stream()
                 .map(OfflinePlayer::getUniqueId)
@@ -608,6 +632,8 @@ public class SynchronizedState implements State {
         setTrackedBanknoteIssuance(0);
         setDailyQuestLocation(null);
         setDailyQuestDate(null);
+        setDailyQuestGeneratedAt(null);
+        setDailyQuestRewardGenerated(false);
     }
 
     @Override
@@ -756,15 +782,21 @@ public class SynchronizedState implements State {
                 setTrackedBanknoteIssuance(data.getTrackedBanknoteIssuance());
 
                 setDailyQuestDate(data.getDailyQuestDate());
+                setDailyQuestGeneratedAt(data.getDailyQuestGeneratedAt());
+                setDailyQuestRewardGenerated(data.isDailyQuestRewardGenerated());
                 Coordinate questCoordinate = data.getDailyQuestLocation();
                 if (questCoordinate != null) {
                     try {
                         setDailyQuestLocation(questCoordinate.asLocation());
                     } catch (IllegalArgumentException ignored) {
                         setDailyQuestLocation(null);
+                        setDailyQuestGeneratedAt(null);
+                        setDailyQuestRewardGenerated(false);
                     }
                 } else {
                     setDailyQuestLocation(null);
+                    setDailyQuestGeneratedAt(null);
+                    setDailyQuestRewardGenerated(false);
                 }
 
             } catch (IOException e) {

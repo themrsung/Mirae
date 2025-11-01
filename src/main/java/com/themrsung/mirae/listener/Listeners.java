@@ -16,6 +16,7 @@ import com.themrsung.mirae.listener.lootbox.LootBoxRedemptionListener;
 import com.themrsung.mirae.listener.mining.CustomBlockSilkTouchListener;
 import com.themrsung.mirae.listener.player.PlayerListener;
 import com.themrsung.mirae.listener.player.ShulkerBoxListener;
+import com.themrsung.mirae.listener.quest.DailyQuestChestListener;
 import com.themrsung.mirae.listener.server.PhantomCancellationListener;
 import com.themrsung.mirae.listener.skill.SkillBoostListener;
 import com.themrsung.mirae.listener.skill.SkillRestrictionListener;
@@ -51,6 +52,7 @@ public final class Listeners {
     public static final @NotNull ItemListener ITEM_LISTENER = new ItemListener();
     public static final @NotNull DrugsListener DRUGS_LISTENER = new DrugsListener();
     public static final @NotNull PhantomCancellationListener PHANTOM_CANCELLATION_LISTENER = new PhantomCancellationListener();
+    public static final @NotNull DailyQuestChestListener DAILY_QUEST_CHEST_LISTENER = new DailyQuestChestListener();
 
     /**
      * The set of all listeners.
@@ -76,7 +78,8 @@ public final class Listeners {
             FOOD_LISTENER,
             ITEM_LISTENER,
             DRUGS_LISTENER,
-            PHANTOM_CANCELLATION_LISTENER
+            PHANTOM_CANCELLATION_LISTENER,
+            DAILY_QUEST_CHEST_LISTENER
     );
 
     /**
