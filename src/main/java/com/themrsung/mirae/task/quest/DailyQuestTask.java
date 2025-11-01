@@ -74,7 +74,11 @@ public final class DailyQuestTask implements Runnable {
         generateQuest(state, today);
     }
 
-    private void generateQuest(@NotNull State state, @NotNull LocalDate today) {
+    public boolean regenerateQuest() {
+        return generateQuest(Mirae.getState(), LocalDate.now(QUEST_ZONE));
+    }
+
+    private boolean generateQuest(@NotNull State state, @NotNull LocalDate today) {
         World world = Bukkit.getWorlds().stream()
                 .filter(w -> w.getEnvironment() == World.Environment.NORMAL)
                 .findFirst()
@@ -82,7 +86,7 @@ public final class DailyQuestTask implements Runnable {
 
         if (world == null) {
             Mirae.getInstance().getLogger().warning("Unable to locate an overworld world for the daily quest task.");
-            return;
+            return false;
         }
 
         Location previous = state.getDailyQuestLocation();
@@ -98,7 +102,7 @@ public final class DailyQuestTask implements Runnable {
             Mirae.getInstance().getLogger().warning("Failed to generate a location for today's daily quest chest.");
             state.setDailyQuestLocation(null);
             state.setDailyQuestDate(null);
-            return;
+            return false;
         }
 
         Block chestBlock = questLocation.getBlock();
@@ -112,6 +116,7 @@ public final class DailyQuestTask implements Runnable {
         state.setDailyQuestDate(today);
 
         broadcastQuest(chestBlock.getLocation());
+        return true;
     }
 
     private @Nullable Location findQuestLocation(@NotNull World world) {
