@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -47,6 +48,8 @@ public class SynchronizedState implements State {
         this.accountMap = new ConcurrentHashMap<>();
         this.marketMap = new ConcurrentHashMap<>();
         this.trackedBanknoteIssuance = 0;
+        this.dailyQuestDate = null;
+        this.dailyQuestLocation = null;
 
         // Transient
         this.directMessages = Collections.synchronizedList(new ArrayList<>());
@@ -182,6 +185,8 @@ public class SynchronizedState implements State {
     private final @NotNull Map<UUID, Market> marketMap;
 
     private double trackedBanknoteIssuance;
+    private @Nullable LocalDate dailyQuestDate;
+    private @Nullable Location dailyQuestLocation;
 
     @Override
     public @NotNull Map<UUID, Market> getMarketMap() {
@@ -518,6 +523,28 @@ public class SynchronizedState implements State {
         return accountSupply + getTrackedBanknoteIssuance();
     }
 
+    /// Quests
+
+    @Override
+    public synchronized @Nullable LocalDate getDailyQuestDate() {
+        return dailyQuestDate;
+    }
+
+    @Override
+    public synchronized void setDailyQuestDate(@Nullable LocalDate date) {
+        this.dailyQuestDate = date;
+    }
+
+    @Override
+    public synchronized @Nullable Location getDailyQuestLocation() {
+        return dailyQuestLocation != null ? dailyQuestLocation.clone() : null;
+    }
+
+    @Override
+    public synchronized void setDailyQuestLocation(@Nullable Location location) {
+        this.dailyQuestLocation = location != null ? location.clone() : null;
+    }
+
     @Override
     public long getCoinSupply() {
         Set<UUID> operatorIds = Bukkit.getOperators().stream()
@@ -579,6 +606,8 @@ public class SynchronizedState implements State {
         clearAccounts();
         clearMarkets();
         setTrackedBanknoteIssuance(0);
+        setDailyQuestLocation(null);
+        setDailyQuestDate(null);
     }
 
     @Override
@@ -725,6 +754,18 @@ public class SynchronizedState implements State {
                 });
 
                 setTrackedBanknoteIssuance(data.getTrackedBanknoteIssuance());
+
+                setDailyQuestDate(data.getDailyQuestDate());
+                Coordinate questCoordinate = data.getDailyQuestLocation();
+                if (questCoordinate != null) {
+                    try {
+                        setDailyQuestLocation(questCoordinate.asLocation());
+                    } catch (IllegalArgumentException ignored) {
+                        setDailyQuestLocation(null);
+                    }
+                } else {
+                    setDailyQuestLocation(null);
+                }
 
             } catch (IOException e) {
                 throw new IOException("Error loading data.", e);

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,8 @@ public final class StateData implements Serializable {
 
         this.warpMap = Map.copyOf(warps);
         this.trackedBanknoteIssuance = state.getTrackedBanknoteIssuance();
+        this.dailyQuestDate = state.getDailyQuestDate() != null ? state.getDailyQuestDate().toString() : null;
+        this.dailyQuestLocation = state.getDailyQuestLocation() != null ? new Coordinate(state.getDailyQuestLocation()) : null;
     }
 
     /**
@@ -58,11 +62,15 @@ public final class StateData implements Serializable {
         this.spawnPoint = null;
         this.warpMap = new HashMap<>();
         this.trackedBanknoteIssuance = 0;
+        this.dailyQuestDate = null;
+        this.dailyQuestLocation = null;
     }
 
     private @Nullable Coordinate spawnPoint;
     private final @NotNull Map<String, Coordinate> warpMap;
     private double trackedBanknoteIssuance;
+    private @Nullable String dailyQuestDate;
+    private @Nullable Coordinate dailyQuestLocation;
 
     /**
      * Returns the spawn point.
@@ -92,6 +100,32 @@ public final class StateData implements Serializable {
     }
 
     /**
+     * Returns the daily quest generation date.
+     *
+     * @return The quest date
+     */
+    public @Nullable LocalDate getDailyQuestDate() {
+        if (dailyQuestDate == null || dailyQuestDate.isBlank()) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(dailyQuestDate);
+        } catch (DateTimeParseException ignored) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the daily quest chest location.
+     *
+     * @return The quest location
+     */
+    public @Nullable Coordinate getDailyQuestLocation() {
+        return dailyQuestLocation;
+    }
+
+    /**
      * Serializer class.
      */
     private static final class Serializer implements JsonSerializer<StateData> {
@@ -109,6 +143,8 @@ public final class StateData implements Serializable {
             object.add("warps", warps);
 
             object.addProperty("trackedBanknoteIssuance", data.trackedBanknoteIssuance);
+            object.add("dailyQuestDate", data.dailyQuestDate != null ? new JsonPrimitive(data.dailyQuestDate) : JsonNull.INSTANCE);
+            object.add("dailyQuestLocation", context.serialize(data.dailyQuestLocation));
 
             return object;
         }
@@ -139,6 +175,14 @@ public final class StateData implements Serializable {
 
             if (object.has("trackedBanknoteIssuance") && object.get("trackedBanknoteIssuance").isJsonPrimitive()) {
                 data.trackedBanknoteIssuance = object.get("trackedBanknoteIssuance").getAsDouble();
+            }
+
+            if (object.has("dailyQuestDate") && !object.get("dailyQuestDate").isJsonNull()) {
+                data.dailyQuestDate = object.get("dailyQuestDate").getAsString();
+            }
+
+            if (object.has("dailyQuestLocation") && !object.get("dailyQuestLocation").isJsonNull()) {
+                data.dailyQuestLocation = context.deserialize(object.get("dailyQuestLocation"), Coordinate.class);
             }
 
             return data;

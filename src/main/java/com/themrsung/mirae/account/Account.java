@@ -19,10 +19,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongUnaryOperator;
+import java.time.format.DateTimeParseException;
 
 /**
  * A Mirae account.
@@ -538,6 +540,24 @@ public interface Account extends Serializable {
     void clearSkillLevels();
 
     ///
+    /// Attendance
+    ///
+
+    /**
+     * Returns the date when this account last claimed a daily attendance reward.
+     *
+     * @return The last attendance date
+     */
+    @Nullable LocalDate getLastAttendanceDate();
+
+    /**
+     * Sets the date when this account last claimed a daily attendance reward.
+     *
+     * @param date The date to set
+     */
+    void setLastAttendanceDate(@Nullable LocalDate date);
+
+    ///
     /// Social
     ///
 
@@ -903,6 +923,10 @@ public interface Account extends Serializable {
             });
             object.add("skillLevels", skillLevels);
 
+            object.add("lastAttendanceDate", account.getLastAttendanceDate() != null
+                    ? new JsonPrimitive(account.getLastAttendanceDate().toString())
+                    : JsonNull.INSTANCE);
+
             // Social
 
             JsonArray mailList = new JsonArray();
@@ -1059,6 +1083,13 @@ public interface Account extends Serializable {
                     SkillTypeLongPair pair = context.deserialize(entry, SkillTypeLongPair.class);
                     account.setSkillLevel(pair.getKey(), pair.getValue());
                 });
+            }
+
+            if (object.has("lastAttendanceDate") && !object.get("lastAttendanceDate").isJsonNull()) {
+                try {
+                    account.setLastAttendanceDate(LocalDate.parse(object.get("lastAttendanceDate").getAsString()));
+                } catch (DateTimeParseException ignored) {
+                }
             }
 
             // Social
