@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,38 @@ public interface State {
      * Clears the account map.
      */
     void clearAccounts();
+
+    ///
+    /// Quests
+    ///
+
+    /**
+     * Returns the date when the current daily quest chest was generated.
+     *
+     * @return The quest generation date
+     */
+    @Nullable LocalDate getDailyQuestDate();
+
+    /**
+     * Sets the date when the current daily quest chest was generated.
+     *
+     * @param date The quest generation date
+     */
+    void setDailyQuestDate(@Nullable LocalDate date);
+
+    /**
+     * Returns the location of the current daily quest chest.
+     *
+     * @return The quest chest location
+     */
+    @Nullable Location getDailyQuestLocation();
+
+    /**
+     * Sets the location of the current daily quest chest.
+     *
+     * @param location The quest chest location
+     */
+    void setDailyQuestLocation(@Nullable Location location);
 
     ///
     /// Markets

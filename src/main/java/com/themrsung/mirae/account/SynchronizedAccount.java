@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,6 +62,7 @@ public class SynchronizedAccount implements Account {
         this.receivedStarterKit = false;
 
         this.itemStorage = new ItemStorage();
+        this.lastAttendanceDate = null;
     }
 
     /**
@@ -96,6 +98,7 @@ public class SynchronizedAccount implements Account {
         this.receivedStarterKit = false;
 
         this.itemStorage = new ItemStorage();
+        this.lastAttendanceDate = null;
     }
 
     /// Identification
@@ -427,6 +430,7 @@ public class SynchronizedAccount implements Account {
     private @Nullable LocalDateTime lastSeenTime;
     private @Nullable Location lastSeenLocation;
     private final @NotNull Map<SkillType, Long> skillLevelMap;
+    private @Nullable LocalDate lastAttendanceDate;
 
     @Override
     public @Nullable LocalDateTime getLastSeenTime() {
@@ -503,6 +507,18 @@ public class SynchronizedAccount implements Account {
         });
 
         skillLevelMap.clear();
+    }
+
+    /// Attendance
+
+    @Override
+    public @Nullable LocalDate getLastAttendanceDate() {
+        return lastAttendanceDate;
+    }
+
+    @Override
+    public synchronized void setLastAttendanceDate(@Nullable LocalDate date) {
+        this.lastAttendanceDate = date;
     }
 
     /// Social

@@ -7,6 +7,7 @@ import com.themrsung.mirae.account.AccountTier;
 import com.themrsung.mirae.account.AccountTitle;
 import com.themrsung.mirae.economy.EconomyCause;
 import com.themrsung.mirae.item.ItemSupplier;
+import com.themrsung.mirae.item.lootbox.LootBox;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -24,7 +25,9 @@ import org.bukkit.event.player.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,6 +49,7 @@ public class PlayerListener implements Listener {
      */
     public static final double LOCAL_CHAT_DISTANCE = 150;
     private static final double LOCAL_CHAT_DISTANCE_SQUARED = Math.pow(LOCAL_CHAT_DISTANCE, 2);
+    private static final ZoneId SEOUL_ZONE = ZoneId.of("Asia/Seoul");
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -85,6 +89,13 @@ public class PlayerListener implements Listener {
         if (!account.hasReceivedStarterKit()) {
             MX.giveItems(player, ItemSupplier.STARTER_KIT.getItem());
             account.setReceivedStarterKit(true);
+        }
+
+        LocalDate today = LocalDate.now(SEOUL_ZONE);
+        if (!today.equals(account.getLastAttendanceDate())) {
+            account.setLastAttendanceDate(today);
+            MX.giveItems(player, LootBox.RED_BOX.getItem());
+            player.sendMessage(Component.text("오늘의 출석 보상으로 레드 박스를 받았습니다!").style(MX.STYLE_GOOD));
         }
 
         account.updateName();

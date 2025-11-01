@@ -11,6 +11,7 @@ import com.themrsung.mirae.task.item.EmpShieldTask;
 import com.themrsung.mirae.task.item.MagnetTask;
 import com.themrsung.mirae.task.player.ElytraDurabilityTask;
 import com.themrsung.mirae.task.player.ScoreboardTask;
+import com.themrsung.mirae.task.quest.DailyQuestTask;
 import com.themrsung.mirae.task.server.NotifierTask;
 import com.themrsung.mirae.task.state.AutoSaveTask;
 import com.themrsung.mirae.task.state.MuteExpirationTask;
@@ -40,6 +41,7 @@ public final class Tasks {
     public static final @NotNull ArrowSeekerTask ARROW_SEEKER_TASK = new ArrowSeekerTask();
     public static final @NotNull EmpShieldTask EMP_SHIELD_TASK = new EmpShieldTask();
     public static final @NotNull ArrowPropulsionTask ARROW_PROPULSION_TASK = new ArrowPropulsionTask();
+    public static final @NotNull DailyQuestTask DAILY_QUEST_TASK = new DailyQuestTask();
 
     /**
      * The set of all tasks.
@@ -59,7 +61,8 @@ public final class Tasks {
             MAGNET_TASK,
             ARROW_SEEKER_TASK,
             EMP_SHIELD_TASK,
-            ARROW_PROPULSION_TASK
+            ARROW_PROPULSION_TASK,
+            DAILY_QUEST_TASK
     );
 
     /**
@@ -94,6 +97,7 @@ public final class Tasks {
         s.runTaskTimer(p, ARROW_SEEKER_TASK, 200, 4);
         s.runTaskTimer(p, EMP_SHIELD_TASK, 200, 2);
         s.runTaskTimer(p, ARROW_PROPULSION_TASK, 200, 3);
+        s.runTaskTimer(p, DAILY_QUEST_TASK, 20 * 60, 20 * 60 * 10);
     }
 
     /**
