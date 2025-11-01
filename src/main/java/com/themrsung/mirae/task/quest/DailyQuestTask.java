@@ -66,6 +66,10 @@ public final class DailyQuestTask implements Runnable {
             if (type != Material.CHEST && type != Material.TRAPPED_CHEST) {
                 needsQuest = true;
             }
+
+            if (!needsQuest && MX.getGriefPrevention().dataStore.getClaimAt(storedLocation, false, null) != null) {
+                needsQuest = true;
+            }
         }
 
         if (!needsQuest) {
