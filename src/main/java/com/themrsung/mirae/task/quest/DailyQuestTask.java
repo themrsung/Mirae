@@ -41,17 +41,9 @@ public final class DailyQuestTask implements Runnable {
             CustomItem.RED_LIGHTSABER,
             CustomItem.GREEN_LIGHTSABER,
             CustomItem.MAGNET,
-            CustomItem.VIBRANIUM_INGOT,
-            CustomItem.URANIUM_INGOT,
-            CustomItem.DONOR_COIN,
             EnchantedItemSupplier.ENCHANTED_NETHERITE_PICKAXE,
             EnchantedItemSupplier.ENCHANTED_NETHERITE_SWORD,
-            EnchantedItemSupplier.ENCHANTED_NETHERITE_AXE,
-            EnchantedItemSupplier.ENCHANTED_DIAMOND_SWORD,
-            EnchantedItemSupplier.MENDING_BOOK,
-            LootBox.ORANGE_BOX,
-            LootBox.GREEN_BOX,
-            LootBox.TITLE_BOX
+            EnchantedItemSupplier.ENCHANTED_NETHERITE_AXE
     );
 
     @Override
@@ -155,9 +147,6 @@ public final class DailyQuestTask implements Runnable {
     private void populateChest(@NotNull Inventory inventory) {
         inventory.clear();
 
-        addIfPresent(inventory, safeGetItem(LootBox.PURPLE_BOX, () -> new ItemStack(Material.NETHERITE_BLOCK, 8), "purple loot box"));
-        addIfPresent(inventory, safeGetItem(LootBox.RED_BOX, () -> new ItemStack(Material.EMERALD_BLOCK, 16), "red loot box"));
-
         List<ItemSupplier> pool = new ArrayList<>(VALUABLE_ITEMS);
         Collections.shuffle(pool);
 
@@ -173,14 +162,6 @@ public final class DailyQuestTask implements Runnable {
             inventory.addItem(reward);
             added++;
         }
-    }
-
-    private void addIfPresent(@NotNull Inventory inventory, @Nullable ItemStack item) {
-        if (item == null || item.getType() == Material.AIR) {
-            return;
-        }
-
-        inventory.addItem(item);
     }
 
     private @Nullable ItemStack safeGetItem(@NotNull ItemSupplier supplier,
