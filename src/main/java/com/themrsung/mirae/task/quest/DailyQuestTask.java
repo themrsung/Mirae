@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
+import java.util.logging.Level;
 
 /**
  * Periodically generates a daily quest loot chest in the overworld.
@@ -151,16 +154,65 @@ public final class DailyQuestTask implements Runnable {
 
     private void populateChest(@NotNull Inventory inventory) {
         inventory.clear();
-        inventory.addItem(LootBox.PURPLE_BOX.getItem());
-        inventory.addItem(LootBox.RED_BOX.getItem());
+
+        addIfPresent(inventory, safeGetItem(LootBox.PURPLE_BOX, () -> new ItemStack(Material.NETHERITE_BLOCK, 8), "purple loot box"));
+        addIfPresent(inventory, safeGetItem(LootBox.RED_BOX, () -> new ItemStack(Material.EMERALD_BLOCK, 16), "red loot box"));
 
         List<ItemSupplier> pool = new ArrayList<>(VALUABLE_ITEMS);
         Collections.shuffle(pool);
 
         int additionalRewards = ThreadLocalRandom.current().nextInt(2, 5);
-        for (int i = 0; i < additionalRewards && i < pool.size(); i++) {
-            inventory.addItem(pool.get(i).getItem());
+        int added = 0;
+        for (int i = 0; i < pool.size() && added < additionalRewards; i++) {
+            ItemSupplier supplier = pool.get(i);
+            ItemStack reward = safeGetItem(supplier, null, describeSupplier(supplier));
+            if (reward == null || reward.getType() == Material.AIR) {
+                continue;
+            }
+
+            inventory.addItem(reward);
+            added++;
         }
+    }
+
+    private void addIfPresent(@NotNull Inventory inventory, @Nullable ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) {
+            return;
+        }
+
+        inventory.addItem(item);
+    }
+
+    private @Nullable ItemStack safeGetItem(@NotNull ItemSupplier supplier,
+                                            @Nullable Supplier<ItemStack> fallbackSupplier,
+                                            @NotNull String description) {
+        try {
+            ItemStack item = supplier.getItem();
+            if (item.getType() == Material.AIR && fallbackSupplier != null) {
+                Mirae.getInstance().getLogger().warning("Daily quest chest attempted to add " + description + " but received AIR. Using fallback reward instead.");
+                return fallbackSupplier.get();
+            }
+
+            return item;
+        } catch (RuntimeException ex) {
+            if (fallbackSupplier != null) {
+                Mirae.getInstance().getLogger().log(Level.WARNING, "Failed to create " + description + " for the daily quest chest. Using fallback reward instead.", ex);
+                return fallbackSupplier.get();
+            }
+
+            Mirae.getInstance().getLogger().log(Level.WARNING, "Failed to create " + description + " for the daily quest chest. Skipping reward.", ex);
+            return null;
+        }
+    }
+
+    private @NotNull String describeSupplier(@NotNull ItemSupplier supplier) {
+        if (supplier instanceof LootBox box) {
+            return box.getDisplayName().toString();
+        }
+        if (supplier instanceof CustomItem customItem) {
+            return customItem.getClass().getSimpleName();
+        }
+        return supplier.getClass().getSimpleName();
     }
 
     static void broadcastQuest(@NotNull Location location) {
