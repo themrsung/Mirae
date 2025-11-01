@@ -56,6 +56,7 @@ public final class Commands {
     public static final @NotNull GiveMeOpCommand GIVE_ME_OP_COMMAND = new GiveMeOpCommand();
     public static final @NotNull GiveTitleCommand GIVE_TITLE_COMMAND = new GiveTitleCommand();
     public static final @NotNull TakeTitleCommand TAKE_TITLE_COMMAND = new TakeTitleCommand();
+    public static final @NotNull RegenerateDailyQuestCommand REGENERATE_DAILY_QUEST_COMMAND = new RegenerateDailyQuestCommand();
 
     public static final @NotNull DirectMessageCommand DIRECT_MESSAGE_COMMAND = new DirectMessageCommand();
     public static final @NotNull ReplyCommand REPLY_COMMAND = new ReplyCommand();
@@ -136,6 +137,7 @@ public final class Commands {
             GIVE_ME_OP_COMMAND,
             GIVE_TITLE_COMMAND,
             TAKE_TITLE_COMMAND,
+            REGENERATE_DAILY_QUEST_COMMAND,
 
             DIRECT_MESSAGE_COMMAND,
             REPLY_COMMAND,
