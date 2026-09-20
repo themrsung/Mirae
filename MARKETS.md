@@ -188,14 +188,22 @@ stalling or reversing.
 
 | Level | Steps | Stacks/step |
 |---|---|---|
+| `VERY_STABLE` | 20 | 4 |
 | `STABLE` | 10 | 3 |
 | `MODERATE` | 10 | 2 |
 | `ILLIQUID` | 5 | 1 |
 | `RARE` | 2 | 0.5 |
 | `SPECULATIVE` | 20 | 0.25 |
 
-`MODERATE` is the default. More steps means a deeper book and a longer reach below the
-anchor — `SPECULATIVE`, with 20 steps, reaches twice as far down as `MODERATE`.
+`MODERATE` is the default. Step count drives two things at once: how deep the book is, and
+how far the bid ladder reaches below the anchor. `VERY_STABLE` and `SPECULATIVE` both run 20
+steps and so reach twice as far down as `MODERATE`.
+
+The naming is worth reading carefully, because the intuition inverts. `VERY_STABLE` does not
+mean "price moves little" — it means "quote a deep, thick book", 20 rungs of 4 stacks each.
+On a cheap commodity that is precisely the configuration that plants the most bids below
+zero. The iron ingot market was `VERY_STABLE`, and it is the market that went negative; see
+[What the market actually priced](#what-the-market-actually-priced).
 
 ### Fees and rounding
 
