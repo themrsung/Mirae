@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Netherite to Vibranium.
+ * Netherite to darksteel.
  */
-public class NetheriteToVibraniumRecipe implements UpgradeRecipe {
+public class NetheriteToDarksteelRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
         ItemStack netheriteIngot = new ItemStack(Material.NETHERITE_INGOT);
@@ -22,10 +22,10 @@ public class NetheriteToVibraniumRecipe implements UpgradeRecipe {
         int amount = left.getAmount();
         if (amount != right.getAmount()) return null;
 
-        ItemStack vibraniumIngot = CustomItem.VIBRANIUM_INGOT.getItem();
-        vibraniumIngot.setAmount(amount);
+        ItemStack darksteelIngot = CustomItem.DARKSTEEL_INGOT.getItem();
+        darksteelIngot.setAmount(amount);
 
-        return vibraniumIngot;
+        return darksteelIngot;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class CustomEnchantApplicationRecipe implements UpgradeRecipe {
 
     private static boolean isShield(@NotNull ItemStack item) {
         if (item.getType() == Material.SHIELD) return true;
-        if (CustomItem.CAPTAIN_SHIELD.isItem(item)) return true;
+        if (CustomItem.HERO_SHIELD.isItem(item)) return true;
 
         return false;
     }

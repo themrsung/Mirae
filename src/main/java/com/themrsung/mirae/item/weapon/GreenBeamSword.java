@@ -10,14 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Captain America's Shield.
+ * Green beam sword.
  */
-public class CaptainShield extends ModifiableItemsAdderItem {
+public class GreenBeamSword extends ModifiableItemsAdderItem {
     /**
-     * Creates a new shield.
+     * Creates a new beam sword.
      */
-    public CaptainShield() {
-        super("stellar_heroes:hero_shield", "mirae.item.captain_shield");
+    public GreenBeamSword() {
+        super("iaspecial_swords:green_lightsaber", "mirae.item.green_lightsaber");
     }
 
     @Override
@@ -25,13 +25,15 @@ public class CaptainShield extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        Component name = MiniMessage.miniMessage().deserialize("<reset><gradient:blue:red><bold>비브라늄 방패<reset>")
+        Component name = MiniMessage.miniMessage().deserialize("<reset><green><bold>광선검<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build());
 
         meta.itemName(name);
         meta.displayName(name);
+
+        meta.setUnbreakable(true);
 
         item.setItemMeta(meta);
         return item;

@@ -2,7 +2,7 @@ package com.themrsung.mirae.upgrade;
 
 import com.themrsung.mirae.upgrade.composition.CoalToDiamondRecipe;
 import com.themrsung.mirae.upgrade.composition.IronToolToDiamondRecipe;
-import com.themrsung.mirae.upgrade.composition.NetheriteToVibraniumRecipe;
+import com.themrsung.mirae.upgrade.composition.NetheriteToDarksteelRecipe;
 import com.themrsung.mirae.upgrade.composition.WoodenToolToNetheriteRecipe;
 import com.themrsung.mirae.upgrade.debug.TestUpgradeRecipe;
 import com.themrsung.mirae.upgrade.enchant.CustomEnchantAcquisitionRecipe;
@@ -22,18 +22,18 @@ public final class Upgrades {
     private static final @NotNull Set<UpgradeRecipe> RECIPES = Set.of(
             new TestUpgradeRecipe(),
 
-            new StormbreakerRecipe(),
-            new ThorHammerRecipe(),
-            new CaptainShieldRecipe(),
+            new StormHammerRecipe(),
+            new MythicHammerRecipe(),
+            new HeroShieldRecipe(),
 
-            new ClosedLightsaberRecipe(),
-            new ColoredLightsaberRecipe(),
+            new ClosedBeamSwordRecipe(),
+            new ColoredBeamSwordRecipe(),
 
             new BaseballBatRecipe(),
 
             new ImprintRemoveRecipe(),
 
-            new NetheriteToVibraniumRecipe(),
+            new NetheriteToDarksteelRecipe(),
             new CoalToDiamondRecipe(),
             new IronToolToDiamondRecipe(),
             new WoodenToolToNetheriteRecipe(),

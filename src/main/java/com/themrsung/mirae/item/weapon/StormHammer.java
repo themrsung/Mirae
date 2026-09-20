@@ -10,14 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Blue lightsaber.
+ * Storm hammer.
  */
-public class BlueLightsaber extends ModifiableItemsAdderItem {
+public class StormHammer extends ModifiableItemsAdderItem {
     /**
-     * Creates a new lightsaber.
+     * Creates a new storm hammer.
      */
-    public BlueLightsaber() {
-        super("iaspecial_swords:blue_lightsaber", "mirae.item.blue_lightsaber");
+    public StormHammer() {
+        super("stellar_heroes:storm_hammer", "mirae.item.stormbreaker");
     }
 
     @Override
@@ -25,15 +25,13 @@ public class BlueLightsaber extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        Component name = MiniMessage.miniMessage().deserialize("<reset><blue><bold>광선검<reset>")
+        Component name = MiniMessage.miniMessage().deserialize("<reset><gradient:gold:black><bold>폭풍의 망치<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build());
 
         meta.itemName(name);
         meta.displayName(name);
-
-        meta.setUnbreakable(true);
 
         item.setItemMeta(meta);
         return item;

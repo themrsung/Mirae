@@ -11,21 +11,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Thor's hammer recipe.
+ * Netherite sword to beam sword.
  */
-public class ThorHammerRecipe implements UpgradeRecipe {
+public class ClosedBeamSwordRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
         if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
 
-        ItemStack mace = new ItemStack(Material.MACE);
-        if (!mace.isSimilar(left)) return null;
+        ItemStack netheriteAxe = new ItemStack(Material.NETHERITE_SWORD);
+        if (!netheriteAxe.isSimilar(left)) return null;
 
-        ItemStack vibranium = CustomItem.VIBRANIUM_INGOT.getItem();
-        if (!vibranium.isSimilar(right)) return null;
+        ItemStack uranium = CustomItem.URANIUM_INGOT.getItem();
+        if (!uranium.isSimilar(right)) return null;
         if (right.getAmount() != 1) return null;
 
-        ItemStack result = CustomItem.THOR_HAMMER.getItem();
+        ItemStack result = CustomItem.CLOSED_BEAM_SWORD.getItem();
 
         if (CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket)) {
             ItemMeta meta = result.getItemMeta();
@@ -38,6 +38,6 @@ public class ThorHammerRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.03;
+        return 0.01;
     }
 }

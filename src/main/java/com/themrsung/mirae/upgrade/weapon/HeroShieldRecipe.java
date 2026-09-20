@@ -11,21 +11,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Netherite sword to lightsaber.
+ * Captain's shield recipe.
  */
-public class ClosedLightsaberRecipe implements UpgradeRecipe {
+public class HeroShieldRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
         if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
 
-        ItemStack netheriteAxe = new ItemStack(Material.NETHERITE_SWORD);
-        if (!netheriteAxe.isSimilar(left)) return null;
+        ItemStack shield = new ItemStack(Material.SHIELD);
+        if (!shield.isSimilar(left)) return null;
 
-        ItemStack uranium = CustomItem.URANIUM_INGOT.getItem();
-        if (!uranium.isSimilar(right)) return null;
-        if (right.getAmount() != 1) return null;
+        ItemStack darksteel = CustomItem.DARKSTEEL_INGOT.getItem();
+        if (!darksteel.isSimilar(right)) return null;
+        if (right.getAmount() != 9) return null;
 
-        ItemStack result = CustomItem.CLOSED_LIGHTSABER.getItem();
+        ItemStack result = CustomItem.HERO_SHIELD.getItem();
 
         if (CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket)) {
             ItemMeta meta = result.getItemMeta();
@@ -38,6 +38,6 @@ public class ClosedLightsaberRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.01;
+        return 0.005;
     }
 }

@@ -14,18 +14,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Lightsaber.
+ * BeamSword.
  */
-public class ColoredLightsaberRecipe implements UpgradeRecipe {
+public class ColoredBeamSwordRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
-        if (!CustomItem.CLOSED_LIGHTSABER.isItem(left)) return null;
+        if (!CustomItem.CLOSED_BEAM_SWORD.isItem(left)) return null;
         if (right.getAmount() != 1) return null;
 
         ItemStack saber = switch (right.getType()) {
-            case REDSTONE -> CustomItem.RED_LIGHTSABER.getItem();
-            case LAPIS_LAZULI -> CustomItem.BLUE_LIGHTSABER.getItem();
-            case EMERALD -> CustomItem.GREEN_LIGHTSABER.getItem();
+            case REDSTONE -> CustomItem.RED_BEAM_SWORD.getItem();
+            case LAPIS_LAZULI -> CustomItem.BLUE_BEAM_SWORD.getItem();
+            case EMERALD -> CustomItem.GREEN_BEAM_SWORD.getItem();
             default -> null;
         };
 

@@ -33,7 +33,7 @@ public class TestCommand extends MiraeCommand {
 //        CustomEnchantment.Value.SUPER_SHOVEL.setEnchantLevel(item, 1);
 //        player.getInventory().setItemInMainHand(item);
 
-        player.sendMessage(CustomItem.STORMBREAKER.isItem(item) ? "true" : "false");
+        player.sendMessage(CustomItem.STORM_HAMMER.isItem(item) ? "true" : "false");
 
         player.getInventory().addItem(
                 LootBox.TEST_BOX.getItem(),

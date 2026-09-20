@@ -11,21 +11,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Stormbreaker recipe.
+ * Mythic hammer recipe.
  */
-public class StormbreakerRecipe implements UpgradeRecipe {
+public class MythicHammerRecipe implements UpgradeRecipe {
     @Override
     public @Nullable ItemStack upgrade(@NotNull ItemStack left, @NotNull ItemStack right, @Nullable ItemStack ticket) {
         if (!CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket) && ticket != null) return null;
 
-        ItemStack netheriteAxe = new ItemStack(Material.NETHERITE_AXE);
-        if (!netheriteAxe.isSimilar(left)) return null;
+        ItemStack mace = new ItemStack(Material.MACE);
+        if (!mace.isSimilar(left)) return null;
 
-        ItemStack vibranium = CustomItem.VIBRANIUM_INGOT.getItem();
-        if (!vibranium.isSimilar(right)) return null;
+        ItemStack darksteel = CustomItem.DARKSTEEL_INGOT.getItem();
+        if (!darksteel.isSimilar(right)) return null;
         if (right.getAmount() != 1) return null;
 
-        ItemStack result = CustomItem.STORMBREAKER.getItem();
+        ItemStack result = CustomItem.MYTHIC_HAMMER.getItem();
 
         if (CustomItem.UPGRADE_SUCCESS_TICKET.isItem(ticket)) {
             ItemMeta meta = result.getItemMeta();
@@ -38,6 +38,6 @@ public class StormbreakerRecipe implements UpgradeRecipe {
 
     @Override
     public double getSuccessRate() {
-        return 0.01;
+        return 0.03;
     }
 }

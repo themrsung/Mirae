@@ -38,9 +38,9 @@ public final class DailyQuestTask implements Runnable {
     private static final int COORDINATE_BOUND = 10_000;
     private static final int MAX_ATTEMPTS = 75;
     private static final @NotNull List<ItemSupplier> VALUABLE_ITEMS = List.of(
-            CustomItem.THOR_HAMMER,
-            CustomItem.RED_LIGHTSABER,
-            CustomItem.GREEN_LIGHTSABER,
+            CustomItem.MYTHIC_HAMMER,
+            CustomItem.RED_BEAM_SWORD,
+            CustomItem.GREEN_BEAM_SWORD,
             CustomItem.MAGNET,
             EnchantedItemSupplier.ENCHANTED_NETHERITE_PICKAXE,
             EnchantedItemSupplier.ENCHANTED_NETHERITE_SWORD,

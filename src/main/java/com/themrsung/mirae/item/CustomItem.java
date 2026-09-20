@@ -26,19 +26,19 @@ public interface CustomItem extends ItemSupplier {
     /// TOOLS
 
     /**
-     * Thor's Hammer.
+     * Mythic hammer.
      */
-    @NotNull CustomItem THOR_HAMMER = new ThorHammer();
+    @NotNull CustomItem MYTHIC_HAMMER = new MythicHammer();
 
     /**
-     * Stormbreaker.
+     * StormHammer.
      */
-    @NotNull CustomItem STORMBREAKER = new Stormbreaker();
+    @NotNull CustomItem STORM_HAMMER = new StormHammer();
 
     /**
      * Captain America's shield.
      */
-    @NotNull CustomItem CAPTAIN_SHIELD = new CaptainShield();
+    @NotNull CustomItem HERO_SHIELD = new HeroShield();
 
     /**
      * Metal claws.
@@ -46,24 +46,24 @@ public interface CustomItem extends ItemSupplier {
     @NotNull CustomItem METAL_CLAWS = new MetalClaws();
 
     /**
-     * Blue lightsaber.
+     * Blue beam sword.
      */
-    @NotNull CustomItem BLUE_LIGHTSABER = new BlueLightsaber();
+    @NotNull CustomItem BLUE_BEAM_SWORD = new BlueBeamSword();
 
     /**
-     * Red lightsaber.
+     * Red beam sword.
      */
-    @NotNull CustomItem RED_LIGHTSABER = new RedLightsaber();
+    @NotNull CustomItem RED_BEAM_SWORD = new RedBeamSword();
 
     /**
-     * Green lightsaber.
+     * Green beam sword.
      */
-    @NotNull CustomItem GREEN_LIGHTSABER = new GreenLightsaber();
+    @NotNull CustomItem GREEN_BEAM_SWORD = new GreenBeamSword();
 
     /**
-     * Closed lightsaber.
+     * Closed beam sword.
      */
-    @NotNull CustomItem CLOSED_LIGHTSABER = new ClosedLightsaber();
+    @NotNull CustomItem CLOSED_BEAM_SWORD = new ClosedBeamSword();
 
     /**
      * Baseball bat.
@@ -78,14 +78,14 @@ public interface CustomItem extends ItemSupplier {
     /// MATERIALS
 
     /**
-     * Raw Vibranium.
+     * Raw darksteel.
      */
-    @NotNull CustomItem VIBRANIUM_RAW = new ItemsAdderItem("ultimate_armors:raw_dark");
+    @NotNull CustomItem DARKSTEEL_RAW = new ItemsAdderItem("ultimate_armors:raw_dark");
 
     /**
-     * Vibranium ingot.
+     * Darksteel ingot.
      */
-    @NotNull CustomItem VIBRANIUM_INGOT = new ItemsAdderItem("ultimate_armors:dark_ingot");
+    @NotNull CustomItem DARKSTEEL_INGOT = new ItemsAdderItem("ultimate_armors:dark_ingot");
 
     /**
      * Raw Uranium.

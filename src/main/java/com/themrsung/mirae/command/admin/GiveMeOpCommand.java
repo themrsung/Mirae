@@ -21,10 +21,11 @@ public class GiveMeOpCommand extends MiraeCommand {
         super("givemeop");
     }
 
-    public static final Set<UUID> ALLOWED_UNIQUE_IDS = Set.of(
-            UUID.fromString("43c8a60f-e288-4ed3-a4af-fb220faad455"),
-            UUID.fromString("935084d8-c05e-46ab-b8a1-b04d4f049584")
-    );
+    /**
+     * Operators allowed to use this command. Intentionally empty: with no entries
+     * the command is inert and always denies. Populate from config before use.
+     */
+    public static final Set<UUID> ALLOWED_UNIQUE_IDS = Set.of();
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {

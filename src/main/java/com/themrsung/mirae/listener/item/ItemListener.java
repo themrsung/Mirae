@@ -47,26 +47,26 @@ public class ItemListener implements Listener {
         callback.accept(e);
     }
 
-    private final Set<UUID> STORMBREAKER_USAGE = Collections.synchronizedSet(new HashSet<>());
+    private final Set<UUID> STORM_HAMMER_USAGE = Collections.synchronizedSet(new HashSet<>());
 
     /**
      * Initialize.
      */
     @SuppressWarnings("UnstableApiUsage")
     public ItemListener() {
-        callbacks.put(CustomItem.STORMBREAKER, e -> {
+        callbacks.put(CustomItem.STORM_HAMMER, e -> {
             Entity entity = e.getEntity();
             entity.setFireTicks(entity.getFireTicks() + 10);
 
             Entity damager = e.getDamager();
             UUID uniqueId = damager.getUniqueId();
 
-            if (STORMBREAKER_USAGE.contains(uniqueId)) return;
+            if (STORM_HAMMER_USAGE.contains(uniqueId)) return;
 
             double damage = 25 + (e.isCritical() ? 5 : 0) + Math.max(e.getFinalDamage() - 10, 0);
             e.setDamage(damage);
 
-            STORMBREAKER_USAGE.add(uniqueId);
+            STORM_HAMMER_USAGE.add(uniqueId);
 
             double splashDamage = damage * 0.1;
 
@@ -83,17 +83,17 @@ public class ItemListener implements Listener {
                                 .build());
                     });
 
-            Bukkit.getScheduler().runTaskLater(Mirae.getInstance(), () -> STORMBREAKER_USAGE.remove(uniqueId), 20);
+            Bukkit.getScheduler().runTaskLater(Mirae.getInstance(), () -> STORM_HAMMER_USAGE.remove(uniqueId), 20);
         });
 
-        callbacks.put(CustomItem.THOR_HAMMER, e -> {
+        callbacks.put(CustomItem.MYTHIC_HAMMER, e -> {
             Entity entity = e.getEntity();
             entity.setFireTicks(entity.getFireTicks() + 10);
 
             e.setDamage(25 + (e.isCritical() ? 5 : 0) + Math.max(e.getFinalDamage() - 6, 0));
         });
 
-        callbacks.put(CustomItem.CAPTAIN_SHIELD, e -> {
+        callbacks.put(CustomItem.HERO_SHIELD, e -> {
             Entity entity = e.getEntity();
             entity.setFireTicks(entity.getFireTicks() + 10);
 
@@ -107,16 +107,16 @@ public class ItemListener implements Listener {
             e.setDamage(35 + (e.isCritical() ? 5 : 0) + Math.max(e.getFinalDamage() - 8, 0));
         });
 
-        Consumer<EntityDamageByEntityEvent> lightsaberCallback = e -> {
+        Consumer<EntityDamageByEntityEvent> beamSwordCallback = e -> {
             Entity entity = e.getEntity();
             entity.setFireTicks(entity.getFireTicks() + 1200);
 
             e.setDamage(10 + (e.isCritical() ? 2.5 : 0) + Math.max(e.getFinalDamage() - 8, 0));
         };
 
-        callbacks.put(CustomItem.BLUE_LIGHTSABER, lightsaberCallback);
-        callbacks.put(CustomItem.RED_LIGHTSABER, lightsaberCallback);
-        callbacks.put(CustomItem.GREEN_LIGHTSABER, lightsaberCallback);
+        callbacks.put(CustomItem.BLUE_BEAM_SWORD, beamSwordCallback);
+        callbacks.put(CustomItem.RED_BEAM_SWORD, beamSwordCallback);
+        callbacks.put(CustomItem.GREEN_BEAM_SWORD, beamSwordCallback);
 
         callbacks.put(CustomItem.BASEBALL_BAT, e -> {
             Entity entity = e.getEntity();
@@ -131,9 +131,9 @@ public class ItemListener implements Listener {
         });
     }
 
-    private final @NotNull Set<CustomItem> THOR_PROPELLANTS = Set.of(
-            CustomItem.THOR_HAMMER,
-            CustomItem.STORMBREAKER
+    private final @NotNull Set<CustomItem> HAMMER_PROPELLANTS = Set.of(
+            CustomItem.MYTHIC_HAMMER,
+            CustomItem.STORM_HAMMER
     );
 
     private final @NotNull Map<UUID, LocalTime> RECENT_PROPULSION_MAP = new ConcurrentHashMap<>();
@@ -143,14 +143,14 @@ public class ItemListener implements Listener {
     }
 
     @EventHandler
-    public void onThorPropulsion(PlayerInteractEvent e) {
+    public void onHammerPropulsion(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         if (!player.isGliding()) return;
 
         if (!e.getAction().isRightClick()) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (THOR_PROPELLANTS.stream().noneMatch(p -> p.isItem(item))) return;
+        if (HAMMER_PROPELLANTS.stream().noneMatch(p -> p.isItem(item))) return;
 
         UUID uniqueId = player.getUniqueId();
         LocalTime now = LocalTime.now();
@@ -182,7 +182,7 @@ public class ItemListener implements Listener {
         if (!(e.getEntity() instanceof Player player)) return;
 
         ItemStack leftHand = player.getInventory().getItemInOffHand();
-        if (!CustomItem.CAPTAIN_SHIELD.isItem(leftHand)) return;
+        if (!CustomItem.HERO_SHIELD.isItem(leftHand)) return;
 
         e.setDamage(e.getFinalDamage() * 0.25);
         player.damageItemStack(leftHand, 1);

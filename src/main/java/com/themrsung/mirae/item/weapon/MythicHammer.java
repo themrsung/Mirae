@@ -10,14 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Thor's axe (a.k.a. Stormbreaker)
+ * Mythic hammer.
  */
-public class Stormbreaker extends ModifiableItemsAdderItem {
+public class MythicHammer extends ModifiableItemsAdderItem {
     /**
-     * Creates a new Thor's axe;
+     * Creates a new Mythic hammer.
      */
-    public Stormbreaker() {
-        super("stellar_heroes:storm_hammer", "mirae.item.stormbreaker");
+    public MythicHammer() {
+        super("stellar_heroes:mythic_hammer", "mirae.item.thor_hammer");
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Stormbreaker extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        Component name = MiniMessage.miniMessage().deserialize("<reset><gradient:gold:black><bold>스톰브레이커<reset>")
+        Component name = MiniMessage.miniMessage().deserialize("<reset><gradient:gold:blue><bold>신화의 망치<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build());

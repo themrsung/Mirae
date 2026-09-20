@@ -10,14 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Red lightsaber.
+ * Blue beam sword.
  */
-public class RedLightsaber extends ModifiableItemsAdderItem {
+public class BlueBeamSword extends ModifiableItemsAdderItem {
     /**
-     * Creates a new lightsaber.
+     * Creates a new beam sword.
      */
-    public RedLightsaber() {
-        super("iaspecial_swords:red_lightsaber", "mirae.item.red_lightsaber");
+    public BlueBeamSword() {
+        super("iaspecial_swords:blue_lightsaber", "mirae.item.blue_lightsaber");
     }
 
     @Override
@@ -25,7 +25,7 @@ public class RedLightsaber extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        Component name = MiniMessage.miniMessage().deserialize("<reset><red><bold>광선검<reset>")
+        Component name = MiniMessage.miniMessage().deserialize("<reset><blue><bold>광선검<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build());

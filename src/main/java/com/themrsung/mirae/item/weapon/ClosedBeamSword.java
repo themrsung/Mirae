@@ -10,14 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Thor's hammer.
+ * Beam sword handle.
  */
-public class ThorHammer extends ModifiableItemsAdderItem {
+public class ClosedBeamSword extends ModifiableItemsAdderItem {
     /**
-     * Creates a new Thor's Hammer.
+     * Creates a new beam sword.
      */
-    public ThorHammer() {
-        super("stellar_heroes:mythic_hammer", "mirae.item.thor_hammer");
+    public ClosedBeamSword() {
+        super("iaspecial_swords:closed_lightsaber", "mirae.item.closed_lightsaber");
     }
 
     @Override
@@ -25,13 +25,15 @@ public class ThorHammer extends ModifiableItemsAdderItem {
         ItemStack item = super.getItem();
         ItemMeta meta = item.getItemMeta();
 
-        Component name = MiniMessage.miniMessage().deserialize("<reset><gradient:gold:blue><bold>묠니르<reset>")
+        Component name = MiniMessage.miniMessage().deserialize("<reset><color:#2975e6><bold>광선검 손잡이<reset>")
                 .applyFallbackStyle(Style.style()
                         .decoration(TextDecoration.ITALIC, false)
                         .build());
 
         meta.itemName(name);
         meta.displayName(name);
+
+        meta.setUnbreakable(true);
 
         item.setItemMeta(meta);
         return item;
